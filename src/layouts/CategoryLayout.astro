@@ -1,0 +1,225 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import type { CategorySlug } from '../content.config';
+import type { Lang } from '../utils/i18n';
+import { CATEGORY_LABELS } from '../utils/i18n';
+import AdSlot from '../components/AdSlot.astro';
+
+interface Props {
+  lang: Lang;
+  category: CategorySlug;
+}
+
+const { lang, category } = Astro.props;
+
+// Fetch posts that belong to this category and language, and are not drafts
+const allPosts = await getCollection('posts', ({ data }) => {
+  if (data.lang !== lang || data.draft) return false;
+  
+  if (category === 'case-law') {
+    // case-law page aggregates all cases from *-cases categories
+    return data.category.endsWith('-cases');
+  }
+  
+  return data.category === category;
+});
+
+// Sort posts: default is latest (pubDate descending)
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const label = CATEGORY_LABELS[category][lang];
+const totalCount = sortedPosts.length;
+const isCaseCategory = category === 'case-law' || category.endsWith('-cases');
+
+const unitText = lang === 'en' 
+  ? (isCaseCategory ? 'cases' : 'notes') 
+  : (isCaseCategory ? '개 판례' : '개 노트');
+
+const countLabel = lang === 'en' ? `${totalCount} ${unitText} Available` : `${totalCount}${unitText} 이용 가능`;
+
+// Extract unique keywords for the keyword cloud from the posts
+const allKeywords = Array.from(
+  new Set(sortedPosts.flatMap(post => post.data.longTailKeywords || []))
+).slice(0, 10); // Limit to top 10 unique keywords
+
+// Date formatter helper
+function formatDate(date: Date, locale: string) {
+  return date.toLocaleDateString(locale === 'ko' ? 'ko-KR' : 'en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+}
+---
+<BaseLayout
+  lang={lang}
+  title={`${label} · YoungkukLaw`}
+  description={lang === 'en' 
+    ? `Browse quality notes and cases for ${label} on YoungkukLaw.`
+    : `영국로(YoungkukLaw)에서 정리한 ${label} 관련 요약 노트와 판례 목록을 둘러보세요.`}
+>
+  <section>
+    <div class="padding-global">
+      <div class="container-large">
+        <div class="spacer-large"></div>
+        <div class="subject-hero-container">
+          <div class="subject-hero-left">
+            <h1 class="heading-style-h1">{label}</h1>
+            <div class="spacer-small"></div>
+            <div class="text-size-medium">
+              {lang === 'en' 
+                ? `Key learning resources and academic guidelines for ${label}.`
+                : `영국법 ${label} 과목의 핵심 학습 원칙 및 가이드라인 정리.`
+              }
+            </div>
+          </div>
+          <div class="subject-hero-right">
+            <div class="text-block-5">{totalCount}</div>
+            <div class="text-block-6">{unitText} Available</div>
+          </div>
+        </div>
+        <div class="spacer-large"></div>
+        <div class="hr-div no-margin"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="padding-global">
+      <div class="container-large">
+        <div class="spacer-large"></div>
+        <div class="article-block">
+          {/* Left Sidebar Filter Section */}
+          <div class="article-list-left">
+            <div class="sort-by">
+              <div class="sort-by-upper">
+                <div class="article-list-left-heading">{lang === 'en' ? 'Sort by' : '정렬 기준'}</div>
+              </div>
+              <div class="sort-by-lower">
+                <a href="#" class="sort-by-radio w-inline-block">
+                  <div class="radio-on w-embed">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+                      <path d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"></path>
+                    </svg>
+                  </div>
+                  <div class="text-block-8">{lang === 'en' ? 'Latest' : '최신순'}</div>
+                </a>
+                <a href="#" class="sort-by-radio w-inline-block">
+                  <div class="radio-off w-embed">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+                      <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"></path>
+                    </svg>
+                  </div>
+                  <div class="text-block-9">{lang === 'en' ? 'Alphabetical' : '알파벳순'}</div>
+                </a>
+              </div>
+            </div>
+            
+            <div class="sort-by">
+              <div class="sort-by-upper">
+                <div class="article-list-left-heading">{lang === 'en' ? 'Keywords' : '핵심 키워드'}</div>
+              </div>
+              <div class="keyword-cloud">
+                <div class="keyword-tag all">{lang === 'en' ? 'All' : '전체'}</div>
+                {allKeywords.map(keyword => (
+                  <a href="#" class="keyword-link w-inline-block">
+                    <div class="keyword-tag">{keyword}</div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div class="sort-by">
+              <div class="sort-by-upper">
+                <div class="article-list-left-heading">{lang === 'en' ? 'Bookmark' : '북마크'}</div>
+              </div>
+              <a href="#" class="bookmarked-only w-inline-block">
+                <div class="bookmark-icon-off w-embed">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+                    <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"></path>
+                  </svg>
+                </div>
+                <div class="bookmarked-only-label">{lang === 'en' ? 'Bookmarked Only' : '북마크한 글만 보기'}</div>
+              </a>
+            </div>
+
+            <div class="google-adsense-placeholder">
+              <AdSlot slot="category-sidebar-ad" />
+            </div>
+          </div>
+
+          {/* Right Articles List Section */}
+          <div class="article-list-wrapper">
+            {totalCount === 0 ? (
+              <div class="note-container">
+                <div class="div-block-2">
+                  <div class={`featured-content-desc${lang === 'ko' ? ' ko' : ''}`}>
+                    {lang === 'en' ? 'No posts yet.' : '아직 게시된 글이 없습니다.'}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div class="article-list">
+                {sortedPosts.map((post) => (
+                  <div class="article-row">
+                    <div class="article-row-upper">
+                      <div class="keyword-tag-container">
+                        {post.data.longTailKeywords?.slice(0, 2).map((k) => (
+                          <div class="keyword-tag">{k}</div>
+                        ))}
+                      </div>
+                      <a href="#" class="bookmark w-inline-block" data-slug={post.data.slug}>
+                        <div class="bookmark-empty w-embed">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+                            <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"></path>
+                          </svg>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="spacer-xsmall"></div>
+                    
+                    {/* Title binding */}
+                    <a href={lang === 'en' ? `/${post.data.slug}/` : `/ko/${post.data.slug}/`} class="article-row-heading w-inline-block">
+                      <h3 class={`heading-style-h3${lang === 'ko' ? ' ko' : ''}`}>{post.data.title}</h3>
+                      {isCaseCategory && post.data.citation && (
+                        <div class="case-citation-text">{post.data.citation}</div>
+                      )}
+                    </a>
+                    
+                    <div class="spacer-small"></div>
+                    <div class="article-row-description">
+                      <div class={`featured-content-desc${lang === 'ko' ? ' ko' : ''}`}>{post.data.description}</div>
+                    </div>
+                    <div class="spacer-small"></div>
+                    
+                    <div class="article-row-lower">
+                      <div class="article-row-lower-left">
+                        <div class="view-number">
+                          <div class="eye-icon w-embed">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+                              <path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"></path>
+                            </svg>
+                          </div>
+                          {/* Static view counter for design mock, can be dynamically wired later */}
+                          <div class="view-number-num">940 views</div>
+                        </div>
+                        <div class="note-row-timestamp">{formatDate(post.data.pubDate, lang)}</div>
+                      </div>
+                      <a href={lang === 'en' ? `/${post.data.slug}/` : `/ko/${post.data.slug}/`} class="btn-read-more w-inline-block">
+                        <div class="featured-content-desc">{lang === 'en' ? 'Read More' : '자세히 보기'}</div>
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div class="spacer-large"></div>
+          </div>
+        </div>
+        <div class="spacer-large"></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

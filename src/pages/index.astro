@@ -1,8 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORY_LABELS } from '../utils/i18n';
+import SearchBar from '../components/SearchBar.astro';
+
+const lang = 'en';
+
+// Featured: 3 cases
+const featuredCases = await getCollection('posts', ({ data }) => {
+  return data.lang === lang && data.category.endsWith('-cases') && !data.draft;
+});
+const slicedFeatured = featuredCases
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// Latest Notes: 12 notes
+const latestNotes = await getCollection('posts', ({ data }) => {
+  return data.lang === lang && !data.category.endsWith('-cases') && !data.draft;
+});
+const sortedNotes = latestNotes
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 12);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+}
 ---
 <BaseLayout
-  lang="en"
+  lang={lang}
   title="YoungkukLaw — Study English Law, Clear Notes, Real Cases, Free"
   description="Quality lecture notes and a vast database of cases for law students worldwide. Study English contract, tort, public, criminal, equity and land law for free."
 >
@@ -14,14 +43,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="spacer-small"></div>
         <div class="text-size-medium align-center">Quality lecture notes and a vast database of cases for law students worldwide.</div>
         <div class="spacer-large"></div>
-        <div class="search-bar">
-          <div class="search-placeholder-text">Search...</div>
-          <div class="code-embed w-embed">
-            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
-              <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"></path>
-            </svg>
-          </div>
-        </div>
+        <SearchBar lang={lang} />
         <div class="spacer-large"></div>
       </div>
     </div>
@@ -34,23 +56,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="heading-style-h2">Featured Case Law</div>
         <div class="spacer-small"></div>
         <div class="case-grid">
-          <div class="case-card">
-            <div class="case-card-upper">
-              <div class="subject-tag">Contract</div>
-              <a href="/sample-test/" class="link-block w-inline-block">
-                <div class="heading-style-h4">Sample Case Card</div>
-                <div class="case-citation-text">[Placeholder citation]</div>
-              </a>
+          {slicedFeatured.length === 0 ? (
+            <div class="case-card">
+              <div class="featured-content-desc">No featured cases available yet.</div>
             </div>
-            <div class="hr-div"></div>
-            <div class="note-row-right">
-              <div class="featured-content-desc">Content will appear here once posts are migrated. This card is a static placeholder for layout validation.</div>
-              <div class="spacer-small"></div>
-              <a href="/sample-test/" class="btn-read-more w-inline-block">
-                <div class="featured-content-desc">Read More</div>
-              </a>
-            </div>
-          </div>
+          ) : (
+            slicedFeatured.map(post => (
+              <div class="case-card">
+                <div class="case-card-upper">
+                  <div class="subject-tag">{CATEGORY_LABELS[post.data.category]?.en || 'Case'}</div>
+                  <a href={`/${post.data.slug}/`} class="link-block w-inline-block">
+                    <div class="heading-style-h4">{post.data.title}</div>
+                    {post.data.citation && <div class="case-citation-text">{post.data.citation}</div>}
+                  </a>
+                </div>
+                <div class="hr-div"></div>
+                <div class="note-row-right">
+                  <div class="featured-content-desc">{post.data.description}</div>
+                  <div class="spacer-small"></div>
+                  <a href={`/${post.data.slug}/`} class="btn-read-more w-inline-block">
+                    <div class="featured-content-desc">Read More</div>
+                  </a>
+                </div>
+              </div>
+            ))
+          )}
         </div>
         <div class="spacer-large"></div>
       </div>
@@ -64,17 +94,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="heading-style-h2">Latest Notes</div>
         <div class="spacer-small"></div>
         <div class="note-container">
-          <div class="note-row">
-            <div class="note-row-left">
-              <div class="subject-tag">Contract</div>
-              <a href="/sample-test/" class="link-block w-inline-block">
-                <div class="featured-content-desc">Sample placeholder note — replaced once content is migrated.</div>
-              </a>
+          {sortedNotes.length === 0 ? (
+            <div class="note-row">
+              <div class="featured-content-desc">No notes available yet.</div>
             </div>
-            <div class="note-row-right">
-              <div class="note-row-timestamp">— — —</div>
-            </div>
-          </div>
+          ) : (
+            sortedNotes.map((post, index) => (
+              <>
+                <div class="note-row">
+                  <div class="note-row-left">
+                    <div class="subject-tag">{CATEGORY_LABELS[post.data.category]?.en || 'Note'}</div>
+                    <a href={`/${post.data.slug}/`} class="link-block w-inline-block">
+                      <div class="featured-content-desc">{post.data.title}</div>
+                    </a>
+                  </div>
+                  <div class="note-row-right">
+                    <div class="note-row-timestamp">{formatDate(post.data.pubDate)}</div>
+                  </div>
+                </div>
+                {index < sortedNotes.length - 1 && <div class="hr-div no-margin"></div>}
+              </>
+            ))
+          )}
         </div>
         <div class="spacer-large"></div>
       </div>

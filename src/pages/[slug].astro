@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content';
+import CaseLayout from '../layouts/CaseLayout.astro';
+import NoteLayout from '../layouts/NoteLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => {
+    return data.lang === 'en' && !data.draft;
+  });
+  
+  return posts.map(post => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const isCase = post.data.category.endsWith('-cases') || post.data.category === 'case-law';
+---
+{isCase ? (
+  <CaseLayout
+    lang="en"
+    slug={post.data.slug}
+    category={post.data.category}
+    title={post.data.title}
+    description={post.data.description}
+    citation={post.data.citation}
+    court={post.data.court}
+    claimant={post.data.claimant}
+    defendant={post.data.defendant}
+    courtLink={post.data.courtLink}
+    pubDate={post.data.pubDate}
+  >
+    <Content />
+  </CaseLayout>
+) : (
+  <NoteLayout
+    lang="en"
+    slug={post.data.slug}
+    category={post.data.category}
+    title={post.data.title}
+    description={post.data.description}
+    pubDate={post.data.pubDate}
+  >
+    <Content />
+  </NoteLayout>
+)}

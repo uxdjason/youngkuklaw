@@ -20,7 +20,11 @@ const CATEGORY_SLUGS = [
 ] as const;
 
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/posts' }),
+  loader: glob({
+    pattern: '**/*.{md,mdx}',
+    base: './src/content/posts',
+    generateId: ({ entry }) => entry.replace(/\.[^/.]+$/, ''),
+  }),
   schema: z.object({
     lang: z.enum(['en', 'ko']),
     title: z.string(),
@@ -39,6 +43,12 @@ const posts = defineCollection({
     humanReviewed: z.boolean().default(false),
     brokenLinks: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
+    isDummy: z.boolean().default(false),
+    citation: z.string().optional(),
+    court: z.string().optional(),
+    claimant: z.string().optional(),
+    defendant: z.string().optional(),
+    courtLink: z.string().optional(),
   }),
 });
 
