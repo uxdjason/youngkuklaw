@@ -1,0 +1,2 @@
+# Replace ca-pub-placeholder with the real AdSense publisher ID once approved.
+google.com, ca-pub-placeholder, DIRECT, f08c47fec0942fa0

@@ -1,0 +1,73 @@
+---
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) =>
+  currentPath === href || currentPath === href + '/';
+---
+<div
+  data-animation="default"
+  data-collapse="medium"
+  data-duration="400"
+  data-easing="ease"
+  data-easing2="ease"
+  role="banner"
+  class="nav_component w-nav"
+>
+  <div class="padding-global">
+    <div class="nav_container">
+      <a
+        href="/"
+        class:list={['nav_brand', 'w-nav-brand', isActive('/') && 'w--current']}
+        aria-current={isActive('/') ? 'page' : undefined}
+      >
+        <div class="text-block-11">YoungkukLaw</div>
+      </a>
+      <nav role="navigation" class="nav_menu w-nav-menu">
+        <a href="/english-law/" class="nav_menu_link w-nav-link">English Law</a>
+        <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+          <div class="dropdown-toggle w-dropdown-toggle">
+            <div>Cases</div>
+            <div class="chevron-down w-embed">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+                <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"></path>
+              </svg>
+            </div>
+            <div class="chevron-up w-embed">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+                <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z"></path>
+              </svg>
+            </div>
+          </div>
+          <nav class="dropdown-list w-dropdown-list">
+            <div class="subnav_container">
+              <a href="/case-law/" class="dropdown-link w-dropdown-link">All Cases</a>
+              <a href="/contract-law-cases/" class="dropdown-link w-dropdown-link">Contract</a>
+              <a href="/tort-law-cases/" class="dropdown-link w-dropdown-link">Tort</a>
+              <a href="/public-law-cases/" class="dropdown-link w-dropdown-link">Public</a>
+              <a href="/criminal-law-cases/" class="dropdown-link w-dropdown-link">Criminal</a>
+              <a href="/equity-law-cases/" class="dropdown-link w-dropdown-link">Equity</a>
+              <a href="/land-law-cases/" class="dropdown-link w-dropdown-link">Land</a>
+            </div>
+          </nav>
+        </div>
+        <a href="/contract-law/" class="nav_menu_link w-nav-link">Contract</a>
+        <a href="/tort-law/" class="nav_menu_link w-nav-link">Tort</a>
+        <a href="/public-law/" class="nav_menu_link w-nav-link">Public</a>
+        <a href="/criminal-law/" class="nav_menu_link w-nav-link">Criminal</a>
+        <a href="/equity-law/" class="nav_menu_link w-nav-link">Equity</a>
+        <a href="/land-law/" class="nav_menu_link w-nav-link">Land</a>
+      </nav>
+      <div class="nav_button w-nav-button">
+        <div class="burger_icon w-embed">
+          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+            <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"></path>
+          </svg>
+        </div>
+        <div class="close_icon w-embed">
+          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
+            <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+---
+import type { Lang } from '../utils/i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const message =
+  lang === 'en'
+    ? 'YoungkukLaw is free and ad-supported. Please consider whitelisting this site in your ad blocker — it keeps the notes coming.'
+    : '영국로(YoungkukLaw)는 광고로 운영되는 무료 사이트입니다. 광고 차단을 해제해 주시면 더 많은 자료를 무료로 제공할 수 있습니다.';
+const closeLabel = lang === 'en' ? 'Dismiss' : '닫기';
+---
+<div
+  class={`adblock-banner${lang === 'ko' ? ' ko' : ''}`}
+  data-adblock-banner
+  hidden
+  role="status"
+>
+  <span>{message}</span>
+  <button
+    type="button"
+    class="adblock-banner__close"
+    data-adblock-dismiss
+    aria-label={closeLabel}
+  >×</button>
+</div>
+
+<script>
+  const STORAGE_KEY = 'ykl-adblock-banner-dismissed';
+  const banner = document.querySelector('[data-adblock-banner]') as HTMLElement | null;
+  const dismissBtn = document.querySelector('[data-adblock-dismiss]');
+
+  if (banner && sessionStorage.getItem(STORAGE_KEY) !== '1') {
+    const bait = document.createElement('ins');
+    bait.className = 'adsbygoogle';
+    bait.style.cssText = 'display:block;position:absolute;left:-9999px;width:1px;height:1px;';
+    document.body.appendChild(bait);
+
+    window.setTimeout(() => {
+      const blocked =
+        bait.offsetParent === null ||
+        bait.offsetHeight === 0 ||
+        bait.clientHeight === 0;
+      if (blocked) banner.hidden = false;
+      bait.remove();
+    }, 250);
+  }
+
+  dismissBtn?.addEventListener('click', () => {
+    if (banner) banner.hidden = true;
+    try {
+      sessionStorage.setItem(STORAGE_KEY, '1');
+    } catch {
+      /* sessionStorage unavailable — banner just stays dismissed for this view */
+    }
+  });
+</script>

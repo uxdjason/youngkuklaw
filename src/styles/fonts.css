@@ -1,0 +1,123 @@
+/* ================================================================== */
+/*  Self-hosted fonts                                                  */
+/*  English: Playfair (serif), Inter (sans-serif)                       */
+/*  Korean : Nanum Myeongjo (serif), Nanum Gothic (sans-serif)          */
+/*                                                                      */
+/*  unicode-range:                                                      */
+/*    Korean fonts target Hangul + Compat Jamo + Basic Latin range.    */
+/*    English fonts target the rest (Basic Latin + Latin-1 + Latin Ext) */
+/*  Browsers pick the appropriate face per glyph so EN/KO live side    */
+/*  by side without one starving the other.                            */
+/* ================================================================== */
+
+/* ---------- Playfair (English Serif) ---------- */
+@font-face {
+  font-family: 'Playfair';
+  src: url('/fonts/Playfair-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair';
+  src: url('/fonts/Playfair-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair';
+  src: url('/fonts/Playfair-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair';
+  src: url('/fonts/Playfair-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ---------- Inter (English Sans-Serif) ---------- */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Nanum Myeongjo (Korean Serif) ---------- */
+@font-face {
+  font-family: 'Nanum Myeongjo';
+  src: url('/fonts/NanumMyeongjo-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+@font-face {
+  font-family: 'Nanum Myeongjo';
+  src: url('/fonts/NanumMyeongjo-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+@font-face {
+  font-family: 'Nanum Myeongjo';
+  src: url('/fonts/NanumMyeongjo-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+
+/* ---------- Nanum Gothic (Korean Sans-Serif) ---------- */
+@font-face {
+  font-family: 'Nanum Gothic';
+  src: url('/fonts/NanumGothic-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+@font-face {
+  font-family: 'Nanum Gothic';
+  src: url('/fonts/NanumGothic-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+@font-face {
+  font-family: 'Nanum Gothic';
+  src: url('/fonts/NanumGothic-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}

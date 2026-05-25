@@ -1,0 +1,67 @@
+---
+import type { Lang } from '../utils/i18n';
+import { oppositeLocalePath } from '../utils/i18n';
+
+interface Props {
+  lang: Lang;
+  /**
+   * When the opposite-locale page does not exist, pass `available={false}`
+   * so the switcher renders disabled (semi-transparent, non-clickable).
+   * Default is true (assumed available — Phase 1 stub state).
+   */
+  available?: boolean;
+}
+
+const { lang, available = true } = Astro.props;
+const targetHref = oppositeLocalePath(Astro.url.pathname, lang);
+
+const targetLabel = lang === 'en' ? 'Switch to Korean' : 'Switch to English';
+const targetTitle = available
+  ? targetLabel
+  : lang === 'en'
+    ? 'Korean version not available for this page'
+    : 'English version not available for this page';
+---
+{lang === 'en' ? (
+  <a
+    href={available ? targetHref : undefined}
+    class="lang-switcher w-inline-block"
+    title={targetTitle}
+    aria-label={targetLabel}
+    aria-disabled={!available}
+  >
+    <img
+      src="/images/Switch-to-KO.png"
+      loading="lazy"
+      alt="Switch to Korean"
+      class="switch-to-ko"
+    />
+    <img
+      src="/images/Switch-to-KO-hover.png"
+      loading="lazy"
+      alt="Switch to Korean"
+      class="switch-to-ko-hover"
+    />
+  </a>
+) : (
+  <a
+    href={available ? targetHref : undefined}
+    class="lang-switcher w-inline-block"
+    title={targetTitle}
+    aria-label={targetLabel}
+    aria-disabled={!available}
+  >
+    <img
+      src="/images/Switch-to-EN.png"
+      loading="lazy"
+      alt="Switch to English"
+      class="switch-to-en"
+    />
+    <img
+      src="/images/Switch-to-EN-hover.png"
+      loading="lazy"
+      alt="Switch to English"
+      class="switch-to-en-hover"
+    />
+  </a>
+)}

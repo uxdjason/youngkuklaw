@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  title="Sample Test Article · YoungkukLaw"
+  description="Sample article used to validate i18n routing, LangSwitcher slug preservation, and layout fidelity during Phase 1."
+  type="article"
+  publishedTime="2026-05-01T00:00:00Z"
+>
+  <section>
+    <div class="padding-global">
+      <div class="container-large">
+        <div class="spacer-large"></div>
+        <div class="subject-tag">Contract</div>
+        <div class="spacer-small"></div>
+        <div class="heading-style-h1">Sample Test Article</div>
+        <div class="spacer-small"></div>
+        <div class="case-citation-text">[Layout validation only]</div>
+        <div class="spacer-large"></div>
+        <div class="text-size-medium">
+          This page exists solely to verify that the EN/KO LangSwitcher swaps correctly
+          between <code>/sample-test/</code> and <code>/ko/sample-test/</code>,
+          that hreflang tags are emitted, and that the layout renders pixel-close to
+          the Webflow prototype. Replace with real content once Phase 2 begins.
+        </div>
+        <div class="spacer-large"></div>
+        <h2 class="heading-style-h2">Section heading</h2>
+        <div class="spacer-small"></div>
+        <p>Body copy paragraph. Inter sans-serif at the base size. <em>Italic accent.</em> <strong>Bold accent.</strong></p>
+        <div class="spacer-large"></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

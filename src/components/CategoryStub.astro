@@ -1,0 +1,39 @@
+---
+import type { Lang } from '../utils/i18n';
+import { CATEGORY_LABELS } from '../utils/i18n';
+
+interface Props {
+  lang: Lang;
+  slug: keyof typeof CATEGORY_LABELS;
+}
+
+const { lang, slug } = Astro.props;
+const label = CATEGORY_LABELS[slug][lang];
+
+const isKo = lang === 'ko';
+const koClass = isKo ? ' ko' : '';
+const heading = isKo ? label : label;
+const intro = isKo
+  ? '이 카테고리의 콘텐츠는 마이그레이션이 완료된 이후 단계적으로 채워진다.'
+  : 'Content for this category will appear here as posts are migrated.';
+---
+<section>
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="spacer-large"></div>
+      <div class="heading-style-h1">{heading}</div>
+      <div class="spacer-small"></div>
+      <div class={`text-size-medium${koClass}`}>{intro}</div>
+      <div class="spacer-large"></div>
+      <div class="note-container">
+        <div class="div-block-2">
+          <div class={isKo ? 'featured-content-desc ko' : 'featured-content-desc'}>
+            {isKo ? '아직 게시된 글이 없습니다.' : 'No posts yet.'}
+          </div>
+        </div>
+      </div>
+      <div class="spacer-large"></div>
+      <div class="spacer-large"></div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="ko"
+  title="샘플 테스트 글 · 영국 Law"
+  description="i18n 라우팅, LangSwitcher의 slug 보존 전환, Webflow 디자인 정합성 검증을 위한 Phase 1 테스트 페이지."
+  type="article"
+  publishedTime="2026-05-01T00:00:00Z"
+>
+  <section>
+    <div class="padding-global">
+      <div class="container-large">
+        <div class="spacer-large"></div>
+        <div class="subject-tag ko">계약법</div>
+        <div class="spacer-small"></div>
+        <div class="heading-style-h1">샘플 테스트 글</div>
+        <div class="spacer-small"></div>
+        <div class="case-citation-text">[레이아웃 검증용]</div>
+        <div class="spacer-large"></div>
+        <div class="text-size-medium ko">
+          이 페이지는 영/한 LangSwitcher가 <code>/sample-test/</code>와
+          <code>/ko/sample-test/</code> 사이를 정확히 오가는지, hreflang 태그가 출력되는지,
+          그리고 Webflow 프로토타입과 픽셀 단위로 가깝게 렌더링되는지 검증할 목적으로 존재한다.
+          Phase 2 진입 시 실제 콘텐츠로 교체한다.
+        </div>
+        <div class="spacer-large"></div>
+        <h2 class="heading-style-h2">소제목 예시</h2>
+        <div class="spacer-small"></div>
+        <p>본문 단락. 나눔명조 한글 + Inter 라틴. <em>이탤릭 강조.</em> <strong>볼드 강조.</strong></p>
+        <div class="spacer-large"></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

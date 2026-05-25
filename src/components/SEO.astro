@@ -1,0 +1,104 @@
+---
+import type { Lang } from '../utils/i18n';
+import { SITE_URL, oppositeLocalePath } from '../utils/i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  breadcrumbs?: Array<{ name: string; url: string }>;
+  noindex?: boolean;
+}
+
+const {
+  lang,
+  title,
+  description = '',
+  image,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  breadcrumbs,
+  noindex = false,
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const canonical = new URL(currentPath, SITE_URL).toString();
+const oppositePath = oppositeLocalePath(currentPath, lang);
+const oppositeUrl = new URL(oppositePath, SITE_URL).toString();
+const xDefaultUrl =
+  lang === 'en' ? canonical : new URL(oppositePath, SITE_URL).toString();
+
+const ogLocale = lang === 'en' ? 'en_GB' : 'ko_KR';
+const ogImage = image ? new URL(image, SITE_URL).toString() : undefined;
+
+const articleSchema =
+  type === 'article'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description,
+        inLanguage: lang === 'en' ? 'en-GB' : 'ko-KR',
+        url: canonical,
+        ...(publishedTime ? { datePublished: publishedTime } : {}),
+        ...(modifiedTime ? { dateModified: modifiedTime } : {}),
+        ...(ogImage ? { image: ogImage } : {}),
+        publisher: {
+          '@type': 'Organization',
+          name: 'YoungkukLaw',
+          url: SITE_URL,
+        },
+      }
+    : null;
+
+const breadcrumbSchema =
+  breadcrumbs && breadcrumbs.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((b, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: b.name,
+          item: new URL(b.url, SITE_URL).toString(),
+        })),
+      }
+    : null;
+---
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+<link rel="canonical" href={canonical} />
+
+{/* hreflang — every page declares en, ko, and x-default */}
+<link rel="alternate" hreflang="en" href={lang === 'en' ? canonical : oppositeUrl} />
+<link rel="alternate" hreflang="ko" href={lang === 'ko' ? canonical : oppositeUrl} />
+<link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
+
+{noindex && <meta name="robots" content="noindex,follow" />}
+
+{/* Open Graph */}
+<meta property="og:type" content={type} />
+<meta property="og:locale" content={ogLocale} />
+<meta property="og:site_name" content="YoungkukLaw" />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:url" content={canonical} />
+{ogImage && <meta property="og:image" content={ogImage} />}
+
+{/* Twitter */}
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+{description && <meta name="twitter:description" content={description} />}
+{ogImage && <meta name="twitter:image" content={ogImage} />}
+
+{articleSchema && (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+)}
+{breadcrumbSchema && (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+)}

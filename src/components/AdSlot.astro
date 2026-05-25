@@ -1,0 +1,22 @@
+---
+interface Props {
+  slot: string;
+  format?: string;
+  responsive?: boolean;
+  client?: string;
+}
+
+const {
+  slot,
+  format = 'auto',
+  responsive = true,
+  client = 'ca-pub-placeholder',
+} = Astro.props;
+---
+<ins
+  class="adsbygoogle ad-slot"
+  data-ad-client={client}
+  data-ad-slot={slot}
+  data-ad-format={format}
+  data-full-width-responsive={responsive ? 'true' : 'false'}
+>Ad placeholder · slot {slot}</ins>
