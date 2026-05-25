@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.python-version
+*.db
+*.db-journal
+
+# Node / Astro
+node_modules/
+dist/
+.astro/
+
+# Env
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# 프로젝트 별 제외
+law-sources/
+legacy-code/
+legacy-source/
+references/
+migration-sources/
+output-storage/
+migration/state.db
+pipeline/state.db
