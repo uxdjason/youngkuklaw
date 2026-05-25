@@ -108,5 +108,57 @@ const FONT_PRELOADS =
       is:inline
     ></script>
     <script src="/js/webflow.js" is:inline></script>
+
+    <script>
+      // Global Bookmark Syncing
+      document.addEventListener('DOMContentLoaded', () => {
+        const updateUI = () => {
+          const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
+          
+          document.querySelectorAll('[data-slug]').forEach(btn => {
+            const slug = btn.getAttribute('data-slug');
+            if (slug) {
+              const isBookmarked = bookmarkedSlugs.includes(slug);
+              if (isBookmarked) {
+                btn.setAttribute('data-bookmarked', 'true');
+              } else {
+                btn.removeAttribute('data-bookmarked');
+              }
+            }
+          });
+        };
+
+        updateUI();
+
+        // Bind clicks
+        document.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('[data-slug]');
+          if (!btn) return;
+          
+          // Don't prevent default on title links or buttons that are navigation links
+          if (btn.tagName === 'A' && !btn.classList.contains('bookmark') && !btn.classList.contains('bookmark-btn')) {
+            return; 
+          }
+          
+          e.preventDefault();
+          const slug = btn.getAttribute('data-slug');
+          if (!slug) return;
+
+          let slugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
+          if (slugs.includes(slug)) {
+            slugs = slugs.filter((s: string) => s !== slug);
+          } else {
+            slugs.push(slug);
+          }
+          
+          localStorage.setItem('bookmarked_posts', JSON.stringify(slugs));
+          updateUI();
+
+          // Dispatch event to notify index page if necessary
+          window.dispatchEvent(new Event('bookmark-updated'));
+        });
+      });
+    </script>
   </body>
 </html>
+

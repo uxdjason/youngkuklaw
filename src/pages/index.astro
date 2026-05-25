@@ -121,4 +121,124 @@ function formatDate(date: Date) {
       </div>
     </div>
   </section>
+
+  {/* Bookmarked Section */}
+  <section class="section">
+    <div class="padding-global">
+      <div class="container-large">
+        <div class="spacer-large"></div>
+        <div class="div-block">
+          <div class="heading-style-h2">Bookmarked</div>
+          <div class="bookmark-icon-static w-embed">
+            <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="7" y="5" width="10" height="13" fill="#FFC400"></rect>
+              <path d="M5 21V5C5 4.45 5.19583 3.97917 5.5875 3.5875C5.97917 3.19583 6.45 3 7 3H17C17.55 3 18.0208 3.19583 18.4125 3.5875C18.8042 3.97917 19 4.45 19 5V21L12 18L5 21ZM7 17.95L12 15.8L17 17.95V5H7V17.95Z" fill="currentColor"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="spacer-small"></div>
+        <div class="note-container bookmark-list-container">
+          <div class="div-block-2 no-bookmarks-msg">
+            <div>You have no bookmarked article.</div>
+          </div>
+        </div>
+        <div class="spacer-large"></div>
+        <div class="spacer-large"></div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+{/* Fetch all published posts to map them in JavaScript for dynamic bookmark rendering */}
+{(() => {
+  async function getBookmarkData() {
+    const allPostsForBookmark = await getCollection('posts', ({ data }) => {
+      return data.lang === lang && !data.draft;
+    });
+    return allPostsForBookmark.map(post => ({
+      slug: post.data.slug,
+      title: post.data.title,
+      url: `/${post.data.slug}/`,
+      categoryLabel: CATEGORY_LABELS[post.data.category]?.en || 'Note',
+      pubDate: post.data.pubDate,
+    }));
+  }
+  
+  return getBookmarkData().then(bookmarkDb => (
+    <script define:vars={{ bookmarkDb, lang }}>
+      document.addEventListener('DOMContentLoaded', () => {
+        const renderBookmarks = () => {
+          const listContainer = document.querySelector('.bookmark-list-container');
+          if (!listContainer) return;
+          
+          // Clear previous dynamically rendered items
+          listContainer.querySelectorAll('.note-row:not(.no-bookmarks-msg), .hr-div').forEach(el => el.remove());
+          
+          const noBookmarksMsg = listContainer.querySelector('.no-bookmarks-msg');
+          
+          const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
+          const bookmarkedPosts = bookmarkDb.filter(post => bookmarkedSlugs.includes(post.slug));
+          
+          if (bookmarkedPosts.length > 0) {
+            if (noBookmarksMsg) (noBookmarksMsg as HTMLElement).style.display = 'none';
+            
+            bookmarkedPosts.forEach((post, index) => {
+              const row = document.createElement('div');
+              row.className = 'note-row';
+              
+              const rowLeft = document.createElement('div');
+              rowLeft.className = 'note-row-left';
+              
+              const tag = document.createElement('div');
+              tag.className = 'subject-tag';
+              tag.textContent = post.categoryLabel;
+              
+              const link = document.createElement('a');
+              link.className = 'link-block w-inline-block';
+              link.href = post.url;
+              
+              const titleDiv = document.createElement('div');
+              titleDiv.className = 'featured-content-desc';
+              titleDiv.textContent = post.title;
+              
+              link.appendChild(titleDiv);
+              rowLeft.appendChild(tag);
+              rowLeft.appendChild(link);
+              
+              const rowRight = document.createElement('div');
+              rowRight.className = 'note-row-right';
+              
+              const timestamp = document.createElement('div');
+              timestamp.className = 'note-row-timestamp';
+              
+              const formattedDate = new Date(post.pubDate).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              });
+              timestamp.textContent = formattedDate;
+              
+              rowRight.appendChild(timestamp);
+              row.appendChild(rowLeft);
+              row.appendChild(rowRight);
+              
+              listContainer.appendChild(row);
+              
+              if (index < bookmarkedPosts.length - 1) {
+                const hr = document.createElement('div');
+                hr.className = 'hr-div no-margin';
+                listContainer.appendChild(hr);
+              }
+            });
+          } else {
+            if (noBookmarksMsg) (noBookmarksMsg as HTMLElement).style.display = 'block';
+          }
+        };
+
+        renderBookmarks();
+        window.addEventListener('bookmark-updated', renderBookmarks);
+      });
+    </script>
+  ));
+})()}
+

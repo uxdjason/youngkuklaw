@@ -116,7 +116,24 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ---------- Header/Navigation Font Weight Adjustments ---------- */
+.nav_menu_link,
+.dropdown {
+  font-weight: 500 !important;
+}
+
+/* ---------- Bookmark Button Active States ---------- */
+.bookmark-btn[data-bookmarked="true"] .bookmark-btn-off,
+.bookmark[data-bookmarked="true"] .bookmark-empty {
+  display: none !important;
+}
+.bookmark-btn[data-bookmarked="true"] .bookmark-btn-on,
+.bookmark[data-bookmarked="true"] .bookmark-filled {
+  display: block !important;
+}
+
 /* ---------- Article Content Styles (Markdown Rendered Elements) ---------- */
+
 .article-text p {
   font-family: inherit;
   font-size: 1.2rem; /* .article-paragraph */
