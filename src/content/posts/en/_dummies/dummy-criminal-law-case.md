@@ -13,21 +13,20 @@ defendant: "Stephen Woollin"
 courtLink: "https://www.bailii.org/uk/cases/UKHL/1998/28.html"
 ---
 
-## Introduction
+## Case Facts
 
-This is a dummy case review for **R v Woollin** with citation **[1999] 1 AC 82**. Under English contract and common law, this case serves as a fundamental benchmark for study and examination purposes.
+The defendant, Stephen Woollin, threw his three-month-old son onto a hard surface in a fit of temper, causing a fractured skull from which the child died. He argued that he did not intend to kill or cause serious injury to the child. The trial judge directed the jury that they could infer intention if there was a "substantial risk" of death or serious injury.
 
-## Facts of the Case
+## Held
 
-The dispute arose in the context of commercial transactions and statements made by the parties. The claimant argued that a binding agreement had been established, whereas the defendant contended that the communication was merely an invitation to treat (ITT) or lacked consideration. The case went through multiple appeals before reaching the final judgment.
+The House of Lords allowed the appeal against the murder conviction and substituted a conviction for manslaughter. They held that the trial judge's use of "substantial risk" was a misdirection. The jury should be instructed that they are not entitled to find the necessary intention unless they feel sure that death or serious bodily harm was a virtual certainty as a result of the defendant's actions.
 
-## Legal Judgment
+## Ratio Decidendi
 
-The court held that the parties' actions constituted a clear unilateral offer that was accepted by performance. The judges laid down the following principles:
-- An offer made to the public can become a binding contract upon compliance with its terms.
-- Performance of the conditions in an advertisement is sufficient acceptance without notification.
-- The puff argument was rejected because the deposit in the bank proved sincerity.
+For crimes of specific intent like murder, where the defendant's primary purpose was not to cause death or serious injury (oblique intention), the jury may only find intention if:
+1. Death or serious bodily harm was a virtual certainty as a consequence of the defendant's actions, and
+2. The defendant appreciated that fact.
 
-## Significance of the decision
+## Obiter Dicta
 
-This judgment remains a cornerstone of the English legal curriculum. It clarifies the boundary between mere advertising puffs and serious legally binding offers.
+Their Lordships discussed the distinction between intention and foresight, emphasizing that foresight of consequences, even of a virtual certainty, is not intention itself, but is evidence from which a jury may find intention.

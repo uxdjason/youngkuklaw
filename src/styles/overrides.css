@@ -110,3 +110,74 @@
   width: 100%;
 }
 
+/* ---------- Global Font-Smoothing and Overrides to Match Webflow ---------- */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Article Content Styles (Markdown Rendered Elements) ---------- */
+.article-text p {
+  font-family: inherit;
+  font-size: 1.2rem; /* .article-paragraph */
+  font-weight: 400;  /* Ensure regular weight is used */
+  line-height: 1.6;
+  color: var(--text-color--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.article-text h1 {
+  font-size: 3.3rem; /* .heading-style-h1 */
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
+  color: var(--base-color-brand--blue-dark);
+}
+
+.article-text h2 {
+  font-size: 2.5rem; /* .heading-style-h2 */
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--base-color-brand--blue-dark);
+}
+
+.article-text h3 {
+  font-size: 2rem; /* .heading-style-h3 */
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 1.8rem;
+  margin-bottom: 0.8rem;
+  color: var(--base-color-brand--blue-dark);
+}
+
+.article-text h4 {
+  font-size: 1.5rem; /* .heading-style-h4 */
+  font-weight: 700;
+  line-height: 1.0;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: var(--base-color-brand--blue-dark);
+}
+
+.article-text ul,
+.article-text ol {
+  padding-left: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.article-text li {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  color: var(--text-color--text-primary);
+}
+
+.article-text li p {
+  margin-bottom: 0;
+  display: inline;
+}
+
+
