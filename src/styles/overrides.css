@@ -8,18 +8,21 @@
   position: relative;
   display: inline-block;
   line-height: 0;
+  /* Override Webflow's fixed 160px so the box hugs the image's natural width
+     at our chosen pixel height. EN/KO PNGs have different widths, so the
+     button rendered width differs per locale by design. */
+  width: auto;
 }
 .lang-switcher .switch-to-ko,
 .lang-switcher .switch-to-ko-hover,
 .lang-switcher .switch-to-en,
 .lang-switcher .switch-to-en-hover {
   display: block;
-  /* The .lang-switcher box is fixed at 160px wide in Webflow CSS.
-     Switch-to-EN.png (807w) is wider than Switch-to-KO.png (608w), so we
-     must constrain to box width and let height auto-scale so both buttons
-     keep their original aspect ratio. The two PNGs share the same height. */
-  width: 100%;
-  height: auto;
+  /* Pin both PNGs to the same rendered height; width scales by aspect ratio.
+     Source PNGs share the same pixel height (96px), so the rendered glyphs
+     line up visually across EN/KO footers. */
+  height: 24px;
+  width: auto;
   transition: opacity 0.25s ease;
 }
 .lang-switcher .switch-to-ko-hover,
