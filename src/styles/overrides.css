@@ -14,6 +14,12 @@
 .lang-switcher .switch-to-en,
 .lang-switcher .switch-to-en-hover {
   display: block;
+  /* The .lang-switcher box is fixed at 160px wide in Webflow CSS.
+     Switch-to-EN.png (807w) is wider than Switch-to-KO.png (608w), so we
+     must constrain to box width and let height auto-scale so both buttons
+     keep their original aspect ratio. The two PNGs share the same height. */
+  width: 100%;
+  height: auto;
   transition: opacity 0.25s ease;
 }
 .lang-switcher .switch-to-ko-hover,
