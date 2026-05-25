@@ -105,7 +105,8 @@ a {
   color: var(--link-color--link-primary);
 }
 
-ul, ol {
+ul,
+ol {
   margin-top: 0;
   margin-bottom: 0;
   padding-left: 1.5rem;
@@ -552,12 +553,16 @@ figcaption {
   line-height: 1.2;
 }
 
-.text-rich-text h1, .text-rich-text h2, .text-rich-text h3, .text-rich-text h4 {
+.text-rich-text h1,
+.text-rich-text h2,
+.text-rich-text h3,
+.text-rich-text h4 {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.text-rich-text h5, .text-rich-text h6 {
+.text-rich-text h5,
+.text-rich-text h6 {
   margin-top: 1.25rem;
   margin-bottom: 1rem;
 }
@@ -566,7 +571,8 @@ figcaption {
   margin-bottom: 1rem;
 }
 
-.text-rich-text ul, .text-rich-text ol {
+.text-rich-text ul,
+.text-rich-text ol {
   margin-bottom: 1.5rem;
 }
 
@@ -775,7 +781,7 @@ figcaption {
 .heading-style-h4 {
   font-size: 1.5rem;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.0;
 }
 
 .max-width-xlarge {
@@ -825,7 +831,8 @@ figcaption {
   font-size: 1rem;
 }
 
-.form_input::placeholder, .form_input.is-select-input {
+.form_input::placeholder,
+.form_input.is-select-input {
   color: var(--text-color--text-secondary);
 }
 
@@ -2024,11 +2031,13 @@ figcaption {
   font-weight: 600;
 }
 
-.pagination-div.current.ko, .pagination-div.ko {
+.pagination-div.current.ko,
+.pagination-div.ko {
   font-family: Nanum Gothic, sans-serif;
 }
 
-.pagination-prev, .pagination-next {
+.pagination-prev,
+.pagination-next {
   font-size: 1.5rem;
   line-height: .7;
 }
@@ -2186,7 +2195,8 @@ figcaption {
   display: flex;
 }
 
-.bookmark-icon-off, .bookmark-icon-static {
+.bookmark-icon-off,
+.bookmark-icon-static {
   font-size: 2rem;
   line-height: .6;
 }
@@ -3109,7 +3119,8 @@ figcaption {
     align-items: flex-start;
   }
 
-  .article-right, .relevant-articles {
+  .article-right,
+  .relevant-articles {
     min-width: 100%;
   }
 
@@ -3262,8 +3273,7 @@ figcaption {
   }
 }
 
-#w-node-_3570259b-feda-7499-4dd0-2427b4ddfb0f-b4ddfb04, #w-node-_1606639c-fc25-6d54-b52a-052fb72e19a9-b72e199a {
+#w-node-_3570259b-feda-7499-4dd0-2427b4ddfb0f-b4ddfb04,
+#w-node-_1606639c-fc25-6d54-b52a-052fb72e19a9-b72e199a {
   justify-self: end;
 }
-
-

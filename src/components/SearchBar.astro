@@ -1,5 +1,5 @@
 ---
-import type { Lang } from '../utils/i18n';
+import type { Lang } from "../utils/i18n";
 
 interface Props {
   lang: Lang;
@@ -7,22 +7,31 @@ interface Props {
 
 const { lang } = Astro.props;
 ---
+
 <div class="search-wrapper" data-lang={lang}>
   <div class="search-bar">
-    <input 
-      type="text" 
-      class={`search-input-field${lang === 'ko' ? ' ko' : ''}`} 
-      placeholder={lang === 'ko' ? '검색어 입력...' : 'Search...'}
-      aria-label={lang === 'ko' ? '검색' : 'Search'}
+    <input
+      type="text"
+      class={`search-input-field${lang === "ko" ? " ko" : ""}`}
+      placeholder={lang === "ko" ? "검색어 입력..." : "Search..."}
+      aria-label={lang === "ko" ? "검색" : "Search"}
       autocomplete="off"
     />
     <div class="code-embed w-embed">
-      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
-        <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"></path>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="1em"
+        viewBox="0 -960 960 960"
+        width="1em"
+        fill="currentColor"
+      >
+        <path
+          d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+        ></path>
       </svg>
     </div>
   </div>
-  
+
   {/* Custom Results Dropdown */}
   <div class="search-results-dropdown" style="display: none;">
     <div class="search-results-container">
@@ -38,7 +47,7 @@ const { lang } = Astro.props;
     max-width: 600px;
     margin: 0 auto;
   }
-  
+
   .search-bar {
     position: relative;
     display: flex;
@@ -49,23 +58,20 @@ const { lang } = Astro.props;
   .search-input-field {
     width: 100%;
     padding: 12px 48px 12px 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    font-family: 'Inter', sans-serif;
+    border: none;
+    font-family: "Inter", sans-serif;
     font-size: 16px;
     outline: none;
     background-color: #ffffff;
     color: #333333;
     transition: border-color 0.2s ease;
   }
-  
+
   .search-input-field.ko {
-    font-family: 'Nanum Gothic', sans-serif;
+    font-family: "Nanum Gothic", sans-serif;
   }
 
   .search-input-field:focus {
-    border-color: #4d65ff;
-    box-shadow: 0 0 0 3px rgba(77, 101, 255, 0.1);
   }
 
   .search-bar .code-embed {
@@ -104,35 +110,41 @@ const { lang } = Astro.props;
   async function initPagefind() {
     if (!pagefind) {
       try {
-        const pagefindPath = '/pagefind/pagefind.js';
+        const pagefindPath = "/pagefind/pagefind.js";
         pagefind = await import(/* @vite-ignore */ pagefindPath);
         await pagefind.init();
       } catch (e) {
-        console.error('Failed to load pagefind index:', e);
+        console.error("Failed to load pagefind index:", e);
       }
     }
   }
 
-  const wrappers = document.querySelectorAll('.search-wrapper');
-  
+  const wrappers = document.querySelectorAll(".search-wrapper");
+
   wrappers.forEach((wrapper) => {
-    const input = wrapper.querySelector('.search-input-field') as HTMLInputElement;
-    const dropdown = wrapper.querySelector('.search-results-dropdown') as HTMLDivElement;
-    const container = wrapper.querySelector('.search-results-container') as HTMLDivElement;
-    const lang = wrapper.getAttribute('data-lang') || 'en';
+    const input = wrapper.querySelector(
+      ".search-input-field"
+    ) as HTMLInputElement;
+    const dropdown = wrapper.querySelector(
+      ".search-results-dropdown"
+    ) as HTMLDivElement;
+    const container = wrapper.querySelector(
+      ".search-results-container"
+    ) as HTMLDivElement;
+    const lang = wrapper.getAttribute("data-lang") || "en";
 
     if (!input || !dropdown || !container) return;
 
-    input.addEventListener('focus', async () => {
+    input.addEventListener("focus", async () => {
       await initPagefind();
     });
 
-    input.addEventListener('input', async (e) => {
+    input.addEventListener("input", async (e) => {
       const query = (e.target as HTMLInputElement).value.trim();
-      
+
       if (query.length < 2) {
-        dropdown.style.display = 'none';
-        container.innerHTML = '';
+        dropdown.style.display = "none";
+        container.innerHTML = "";
         return;
       }
 
@@ -141,13 +153,13 @@ const { lang } = Astro.props;
 
       // Search with language filter
       const search = await pagefind.search(query, {
-        filters: { lang: lang }
+        filters: { lang: lang },
       });
 
       if (search.results.length === 0) {
-        dropdown.style.display = 'block';
+        dropdown.style.display = "block";
         container.innerHTML = `<div class="search-no-results" style="padding: 16px; text-align: center; color: #666; font-size: 14px;">
-          ${lang === 'ko' ? '검색 결과가 없습니다.' : 'No results found.'}
+          ${lang === "ko" ? "검색 결과가 없습니다." : "No results found."}
         </div>`;
         return;
       }
@@ -157,21 +169,23 @@ const { lang } = Astro.props;
         search.results.slice(0, 5).map((r: any) => r.data())
       );
 
-      dropdown.style.display = 'block';
-      container.innerHTML = results.map((res: any) => {
-        return `
+      dropdown.style.display = "block";
+      container.innerHTML = results
+        .map((res: any) => {
+          return `
           <a href="${res.url}" style="display: block; padding: 12px 16px; text-decoration: none; border-bottom: 1px solid #f0f0f0; transition: background 0.2s;" onmouseover="this.style.background='#f7f9ff'" onmouseout="this.style.background='transparent'">
             <div style="font-weight: 600; color: #333; font-size: 15px; margin-bottom: 4px;">${res.meta.title}</div>
             <div style="font-size: 13px; color: #666; line-height: 1.4;">${res.excerpt}</div>
           </a>
         `;
-      }).join('');
+        })
+        .join("");
     });
 
     // Close dropdown on click outside
-    document.addEventListener('click', (e) => {
+    document.addEventListener("click", (e) => {
       if (!wrapper.contains(e.target as Node)) {
-        dropdown.style.display = 'none';
+        dropdown.style.display = "none";
       }
     });
   });
