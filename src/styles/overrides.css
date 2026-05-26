@@ -230,6 +230,85 @@ body {
   }
 }
 
+/* ---------- Print-only Footer ---------- */
+.print-only-footer {
+  display: none;
+}
+
+/* ---------- Print Layout Style Overrides ---------- */
+@media print {
+  /* Hide navigation links, mobile menus, share/bookmark buttons, sidebars, footers, ads and adblock alerts */
+  .nav_menu,
+  .nav_button,
+  .footer_component,
+  .footer,
+  footer,
+  .google-adsense-placeholder,
+  .ad-slot,
+  .adblock-banner,
+  .article-hero-lower-right,
+  .bookmark-btn,
+  .print-button,
+  .share-button,
+  .relevant-articles,
+  .article-right,
+  .vr-div {
+    display: none !important;
+  }
+
+  /* Force the content area to span 100% width of the print page */
+  .article-block {
+    display: block !important;
+  }
+  .article-body {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .padding-global {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .container-large {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Custom Print Footer */
+  .print-only-footer {
+    display: block !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: inherit;
+    font-size: 11px;
+    color: #555;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 20px;
+  }
+  .print-footer-brand {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .print-footer-url {
+    font-size: 10px;
+    color: #777;
+  }
+
+  /* Optimize print margins and background */
+  @page {
+    margin: 1.5cm;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
+
 
 
 

@@ -97,6 +97,11 @@ const FONT_PRELOADS =
       <slot />
     </main>
 
+    <div class="print-only-footer">
+      <div class="print-footer-brand">{lang === 'ko' ? '영국 Law / Youngkuk Law' : 'Youngkuk Law'}</div>
+      <div class="print-footer-url" id="print-url"></div>
+    </div>
+
     {lang === 'ko' ? <FooterKo /> : <FooterEn />}
 
     {/* jQuery + webflow.js — required by the ported Webflow markup
@@ -129,6 +134,12 @@ const FONT_PRELOADS =
 
       const initBookmarks = () => {
         updateUI();
+
+        // Populate print URL
+        const printUrlEl = document.getElementById('print-url');
+        if (printUrlEl) {
+          printUrlEl.textContent = window.location.href;
+        }
 
         // Bind clicks
         document.addEventListener('click', (e) => {
