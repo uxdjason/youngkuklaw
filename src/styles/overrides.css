@@ -3,6 +3,15 @@
 /*  Layered on top of normalize → webflow → fonts → youngkuklaw.webflow */
 /* ================================================================== */
 
+
+/* ---------- Section Background Color Specification ---------- */
+/*
+  [Section Background Rules]
+  - Plain <section> tag (no class) = Transparent / White background (e.g. Bookmarked section).
+  - <section class="section"> = Light Blue background (#edf1ff80) as defined in Webflow (e.g. Main lists).
+  - Keep this distinction to preserve Webflow's original UI architecture.
+*/
+
 /* ---------- LangSwitcher hover crossfade ---------- */
 .lang-switcher {
   position: relative;
