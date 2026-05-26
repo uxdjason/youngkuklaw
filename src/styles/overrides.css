@@ -279,7 +279,7 @@ body {
   .print-only-footer {
     display: block !important;
     position: fixed;
-    bottom: 0;
+    bottom: 0.5cm;
     left: 0;
     width: 100%;
     text-align: center;
@@ -301,7 +301,10 @@ body {
 
   /* Optimize print margins and background */
   @page {
-    margin: 1.5cm;
+    margin-top: 1.5cm;
+    margin-bottom: 2.5cm;
+    margin-left: 1.5cm;
+    margin-right: 1.5cm;
   }
   body {
     background: white !important;
