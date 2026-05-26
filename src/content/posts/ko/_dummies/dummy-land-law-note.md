@@ -4,8 +4,13 @@ title: "토지법상 공동소유(Co-ownership)의 이해"
 description: "영국 재산법상 합동소유(joint tenancy)와 공유(tenancy in common)의 비교 검토."
 slug: "dummy-land-law-note"
 category: "land-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-22T20:00:00Z
+views: 650
 isDummy: true
+longTailKeywords:
+  - "공동소유"
+  - "점유"
+  - "재산법"
 ---
 
 ## 주요 개념 (Key Concepts)

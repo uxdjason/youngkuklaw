@@ -4,8 +4,13 @@ title: "The Doctrine of Parliamentary Supremacy"
 description: "Analysis of the constitutional doctrine that positions Parliament as the supreme legal authority."
 slug: "dummy-public-law-note"
 category: "public-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-16T20:00:00Z
+views: 940
 isDummy: true
+longTailKeywords:
+  - "Supremacy"
+  - "Parliament"
+  - "Constitution"
 ---
 
 ## Key Concepts

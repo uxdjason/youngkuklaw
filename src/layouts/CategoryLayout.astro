@@ -240,8 +240,10 @@ const sortOptions = [
                   <div class="article-row"
                        data-pubdate={post.data.pubDate.valueOf()}
                        data-title={post.data.title.toLowerCase()}
-                       data-views={940}
-                       data-created={post.data.pubDate.valueOf()}>
+                       data-views={post.data.views || 940}
+                       data-created={post.data.pubDate.valueOf()}
+                       data-keywords={post.data.longTailKeywords?.join(',').toLowerCase() || ''}
+                       data-slug={post.data.slug}>
 
                     <div class="article-row-upper">
                       <div class="keyword-tag-container">
@@ -253,6 +255,12 @@ const sortOptions = [
                         <div class="bookmark-empty w-embed">
                           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
                             <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"></path>
+                          </svg>
+                        </div>
+                        <div class="bookmark-filled w-embed">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 24 24" fill="none">
+                            <rect x="7" y="5" width="10" height="13" fill="#FFC400"></rect>
+                            <path d="M5 21V5C5 4.45 5.19583 3.97917 5.5875 3.5875C5.97917 3.19583 6.45 3 7 3H17C17.55 3 18.0208 3.19583 18.4125 3.5875C18.8042 3.97917 19 4.45 19 5V21L12 18L5 21ZM7 17.95L12 15.8L17 17.95V5H7V17.95Z" fill="currentColor"></path>
                           </svg>
                         </div>
                       </a>
@@ -281,8 +289,7 @@ const sortOptions = [
                               <path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"></path>
                             </svg>
                           </div>
-                          {/* Static view counter for design mock, can be dynamically wired later */}
-                          <div class="view-number-num">940 views</div>
+                          <div class="view-number-num">{post.data.views || 940} views</div>
                         </div>
                         <div class="note-row-timestamp">{formatDate(post.data.pubDate, lang)}</div>
                       </div>
@@ -317,6 +324,28 @@ const sortOptions = [
   .sort-by-radio[data-active="false"] .radio-off {
     display: block;
   }
+
+  /* Active states for Bookmark filters */
+  .bookmarked-only[data-active="true"] {
+    color: var(--base-color-brand--yellow-dark) !important;
+  }
+  .bookmarked-only[data-active="true"] .bookmark-icon-off {
+    color: var(--base-color-brand--yellow-dark) !important;
+  }
+  
+  /* Active states for Keyword filters */
+  .keyword-tag[data-active="true"] {
+    background-color: var(--base-color-brand--blue-dark) !important;
+    color: var(--text-color--text-alternate) !important;
+  }
+  .keyword-tag:not([data-active="true"]) {
+    background-color: var(--base-color-brand--blue-light) !important;
+    color: var(--base-color-brand--blue-dark) !important;
+  }
+  .keyword-tag.all:not([data-active="true"]) {
+    color: var(--base-color-brand--blue-dark) !important;
+    background-color: var(--base-color-brand--blue-light) !important;
+  }
 </style>
 
 <script>
@@ -324,28 +353,48 @@ const sortOptions = [
   const container = document.querySelector('.article-list');
   if (container) {
     const radioButtons = document.querySelectorAll('.sort-by-radio');
+    const keywordCloud = document.querySelector('.keyword-cloud');
+    const bookmarkToggle = document.querySelector('.bookmarked-only');
     
+    let activeKeyword = 'all';
+    let showBookmarkedOnly = false;
+    
+    // Filter Function
+    function applyFilters() {
+      const items = Array.from(container.querySelectorAll('.article-row'));
+      const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
+      
+      items.forEach(item => {
+        const itemKeywords = item.getAttribute('data-keywords') || '';
+        const itemSlug = item.getAttribute('data-slug') || '';
+        
+        const keywordsArray = itemKeywords.split(',').map(k => k.trim().toLowerCase()).filter(Boolean);
+        const matchesKeyword = activeKeyword === 'all' || keywordsArray.includes(activeKeyword.toLowerCase());
+        const matchesBookmark = !showBookmarkedOnly || bookmarkedSlugs.includes(itemSlug);
+        
+        if (matchesKeyword && matchesBookmark) {
+          (item as HTMLElement).style.display = '';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    }
+    
+    // 1. Sort Handling
     radioButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         
         const sortType = btn.getAttribute('data-sort-type');
         
-        // Active styling toggle
         radioButtons.forEach(b => {
           b.setAttribute('data-active', b === btn ? 'true' : 'false');
-          // Update text-block class weight if needed
           const textBlock = b.querySelector('.text-block-8, .text-block-9');
           if (textBlock) {
-            if (b === btn) {
-              textBlock.className = 'text-block-8';
-            } else {
-              textBlock.className = 'text-block-9';
-            }
+            textBlock.className = b === btn ? 'text-block-8' : 'text-block-9';
           }
         });
         
-        // Sort items
         const items = Array.from(container.querySelectorAll('.article-row'));
         
         items.sort((a, b) => {
@@ -354,31 +403,92 @@ const sortOptions = [
           if (sortType === 'latest') {
             valA = parseInt(a.getAttribute('data-pubdate') || '0', 10);
             valB = parseInt(b.getAttribute('data-pubdate') || '0', 10);
-            return valB - valA; // Descending
+            return valB - valA;
           } else if (sortType === 'oldest') {
             valA = parseInt(a.getAttribute('data-pubdate') || '0', 10);
             valB = parseInt(b.getAttribute('data-pubdate') || '0', 10);
-            return valA - valB; // Ascending
+            return valA - valB;
           } else if (sortType === 'recently-added') {
             valA = parseInt(a.getAttribute('data-created') || '0', 10);
             valB = parseInt(b.getAttribute('data-created') || '0', 10);
-            return valB - valA; // Descending
+            return valB - valA;
           } else if (sortType === 'most-popular') {
             valA = parseInt(a.getAttribute('data-views') || '0', 10);
             valB = parseInt(b.getAttribute('data-views') || '0', 10);
-            return valB - valA; // Descending
+            return valB - valA;
           } else if (sortType === 'alphabetical') {
             valA = a.getAttribute('data-title') || '';
             valB = b.getAttribute('data-title') || '';
-            return valA.localeCompare(valB); // Ascending
+            return valA.localeCompare(valB);
           }
           return 0;
         });
         
-        // Re-append sorted elements
         items.forEach(item => container.appendChild(item));
       });
     });
+
+    // 2. Keyword Filter Handling
+    if (keywordCloud) {
+      const keywordTags = keywordCloud.querySelectorAll('.keyword-tag, .keyword-link');
+      
+      keywordTags.forEach(tag => {
+        tag.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          let rawKeyword = tag.textContent || '';
+          const cleanKeyword = rawKeyword.trim();
+          
+          if (cleanKeyword === 'All' || cleanKeyword === '전체') {
+            activeKeyword = 'all';
+          } else {
+            activeKeyword = cleanKeyword;
+          }
+          
+          keywordCloud.querySelectorAll('.keyword-tag').forEach(t => {
+            const isAllTag = t.classList.contains('all');
+            const tText = t.textContent?.trim() || '';
+            
+            if (activeKeyword === 'all') {
+              if (isAllTag) {
+                t.setAttribute('data-active', 'true');
+              } else {
+                t.removeAttribute('data-active');
+              }
+            } else {
+              if (tText.toLowerCase() === activeKeyword.toLowerCase()) {
+                t.setAttribute('data-active', 'true');
+              } else {
+                t.removeAttribute('data-active');
+              }
+            }
+          });
+          
+          applyFilters();
+        });
+      });
+      
+      const allTag = keywordCloud.querySelector('.keyword-tag.all');
+      if (allTag) {
+        allTag.setAttribute('data-active', 'true');
+      }
+    }
+    
+    // 3. Bookmark Filter Handling
+    if (bookmarkToggle) {
+      bookmarkToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        showBookmarkedOnly = !showBookmarkedOnly;
+        bookmarkToggle.setAttribute('data-active', showBookmarkedOnly ? 'true' : 'false');
+        
+        applyFilters();
+      });
+    }
+
+    // Sync filters on page load/bookmark updates
+    window.addEventListener('bookmark-updated', applyFilters);
+    applyFilters();
   }
 </script>
 

@@ -4,8 +4,13 @@ title: "계약 성립에 있어서 청약과 승낙의 원칙"
 description: "영국법상 상호 합의를 통해 계약이 법적으로 성립하는 방식에 대한 상세 정리."
 slug: "dummy-contract-law-note"
 category: "contract-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-12T20:00:00Z
+views: 850
 isDummy: true
+longTailKeywords:
+  - "청약"
+  - "승낙"
+  - "합의"
 ---
 
 ## 주요 개념 (Key Concepts)

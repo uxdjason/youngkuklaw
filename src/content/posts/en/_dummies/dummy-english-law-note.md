@@ -4,8 +4,13 @@ title: "Introduction to English Common Law System"
 description: "An overview of the development, structure, and key characteristics of the English legal system."
 slug: "dummy-english-law-note"
 category: "english-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-10T20:00:00Z
+views: 1050
 isDummy: true
+longTailKeywords:
+  - "Common Law"
+  - "Precedent"
+  - "Source of Law"
 ---
 
 ## Key Concepts

@@ -4,8 +4,13 @@ title: "The Duty of Care in the Law of Negligence"
 description: "Exploring the establishment of duty of care following landmark judicial developments."
 slug: "dummy-tort-law-note"
 category: "tort-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-14T20:00:00Z
+views: 1200
 isDummy: true
+longTailKeywords:
+  - "Negligence"
+  - "Duty of Care"
+  - "Neighbor Principle"
 ---
 
 ## Key Concepts

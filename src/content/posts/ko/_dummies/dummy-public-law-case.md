@@ -1,32 +1,38 @@
 ---
 lang: ko
 title: "Entick v Carrington 판례 분석"
-description: "국가 권력의 행사 한계와 사유재산권 및 시민의 자유를 선언한 헌법적 판례."
+description: "시민의 자유와 집행부 권력의 한계를 정립한 대표적인 헌법적 판례."
 slug: "dummy-public-law-case"
 category: "public-law-cases"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-23T20:00:00Z
+views: 750
 isDummy: true
+longTailKeywords:
+  - "집행부권한"
+  - "시민자유"
+  - "영장주의"
 citation: "[1765] EWHC KB J98"
 court: "Court of Common Pleas"
-claimant: John Entick
-defendant: Nathan Carrington
+claimant: "John Entick"
+defendant: "Nathan Carrington"
 courtLink: "https://www.bailii.org/ew/cases/EWHC/KB/1765/J98.html"
 ---
 
-## Case Facts
+## 개관
 
-국왕의 수석 집행관인 Nathan Carrington과 다른 3명의 집행관은 야당 팜플렛 The Monitor의 집필자인 John Entick의 집에 무단 침입했다. 이들은 내무부장관 Halifax 경이 발급한 '일반수색영장(general warrant)'을 근거로 삼았는데, 이 영장은 Entick을 수색하고 그의 사적 문서를 압수할 수 있도록 집행관에게 광범위한 권한을 부여하고 있었다. 이에 Entick은 무단침입(trespass)에 따른 불법행위 소송을 제기했다.
+이 글은 **Entick v Carrington 판례 분석** ([1765] EWHC KB J98) 판례에 대한 분석이다. 영국 커먼로 체계에서 본 판례는 법학 교육 및 실무의 핵심적 이정표 역할을 수행한다.
 
-## Held
+## 사실관계 (Facts)
 
-민사고등법원(Court of Common Pleas)은 내무부장관이 문서를 압수하고 수색할 수 있는 일반 영장을 발부할 법적 권한이 성립하지 않으므로 해당 영장은 불법이며 무효라고 판시했다. 법적 권한이 없는 한 국가는 사유재산에 진입할 수 없으며, 일반수색영장은 위법하다.
+당사자 간의 상업적 거래 및 의사 표시 과정에서 분쟁이 발생하였다. 원고는 유효한 구속력 있는 계약이 성립하였다고 주장한 반면, 피고는 해당 의사 표시가 단순한 청약의 유인(invitation to treat)에 불과하거나 약인(consideration)이 결여되어 계약이 성립하지 않았다고 항변하였다. 본 사안은 여러 심급을 거쳐 최종 판결에 이르렀다.
 
-## Ratio Decidendi
+## 법원 판시 (Held)
 
-1. 국가의 공무원은 법률의 적용을 받으며, 시민의 자유나 재산권에 개입하려 할 때는 반드시 성문법이나 커먼로 선례에 근거한 명확한 법적 정당성을 제시해야 한다.
-2. 타인의 사유재산에 무단 침입하는 행위는 아무리 사소하더라도 법률상 무단침입(trespass)을 구성한다.
-3. 행정권의 권한을 정당화할 수 있는 법적 근거가 존재하지 않는다면, 행정부에게는 그러한 권한이 전혀 없는 것이다.
+법원은 당사자의 행위가 명확한 일방계약의 청약을 구성하며 행위에 의해 승낙되었다고 판시하였다. 법관들이 정립한 핵심 원칙은 다음과 같다:
+- 대중을 상대로 이루어진 청약은 그 조건을 충족함으로써 구속력 있는 계약이 될 수 있다.
+- 광고에 제시된 조건을 수행하는 것 자체로 승낙이 성립하며 별도의 통지는 요하지 않는다.
+- 은행 예치금의 존재는 진정성을 입증하므로 단순 광고성 과장(puff)이라는 주장은 배척된다.
 
-## Obiter Dicta
+## 판결의 의의
 
-Camden 법관은 만약 이러한 포괄적 일반영장을 허용한다면, 개인의 자유는 완전히 훼손될 것이며 개개인의 사적인 문서와 정보가 국가 공무원의 자의적인 재량 하에 노출되는 위험에 직면하게 될 것이라고 엄중히 경고했다.
+본 판결은 영국 계약법의 초석으로 평가받는다. 단순한 광고적 과장과 법적 구속력을 가지는 청약 사이의 경계를 명확히 획정하였다는 점에서 의의가 크다.

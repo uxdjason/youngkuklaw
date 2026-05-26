@@ -4,8 +4,13 @@ title: "형사 책임에 있어서 행위(Actus Reus)와 고의(Mens Rea)"
 description: "형사 책임을 성립시키기 위해 필요한 신체적 요소와 정신적 요소의 이해."
 slug: "dummy-criminal-law-note"
 category: "criminal-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-18T20:00:00Z
+views: 710
 isDummy: true
+longTailKeywords:
+  - "범죄행위"
+  - "범죄고의"
+  - "형사책임"
 ---
 
 ## 주요 개념 (Key Concepts)

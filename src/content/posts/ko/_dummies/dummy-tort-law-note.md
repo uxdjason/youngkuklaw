@@ -4,8 +4,13 @@ title: "과실법상 주의의무(Duty of Care)의 원칙"
 description: "사법적 발전 과정을 거쳐 정립된 주의의무(duty of care)의 개념 탐구."
 slug: "dummy-tort-law-note"
 category: "tort-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-14T20:00:00Z
+views: 1200
 isDummy: true
+longTailKeywords:
+  - "과실법"
+  - "주의의무"
+  - "이웃원칙"
 ---
 
 ## 주요 개념 (Key Concepts)

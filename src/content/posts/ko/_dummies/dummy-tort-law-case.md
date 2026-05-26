@@ -1,32 +1,38 @@
 ---
 lang: ko
 title: "Donoghue v Stevenson 판례 분석"
-description: "현대 불법행위법의 근간이 되는 '이웃 원칙(neighbor principle)'과 주의의무를 확립한 역사적 판례."
+description: "현대 과실법과 이웃 원칙(neighbor principle)을 확립한 초석이 되는 판례."
 slug: "dummy-tort-law-case"
 category: "tort-law-cases"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-24T20:00:00Z
+views: 1800
 isDummy: true
+longTailKeywords:
+  - "과실법"
+  - "이웃원칙"
+  - "주의의무"
 citation: "[1932] AC 562"
 court: "House of Lords"
-claimant: May Donoghue
-defendant: David Stevenson
+claimant: "May Donoghue"
+defendant: "David Stevenson"
 courtLink: "https://www.bailii.org/uk/cases/UKHL/1932/100.html"
 ---
 
-## Case Facts
+## 개관
 
-원고인 May Donoghue는 Paisley의 한 카페에 방문했고, 그녀의 친구가 그녀를 위해 불투명한 유리병에 든 진저비어를 구매해 주었다. Donoghue가 음료의 일부를 마신 뒤 남은 음료를 유리잔에 따르자, 부패한 달팽이 사체가 쏟아져 나왔다. 이로 인해 Donoghue는 위장염과 정신적 충격(gastroenteritis and nervous shock)을 겪었다. 그녀는 음료 제조사 세일즈 계약 당사자가 아니었으므로 계약상 손해배상을 청구할 수 없자, 제조업자인 David Stevenson을 상대로 불법행위(tort) 소송을 제기했다.
+이 글은 **Donoghue v Stevenson 판례 분석** ([1932] AC 562) 판례에 대한 분석이다. 영국 커먼로 체계에서 본 판례는 법학 교육 및 실무의 핵심적 이정표 역할을 수행한다.
 
-## Held
+## 사실관계 (Facts)
 
-상원(House of Lords)은 다수의견으로 제조사가 최종 소비자에게 주의의무(duty of care)를 부담한다고 판시했다. 제조업자가 생산한 제품이 중간 검사의 실질적 가능성이 없는 형태로 최종 소비자에게 도달하도록 의도하여 판매한 경우, 제조업자는 소비자가 입을 수 있는 피해를 예방하기 위해 합리적인 주의를 기울여야 할 의무를 진다.
+당사자 간의 상업적 거래 및 의사 표시 과정에서 분쟁이 발생하였다. 원고는 유효한 구속력 있는 계약이 성립하였다고 주장한 반면, 피고는 해당 의사 표시가 단순한 청약의 유인(invitation to treat)에 불과하거나 약인(consideration)이 결여되어 계약이 성립하지 않았다고 항변하였다. 본 사안은 여러 심급을 거쳐 최종 판결에 이르렀다.
 
-## Ratio Decidendi
+## 법원 판시 (Held)
 
-1. 자신의 행위나 태만이 '이웃'에게 피해를 줄 수 있음을 합리적으로 예견할 수 있다면, 그러한 피해를 피하기 위해 합리적인 주의를 기울여야 한다.
-2. 법률상 '이웃(neighbor)'이란, 내 행위로 인해 직접적이고 밀접한 영향을 받게 되므로 행위를 결정할 때 당연히 염두에 두어야 하는 대상을 의미한다.
-3. 제조업자는 자사 제품의 최종 소비자에게 주의의무(duty of care)를 진다.
+법원은 당사자의 행위가 명확한 일방계약의 청약을 구성하며 행위에 의해 승낙되었다고 판시하였다. 법관들이 정립한 핵심 원칙은 다음과 같다:
+- 대중을 상대로 이루어진 청약은 그 조건을 충족함으로써 구속력 있는 계약이 될 수 있다.
+- 광고에 제시된 조건을 수행하는 것 자체로 승낙이 성립하며 별도의 통지는 요하지 않는다.
+- 은행 예치금의 존재는 진정성을 입증하므로 단순 광고성 과장(puff)이라는 주장은 배척된다.
 
-## Obiter Dicta
+## 판결의 의의
 
-Atkin 판사는 도덕적인 의미의 "이웃을 사랑하라"는 계명이 어떻게 법적으로 타인에게 피해를 입히지 않아야 한다는 의무(주의의무)의 요건으로 전환되는지 그 철학적 배경을 설시했다.
+본 판결은 영국 계약법의 초석으로 평가받는다. 단순한 광고적 과장과 법적 구속력을 가지는 청약 사이의 경계를 명확히 획정하였다는 점에서 의의가 크다.

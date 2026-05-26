@@ -4,8 +4,13 @@ title: "의회주권(Parliamentary Supremacy)의 원칙"
 description: "의회를 최고 법적 권위로 규정하는 헌법적 원칙에 대한 분석."
 slug: "dummy-public-law-note"
 category: "public-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-16T20:00:00Z
+views: 940
 isDummy: true
+longTailKeywords:
+  - "의회주권"
+  - "의회"
+  - "헌법"
 ---
 
 ## 주요 개념 (Key Concepts)

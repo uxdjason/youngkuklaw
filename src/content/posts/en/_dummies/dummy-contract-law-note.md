@@ -4,8 +4,13 @@ title: "Principles of Offer and Acceptance in Contract Formation"
 description: "A detailed note on how contracts are legally formed through mutual assent under English law."
 slug: "dummy-contract-law-note"
 category: "contract-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-12T20:00:00Z
+views: 850
 isDummy: true
+longTailKeywords:
+  - "Offer"
+  - "Acceptance"
+  - "Agreement"
 ---
 
 ## Key Concepts

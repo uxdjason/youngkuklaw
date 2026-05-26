@@ -4,8 +4,13 @@ title: "Understanding Co-ownership in Land Law"
 description: "An examination of joint tenancy and tenancy in common under English property law."
 slug: "dummy-land-law-note"
 category: "land-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-22T20:00:00Z
+views: 650
 isDummy: true
+longTailKeywords:
+  - "Co-ownership"
+  - "Tenancy"
+  - "Property"
 ---
 
 ## Key Concepts

@@ -4,8 +4,13 @@ title: "Actus Reus and Mens Rea in Criminal Liability"
 description: "Understanding the physical and mental elements required to establish criminal liability."
 slug: "dummy-criminal-law-note"
 category: "criminal-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-18T20:00:00Z
+views: 710
 isDummy: true
+longTailKeywords:
+  - "Actus Reus"
+  - "Mens Rea"
+  - "Liability"
 ---
 
 ## Key Concepts

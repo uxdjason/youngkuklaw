@@ -4,8 +4,13 @@ title: "The Nature and Maxims of Equity"
 description: "A study on how equity acts as a gloss on the common law and its guiding maxims."
 slug: "dummy-equity-law-note"
 category: "equity-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-20T20:00:00Z
+views: 1100
 isDummy: true
+longTailKeywords:
+  - "Trusts"
+  - "Maxims"
+  - "Equity"
 ---
 
 ## Key Concepts

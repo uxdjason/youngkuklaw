@@ -10,6 +10,10 @@ const CATEGORY_INFO = [
     titleKo: '영국 커먼로(Common Law) 체계 개관',
     descEn: 'An overview of the development, structure, and key characteristics of the English legal system.',
     descKo: '영국 법체계의 발전 과정, 구조 및 주요 특징에 대한 개관.',
+    longTailKeywordsEn: ['Common Law', 'Precedent', 'Source of Law'],
+    longTailKeywordsKo: ['커먼로', '선례구속력', '법원'],
+    pubDate: '2026-05-10T20:00:00Z',
+    views: 1050,
   },
   {
     slug: 'dummy-contract-law-note',
@@ -19,6 +23,10 @@ const CATEGORY_INFO = [
     titleKo: '계약 성립에 있어서 청약과 승낙의 원칙',
     descEn: 'A detailed note on how contracts are legally formed through mutual assent under English law.',
     descKo: '영국법상 상호 합의를 통해 계약이 법적으로 성립하는 방식에 대한 상세 정리.',
+    longTailKeywordsEn: ['Offer', 'Acceptance', 'Agreement'],
+    longTailKeywordsKo: ['청약', '승낙', '합의'],
+    pubDate: '2026-05-12T20:00:00Z',
+    views: 850,
   },
   {
     slug: 'dummy-tort-law-note',
@@ -28,6 +36,10 @@ const CATEGORY_INFO = [
     titleKo: '과실법상 주의의무(Duty of Care)의 원칙',
     descEn: 'Exploring the establishment of duty of care following landmark judicial developments.',
     descKo: '사법적 발전 과정을 거쳐 정립된 주의의무(duty of care)의 개념 탐구.',
+    longTailKeywordsEn: ['Negligence', 'Duty of Care', 'Neighbor Principle'],
+    longTailKeywordsKo: ['과실법', '주의의무', '이웃원칙'],
+    pubDate: '2026-05-14T20:00:00Z',
+    views: 1200,
   },
   {
     slug: 'dummy-public-law-note',
@@ -37,6 +49,10 @@ const CATEGORY_INFO = [
     titleKo: '의회주권(Parliamentary Supremacy)의 원칙',
     descEn: 'Analysis of the constitutional doctrine that positions Parliament as the supreme legal authority.',
     descKo: '의회를 최고 법적 권위로 규정하는 헌법적 원칙에 대한 분석.',
+    longTailKeywordsEn: ['Supremacy', 'Parliament', 'Constitution'],
+    longTailKeywordsKo: ['의회주권', '의회', '헌법'],
+    pubDate: '2026-05-16T20:00:00Z',
+    views: 940,
   },
   {
     slug: 'dummy-criminal-law-note',
@@ -46,6 +62,10 @@ const CATEGORY_INFO = [
     titleKo: '형사 책임에 있어서 행위(Actus Reus)와 고의(Mens Rea)',
     descEn: 'Understanding the physical and mental elements required to establish criminal liability.',
     descKo: '형사 책임을 성립시키기 위해 필요한 신체적 요소와 정신적 요소의 이해.',
+    longTailKeywordsEn: ['Actus Reus', 'Mens Rea', 'Liability'],
+    longTailKeywordsKo: ['범죄행위', '범죄고의', '형사책임'],
+    pubDate: '2026-05-18T20:00:00Z',
+    views: 710,
   },
   {
     slug: 'dummy-equity-law-note',
@@ -55,6 +75,10 @@ const CATEGORY_INFO = [
     titleKo: '형평법(Equity)의 성질과 격언들',
     descEn: 'A study on how equity acts as a gloss on the common law and its guiding maxims.',
     descKo: '커먼로를 보완하는 형평법의 원리와 이를 이끄는 주요 격언들에 대한 연구.',
+    longTailKeywordsEn: ['Trusts', 'Maxims', 'Equity'],
+    longTailKeywordsKo: ['신탁법', '형평법격언', '형평법'],
+    pubDate: '2026-05-20T20:00:00Z',
+    views: 1100,
   },
   {
     slug: 'dummy-land-law-note',
@@ -64,6 +88,10 @@ const CATEGORY_INFO = [
     titleKo: '토지법상 공동소유(Co-ownership)의 이해',
     descEn: 'An examination of joint tenancy and tenancy in common under English property law.',
     descKo: '영국 재산법상 합동소유(joint tenancy)와 공유(tenancy in common)의 비교 검토.',
+    longTailKeywordsEn: ['Co-ownership', 'Tenancy', 'Property'],
+    longTailKeywordsKo: ['공동소유', '점유', '재산법'],
+    pubDate: '2026-05-22T20:00:00Z',
+    views: 650,
   },
   {
     slug: 'dummy-contract-law-case',
@@ -78,6 +106,10 @@ const CATEGORY_INFO = [
     claimant: 'Louisa Elizabeth Carlill',
     defendant: 'Carbolic Smoke Ball Company',
     courtLink: 'https://www.bailii.org/ew/cases/EWCA/Civ/1892/1.html',
+    longTailKeywordsEn: ['Offer', 'Unilateral Contract', 'Smoke Ball'],
+    longTailKeywordsKo: ['청약', '일방계약', '광고효력'],
+    pubDate: '2026-05-25T20:00:00Z',
+    views: 1500,
   },
   {
     slug: 'dummy-tort-law-case',
@@ -92,6 +124,10 @@ const CATEGORY_INFO = [
     claimant: 'May Donoghue',
     defendant: 'David Stevenson',
     courtLink: 'https://www.bailii.org/uk/cases/UKHL/1932/100.html',
+    longTailKeywordsEn: ['Negligence', 'Neighbor Principle', 'Duty of Care'],
+    longTailKeywordsKo: ['과실법', '이웃원칙', '주의의무'],
+    pubDate: '2026-05-24T20:00:00Z',
+    views: 1800,
   },
   {
     slug: 'dummy-public-law-case',
@@ -106,6 +142,10 @@ const CATEGORY_INFO = [
     claimant: 'John Entick',
     defendant: 'Nathan Carrington',
     courtLink: 'https://www.bailii.org/ew/cases/EWHC/KB/1765/J98.html',
+    longTailKeywordsEn: ['Executive Power', 'Civil Liberties', 'Warrant'],
+    longTailKeywordsKo: ['집행부권한', '시민자유', '영장주의'],
+    pubDate: '2026-05-23T20:00:00Z',
+    views: 750,
   },
   {
     slug: 'dummy-criminal-law-case',
@@ -120,6 +160,10 @@ const CATEGORY_INFO = [
     claimant: 'The Crown',
     defendant: 'Stephen Woollin',
     courtLink: 'https://www.bailii.org/uk/cases/UKHL/1998/28.html',
+    longTailKeywordsEn: ['Murder', 'Intention', 'Indirect Intention'],
+    longTailKeywordsKo: ['살인죄', '범죄고의', '간접고의'],
+    pubDate: '2026-05-21T20:00:00Z',
+    views: 920,
   },
   {
     slug: 'dummy-equity-law-case',
@@ -134,6 +178,10 @@ const CATEGORY_INFO = [
     claimant: 'Milroy',
     defendant: 'Lord',
     courtLink: 'https://www.bailii.org/ew/cases/EWHC/Ch/1862/J78.html',
+    longTailKeywordsEn: ['Trusts', 'Declaration', 'Transfer'],
+    longTailKeywordsKo: ['신탁법', '신탁선언', '재산양도'],
+    pubDate: '2026-05-19T20:00:00Z',
+    views: 680,
   },
   {
     slug: 'dummy-land-law-case',
@@ -148,6 +196,10 @@ const CATEGORY_INFO = [
     claimant: 'Roger Street',
     defendant: 'Wendy Mountford',
     courtLink: 'https://www.bailii.org/uk/cases/UKHL/1985/4.html',
+    longTailKeywordsEn: ['Lease', 'Licence', 'Exclusive Possession'],
+    longTailKeywordsKo: ['임대차', '사용허가', '독점적점유'],
+    pubDate: '2026-05-17T20:00:00Z',
+    views: 1350,
   },
 ];
 
@@ -162,6 +214,7 @@ function getFrontmatter(item: typeof CATEGORY_INFO[0], lang: 'en' | 'ko'): strin
   const isEn = lang === 'en';
   const title = isEn ? item.titleEn : item.titleKo;
   const desc = isEn ? item.descEn : item.descKo;
+  const keywords = isEn ? item.longTailKeywordsEn : item.longTailKeywordsKo;
 
   let fm = `---
 lang: ${lang}
@@ -169,9 +222,15 @@ title: "${title}"
 description: "${desc}"
 slug: "${item.slug}"
 category: "${item.category}"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: ${item.pubDate}
+views: ${item.views}
 isDummy: true
+longTailKeywords:
 `;
+
+  keywords.forEach(k => {
+    fm += `  - "${k}"\n`;
+  });
 
   if (item.isCase) {
     fm += `citation: "${item.citation}"

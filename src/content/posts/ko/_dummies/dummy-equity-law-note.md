@@ -4,8 +4,13 @@ title: "형평법(Equity)의 성질과 격언들"
 description: "커먼로를 보완하는 형평법의 원리와 이를 이끄는 주요 격언들에 대한 연구."
 slug: "dummy-equity-law-note"
 category: "equity-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-20T20:00:00Z
+views: 1100
 isDummy: true
+longTailKeywords:
+  - "신탁법"
+  - "형평법격언"
+  - "형평법"
 ---
 
 ## 주요 개념 (Key Concepts)

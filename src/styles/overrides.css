@@ -206,4 +206,13 @@ body {
   display: inline;
 }
 
+/* ---------- Mobile Navigation Icon Toggle ---------- */
+.w-nav-button.w--open .burger_icon {
+  display: none !important;
+}
+.w-nav-button.w--open .close_icon {
+  display: block !important;
+}
+
+
 

@@ -5,7 +5,12 @@ description: "The landmark contract case defining unilateral contracts and offer
 slug: "dummy-contract-law-case"
 category: "contract-law-cases"
 pubDate: 2026-05-25T20:00:00Z
+views: 1500
 isDummy: true
+longTailKeywords:
+  - "Offer"
+  - "Unilateral Contract"
+  - "Smoke Ball"
 citation: "[1893] 1 QB 256"
 court: "Court of Appeal"
 claimant: "Louisa Elizabeth Carlill"
@@ -13,20 +18,21 @@ defendant: "Carbolic Smoke Ball Company"
 courtLink: "https://www.bailii.org/ew/cases/EWCA/Civ/1892/1.html"
 ---
 
-## Case Facts
+## Introduction
 
-The defendants, the Carbolic Smoke Ball Co., manufactured and sold the "Carbolic Smoke Ball" and advertised in the Pall Mall Gazette that they would pay £100 to anyone who used the smoke ball as directed and still contracted influenza. The claimant, Louisa Elizabeth Carlill, used the smoke ball as directed and contracted influenza. The defendants argued that there was no binding contract.
+This is a dummy case review for **Carlill v Carbolic Smoke Ball Company** with citation **[1893] 1 QB 256**. Under English contract and common law, this case serves as a fundamental benchmark for study and examination purposes.
 
-## Held
+## Facts of the Case
 
-The Court of Appeal held that the advertisement constituted a unilateral offer to the world, which could be accepted by performing the conditions (using the smoke ball). There was sufficient consideration (the inconvenience of using the ball, and the benefit to the defendants from sales), and the advertisement was not a mere puff, as the defendants had deposited £1,000 in a bank to show their sincerity.
+The dispute arose in the context of commercial transactions and statements made by the parties. The claimant argued that a binding agreement had been established, whereas the defendant contended that the communication was merely an invitation to treat (ITT) or lacked consideration. The case went through multiple appeals before reaching the final judgment.
 
-## Ratio Decidendi
+## Legal Judgment
 
-1. An advertisement offering a reward for performance of a condition can constitute a unilateral offer to the public at large.
-2. Acceptance of a unilateral contract does not require notification; performance of the requested act is sufficient acceptance.
-3. Depositing funds in a bank to demonstrate sincerity defeats any argument that the offer was a mere sales puff.
+The court held that the parties' actions constituted a clear unilateral offer that was accepted by performance. The judges laid down the following principles:
+- An offer made to the public can become a binding contract upon compliance with its terms.
+- Performance of the conditions in an advertisement is sufficient acceptance without notification.
+- The puff argument was rejected because the deposit in the bank proved sincerity.
 
-## Obiter Dicta
+## Significance of the decision
 
-The judges noted that if an offeror chooses to make an offer of this nature, they must run the risk of having to pay many claimants, and they cannot escape liability by claiming that the contract is too wide or impossible to perform.
+This judgment remains a cornerstone of the English legal curriculum. It clarifies the boundary between mere advertising puffs and serious legally binding offers.

@@ -4,8 +4,13 @@ title: "영국 커먼로(Common Law) 체계 개관"
 description: "영국 법체계의 발전 과정, 구조 및 주요 특징에 대한 개관."
 slug: "dummy-english-law-note"
 category: "english-law"
-pubDate: 2026-05-25T20:00:00Z
+pubDate: 2026-05-10T20:00:00Z
+views: 1050
 isDummy: true
+longTailKeywords:
+  - "커먼로"
+  - "선례구속력"
+  - "법원"
 ---
 
 ## 주요 개념 (Key Concepts)
