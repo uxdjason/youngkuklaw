@@ -214,5 +214,22 @@ body {
   display: block !important;
 }
 
+/* ---------- Article List Left Sidebar Fixed Width & Keyword Wrap ---------- */
+.article-list-left {
+  width: 350px !important;
+  min-width: 350px !important;
+  max-width: 350px !important;
+  flex-shrink: 0 !important;
+}
+
+@media screen and (max-width: 991px) {
+  .article-list-left {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+
 
 
