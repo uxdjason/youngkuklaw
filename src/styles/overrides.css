@@ -279,7 +279,7 @@ body {
   .print-only-footer {
     display: block !important;
     position: fixed;
-    bottom: 0.5cm;
+    bottom: -2.0cm;
     left: 0;
     width: 100%;
     text-align: center;
