@@ -215,6 +215,12 @@ const sortOptions = [
                     <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"></path>
                   </svg>
                 </div>
+                <div class="bookmark-icon-on w-embed">
+                  <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="7" y="5" width="10" height="13" fill="#FFC400"></rect>
+                    <path d="M5 21V5C5 4.45 5.19583 3.97917 5.5875 3.5875C5.97917 3.19583 6.45 3 7 3H17C17.55 3 18.0208 3.19583 18.4125 3.5875C18.8042 3.97917 19 4.45 19 5V21L12 18L5 21ZM7 17.95L12 15.8L17 17.95V5H7V17.95Z" fill="currentColor"></path>
+                  </svg>
+                </div>
                 <div class="bookmarked-only-label">{lang === 'en' ? 'Bookmarked Only' : '북마크한 글만 보기'}</div>
               </a>
             </div>
@@ -330,7 +336,10 @@ const sortOptions = [
     color: var(--base-color-brand--yellow-dark) !important;
   }
   .bookmarked-only[data-active="true"] .bookmark-icon-off {
-    color: var(--base-color-brand--yellow-dark) !important;
+    display: none !important;
+  }
+  .bookmarked-only[data-active="true"] .bookmark-icon-on {
+    display: block !important;
   }
   
   /* Active states for Keyword filters */
