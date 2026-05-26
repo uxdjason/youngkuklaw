@@ -25,12 +25,41 @@ const allPosts = await getCollection('posts', ({ data }) => {
   return data.category === category;
 });
 
-// Sort posts: default is latest (pubDate descending)
-const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+// Helper function to extract citation year
+function getCitationYear(citation?: string, pubDate?: Date): number {
+  if (!citation) {
+    return pubDate ? pubDate.getFullYear() : 0;
+  }
+  const fourDigitMatch = citation.match(/\b(1[5-9]\d{2}|20\d{2})\b/);
+  if (fourDigitMatch) {
+    return parseInt(fourDigitMatch[1], 10);
+  }
+  const twoDigitMatch = citation.match(/\b\d+\/(\d{2})\b/);
+  if (twoDigitMatch) {
+    const yr = parseInt(twoDigitMatch[1], 10);
+    return yr >= 50 ? 1900 + yr : 2000 + yr;
+  }
+  return pubDate ? pubDate.getFullYear() : 0;
+}
+
+const isCaseCategory = category === 'case-law' || category.endsWith('-cases');
+
+// Sort posts: default is latest (citation year descending for cases, pubDate descending for notes)
+const sortedPosts = allPosts.sort((a, b) => {
+  if (isCaseCategory) {
+    const yearA = getCitationYear(a.data.citation, a.data.pubDate);
+    const yearB = getCitationYear(b.data.citation, b.data.pubDate);
+    if (yearB !== yearA) {
+      return yearB - yearA;
+    }
+    return a.data.title.localeCompare(b.data.title);
+  } else {
+    return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  }
+});
 
 const label = CATEGORY_LABELS[category][lang];
 const totalCount = sortedPosts.length;
-const isCaseCategory = category === 'case-law' || category.endsWith('-cases');
 
 const unitText = lang === 'en' 
   ? (isCaseCategory ? 'cases' : 'notes') 
@@ -241,7 +270,7 @@ const sortOptions = [
                 </div>
               </div>
             ) : (
-              <div class="article-list">
+              <div class="article-list" data-is-case-category={isCaseCategory ? "true" : "false"}>
                 {sortedPosts.map((post) => (
                   <div class="article-row"
                        data-pubdate={post.data.pubDate.valueOf()}
@@ -249,7 +278,8 @@ const sortOptions = [
                        data-views={post.data.views || 940}
                        data-created={post.data.pubDate.valueOf()}
                        data-keywords={post.data.longTailKeywords?.join(',').toLowerCase() || ''}
-                       data-slug={post.data.slug}>
+                       data-slug={post.data.slug}
+                       data-citation-year={getCitationYear(post.data.citation, post.data.pubDate)}>
 
                     <div class="article-row-upper">
                       <div class="keyword-tag-container">
@@ -404,30 +434,51 @@ const sortOptions = [
           }
         });
         
+        const isCaseCategory = container.getAttribute('data-is-case-category') === 'true';
         const items = Array.from(container.querySelectorAll('.article-row'));
         
         items.sort((a, b) => {
-          let valA, valB;
-          
           if (sortType === 'latest') {
-            valA = parseInt(a.getAttribute('data-pubdate') || '0', 10);
-            valB = parseInt(b.getAttribute('data-pubdate') || '0', 10);
-            return valB - valA;
+            if (isCaseCategory) {
+              const yearA = parseInt(a.getAttribute('data-citation-year') || '0', 10);
+              const yearB = parseInt(b.getAttribute('data-citation-year') || '0', 10);
+              if (yearB !== yearA) {
+                return yearB - yearA;
+              }
+              const titleA = a.getAttribute('data-title') || '';
+              const titleB = b.getAttribute('data-title') || '';
+              return titleA.localeCompare(titleB);
+            } else {
+              const valA = parseInt(a.getAttribute('data-pubdate') || '0', 10);
+              const valB = parseInt(b.getAttribute('data-pubdate') || '0', 10);
+              return valB - valA;
+            }
           } else if (sortType === 'oldest') {
-            valA = parseInt(a.getAttribute('data-pubdate') || '0', 10);
-            valB = parseInt(b.getAttribute('data-pubdate') || '0', 10);
-            return valA - valB;
+            if (isCaseCategory) {
+              const yearA = parseInt(a.getAttribute('data-citation-year') || '0', 10);
+              const yearB = parseInt(b.getAttribute('data-citation-year') || '0', 10);
+              if (yearA !== yearB) {
+                return yearA - yearB;
+              }
+              const titleA = a.getAttribute('data-title') || '';
+              const titleB = b.getAttribute('data-title') || '';
+              return titleA.localeCompare(titleB);
+            } else {
+              const valA = parseInt(a.getAttribute('data-pubdate') || '0', 10);
+              const valB = parseInt(b.getAttribute('data-pubdate') || '0', 10);
+              return valA - valB;
+            }
           } else if (sortType === 'recently-added') {
-            valA = parseInt(a.getAttribute('data-created') || '0', 10);
-            valB = parseInt(b.getAttribute('data-created') || '0', 10);
+            const valA = parseInt(a.getAttribute('data-created') || '0', 10);
+            const valB = parseInt(b.getAttribute('data-created') || '0', 10);
             return valB - valA;
           } else if (sortType === 'most-popular') {
-            valA = parseInt(a.getAttribute('data-views') || '0', 10);
-            valB = parseInt(b.getAttribute('data-views') || '0', 10);
+            const valA = parseInt(a.getAttribute('data-views') || '0', 10);
+            const valB = parseInt(b.getAttribute('data-views') || '0', 10);
             return valB - valA;
           } else if (sortType === 'alphabetical') {
-            valA = a.getAttribute('data-title') || '';
-            valB = b.getAttribute('data-title') || '';
+            const valA = a.getAttribute('data-title') || '';
+            const valB = b.getAttribute('data-title') || '';
             return valA.localeCompare(valB);
           }
           return 0;
