@@ -275,23 +275,20 @@ body {
     width: 100% !important;
   }
 
-  /* Custom Print Footer */
-  /* position:fixed with bottom:0 places the element in the bottom margin
-     area created by @page margin-bottom. It repeats on every page and
-     never overlaps body content. */
+  /* Custom Print Footer — appears once after all content on the last page */
   .print-only-footer {
     display: block !important;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: static;
     width: 100%;
     text-align: center;
     font-family: inherit;
     font-size: 11px;
     color: #555;
     border-top: 1px solid #ddd;
-    padding: 6px 0 4px;
+    padding: 12px 0 6px;
+    margin-top: 32px;
+    page-break-before: avoid;
+    break-before: avoid;
   }
   .print-footer-brand {
     font-weight: bold;
@@ -305,7 +302,7 @@ body {
   /* Optimize print margins and background */
   @page {
     margin-top: 1.5cm;
-    margin-bottom: 2.0cm;
+    margin-bottom: 1.5cm;
     margin-left: 1.5cm;
     margin-right: 1.5cm;
   }
