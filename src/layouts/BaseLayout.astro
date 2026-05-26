@@ -111,34 +111,29 @@ const FONT_PRELOADS =
 
     <script>
       // Global Bookmark Syncing
-      document.addEventListener('DOMContentLoaded', () => {
-        const updateUI = () => {
-          const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
-          
-          document.querySelectorAll('[data-slug]').forEach(btn => {
-            const slug = btn.getAttribute('data-slug');
-            if (slug) {
-              const isBookmarked = bookmarkedSlugs.includes(slug);
-              if (isBookmarked) {
-                btn.setAttribute('data-bookmarked', 'true');
-              } else {
-                btn.removeAttribute('data-bookmarked');
-              }
+      const updateUI = () => {
+        const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
+        
+        document.querySelectorAll('.bookmark, .bookmark-btn').forEach(btn => {
+          const slug = btn.getAttribute('data-slug');
+          if (slug) {
+            const isBookmarked = bookmarkedSlugs.includes(slug);
+            if (isBookmarked) {
+              btn.setAttribute('data-bookmarked', 'true');
+            } else {
+              btn.removeAttribute('data-bookmarked');
             }
-          });
-        };
+          }
+        });
+      };
 
+      const initBookmarks = () => {
         updateUI();
 
         // Bind clicks
         document.addEventListener('click', (e) => {
-          const btn = (e.target as HTMLElement).closest('[data-slug]');
+          const btn = (e.target as HTMLElement).closest('.bookmark, .bookmark-btn');
           if (!btn) return;
-          
-          // Don't prevent default on title links or buttons that are navigation links
-          if (btn.tagName === 'A' && !btn.classList.contains('bookmark') && !btn.classList.contains('bookmark-btn')) {
-            return; 
-          }
           
           e.preventDefault();
           const slug = btn.getAttribute('data-slug');
@@ -154,10 +149,19 @@ const FONT_PRELOADS =
           localStorage.setItem('bookmarked_posts', JSON.stringify(slugs));
           updateUI();
 
-          // Dispatch event to notify index page if necessary
+          // Dispatch event to notify other pages/components
           window.dispatchEvent(new Event('bookmark-updated'));
         });
-      });
+
+        // Keep state in sync across different components
+        window.addEventListener('bookmark-updated', updateUI);
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBookmarks);
+      } else {
+        initBookmarks();
+      }
     </script>
   </body>
 </html>

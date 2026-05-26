@@ -166,78 +166,80 @@ function formatDate(date: Date) {
   
   return getBookmarkData().then(bookmarkDb => (
     <script define:vars={{ bookmarkDb, lang }}>
-      document.addEventListener('DOMContentLoaded', () => {
-        const renderBookmarks = () => {
-          const listContainer = document.querySelector('.bookmark-list-container');
-          if (!listContainer) return;
+      const renderBookmarks = () => {
+        const listContainer = document.querySelector('.bookmark-list-container');
+        if (!listContainer) return;
+        
+        // Clear previous dynamically rendered items
+        listContainer.querySelectorAll('.note-row:not(.no-bookmarks-msg), .hr-div').forEach(el => el.remove());
+        
+        const noBookmarksMsg = listContainer.querySelector('.no-bookmarks-msg');
+        
+        const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
+        const bookmarkedPosts = bookmarkDb.filter(post => bookmarkedSlugs.includes(post.slug));
+        
+        if (bookmarkedPosts.length > 0) {
+          if (noBookmarksMsg) noBookmarksMsg.style.display = 'none';
           
-          // Clear previous dynamically rendered items
-          listContainer.querySelectorAll('.note-row:not(.no-bookmarks-msg), .hr-div').forEach(el => el.remove());
-          
-          const noBookmarksMsg = listContainer.querySelector('.no-bookmarks-msg');
-          
-          const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
-          const bookmarkedPosts = bookmarkDb.filter(post => bookmarkedSlugs.includes(post.slug));
-          
-          if (bookmarkedPosts.length > 0) {
-            if (noBookmarksMsg) (noBookmarksMsg as HTMLElement).style.display = 'none';
+          bookmarkedPosts.forEach((post, index) => {
+            const row = document.createElement('div');
+            row.className = 'note-row';
             
-            bookmarkedPosts.forEach((post, index) => {
-              const row = document.createElement('div');
-              row.className = 'note-row';
-              
-              const rowLeft = document.createElement('div');
-              rowLeft.className = 'note-row-left';
-              
-              const tag = document.createElement('div');
-              tag.className = 'subject-tag ko';
-              tag.textContent = post.categoryLabel;
-              
-              const link = document.createElement('a');
-              link.className = 'link-block w-inline-block';
-              link.href = post.url;
-              
-              const titleDiv = document.createElement('div');
-              titleDiv.className = 'featured-content-desc ko';
-              titleDiv.textContent = post.title;
-              
-              link.appendChild(titleDiv);
-              rowLeft.appendChild(tag);
-              rowLeft.appendChild(link);
-              
-              const rowRight = document.createElement('div');
-              rowRight.className = 'note-row-right';
-              
-              const timestamp = document.createElement('div');
-              timestamp.className = 'note-row-timestamp ko';
-              
-              const formattedDate = new Date(post.pubDate).toLocaleDateString('ko-KR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-              });
-              timestamp.textContent = formattedDate;
-              
-              rowRight.appendChild(timestamp);
-              row.appendChild(rowLeft);
-              row.appendChild(rowRight);
-              
-              listContainer.appendChild(row);
-              
-              if (index < bookmarkedPosts.length - 1) {
-                const hr = document.createElement('div');
-                hr.className = 'hr-div no-margin';
-                listContainer.appendChild(hr);
-              }
+            const rowLeft = document.createElement('div');
+            rowLeft.className = 'note-row-left';
+            
+            const tag = document.createElement('div');
+            tag.className = 'subject-tag ko';
+            tag.textContent = post.categoryLabel;
+            
+            const link = document.createElement('a');
+            link.className = 'link-block w-inline-block';
+            link.href = post.url;
+            
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'featured-content-desc ko';
+            titleDiv.textContent = post.title;
+            
+            link.appendChild(titleDiv);
+            rowLeft.appendChild(tag);
+            rowLeft.appendChild(link);
+            
+            const rowRight = document.createElement('div');
+            rowRight.className = 'note-row-right';
+            
+            const timestamp = document.createElement('div');
+            timestamp.className = 'note-row-timestamp ko';
+            
+            const formattedDate = new Date(post.pubDate).toLocaleDateString('ko-KR', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
             });
-          } else {
-            if (noBookmarksMsg) (noBookmarksMsg as HTMLElement).style.display = 'block';
-          }
-        };
+            timestamp.textContent = formattedDate;
+            
+            rowRight.appendChild(timestamp);
+            row.appendChild(rowLeft);
+            row.appendChild(rowRight);
+            
+            listContainer.appendChild(row);
+            
+            if (index < bookmarkedPosts.length - 1) {
+              const hr = document.createElement('div');
+              hr.className = 'hr-div no-margin';
+              listContainer.appendChild(hr);
+            }
+          });
+        } else {
+          if (noBookmarksMsg) noBookmarksMsg.style.display = 'block';
+        }
+      };
 
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderBookmarks);
+      } else {
         renderBookmarks();
-        window.addEventListener('bookmark-updated', renderBookmarks);
-      });
+      }
+      window.addEventListener('bookmark-updated', renderBookmarks);
     </script>
   ));
 })()}
