@@ -109,13 +109,23 @@ const sortOptions = [
   }
 ];
 
+// Build richer SEO title and description for category pages
+const isCaseCat = isCaseCategory;
+const seoTitle =
+  lang === 'en'
+    ? `${label} ${isCaseCat ? 'Cases' : 'Notes'} · YoungkukLaw`
+    : `${label} ${isCaseCat ? '판례' : '노트'} · YoungkukLaw`;
+
+const seoDescription =
+  lang === 'en'
+    ? `Browse ${totalCount} ${isCaseCat ? 'case summaries' : 'lecture notes'} for ${label}. Free, clear and well-structured English law resources for law students worldwide.`
+    : `YoungkukLaw에서 ${label} 관련 ${isCaseCat ? '판례' : '노트'} ${totalCount}개를 무료로 제공합니다. 영국법 학습자를 위한 명확하고 체계적인 학습 자료입니다.`;
+
 ---
 <BaseLayout
   lang={lang}
-  title={`${label} · YoungkukLaw`}
-  description={lang === 'en' 
-    ? `Browse quality notes and cases for ${label} on YoungkukLaw.`
-    : `영국로(YoungkukLaw)에서 정리한 ${label} 관련 요약 노트와 판례 목록을 둘러보세요.`}
+  title={seoTitle}
+  description={seoDescription}
 >
   <section>
     <div class="padding-global">

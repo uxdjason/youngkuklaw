@@ -12,6 +12,7 @@ interface Props {
   title: string;
   description: string;
   pubDate: Date;
+  modifiedDate?: Date;
 }
 
 const {
@@ -21,6 +22,7 @@ const {
   title,
   description,
   pubDate,
+  modifiedDate,
 } = Astro.props;
 
 // Fetch related notes in the same category and language
@@ -45,6 +47,7 @@ function formatDate(date: Date, locale: string) {
   description={description}
   type="article"
   publishedTime={pubDate.toISOString()}
+  modifiedTime={modifiedDate ? modifiedDate.toISOString() : undefined}
 >
   <section>
     <div class="padding-global">

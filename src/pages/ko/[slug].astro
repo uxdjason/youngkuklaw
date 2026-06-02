@@ -18,20 +18,25 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 
 const isCase = post.data.category.endsWith('-cases') || post.data.category === 'case-law';
+
+// Use seoTitle / metaDescription overrides when available (migrated content)
+const displayTitle       = post.data.seoTitle       || post.data.title;
+const displayDescription = post.data.metaDescription || post.data.description;
 ---
 {isCase ? (
   <CaseLayout
     lang="ko"
     slug={post.data.slug}
     category={post.data.category}
-    title={post.data.title}
-    description={post.data.description}
+    title={displayTitle}
+    description={displayDescription}
     citation={post.data.citation}
     court={post.data.court}
     claimant={post.data.claimant}
     defendant={post.data.defendant}
     courtLink={post.data.courtLink}
     pubDate={post.data.pubDate}
+    modifiedDate={post.data.updatedDate}
   >
     <Content />
   </CaseLayout>
@@ -40,9 +45,10 @@ const isCase = post.data.category.endsWith('-cases') || post.data.category === '
     lang="ko"
     slug={post.data.slug}
     category={post.data.category}
-    title={post.data.title}
-    description={post.data.description}
+    title={displayTitle}
+    description={displayDescription}
     pubDate={post.data.pubDate}
+    modifiedDate={post.data.updatedDate}
   >
     <Content />
   </NoteLayout>
