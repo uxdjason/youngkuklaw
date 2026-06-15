@@ -1,0 +1,405 @@
+# glossary.yaml — 영국법 법률 용어 사전
+# 용도: AI 프롬프트에 인라인 삽입하여 영/한 용어 일관성 보장
+# 형식: term_en (영국식 원형) → term_ko (한국어 병기)
+# 규칙 §4.1~4.3 동시 적용
+
+style_rules:
+  - "법령명·판례 citation은 영/한 페이지 모두 영문 원형 그대로. 예: s 4 Contracts Act 2015, Donoghue v Stevenson [1932] AC 562."
+  - "판례 'v' 뒤에 마침표 붙이지 않음. 'Smith v Jones' O / 'Smith v. Jones' X."
+  - "영국식 철자 사용: organisation, judgement, behaviour, labour, colour, favour, honour."
+  - "한국어 종결은 '~다.' 형태. '~함.' '~음.' 금지. 경어(~습니다, ~세요) 금지."
+  - "한국어 콤마 최소화. 꼭 필요한 경우에만."
+  - "인명/지명/단체명 고유명사는 영문 원형. 예: Donoghue, House of Lords, EWCA."
+  - "핵심 법률 개념은 영문+한국어 병기. 예: duty of care(주의의무), consideration(약인)."
+
+# ─────────────────────────────────────────────
+# Contract Law (계약법)
+# ─────────────────────────────────────────────
+terms:
+  - en: "offer"
+    ko: "청약"
+    note: "계약 성립의 첫 단계"
+
+  - en: "acceptance"
+    ko: "승낙"
+
+  - en: "consideration"
+    ko: "약인"
+    note: "영국 계약법 특유 개념. '대가' 또는 '대가관계'로도 쓰임"
+
+  - en: "invitation to treat"
+    ko: "청약의 유인"
+
+  - en: "intention to create legal relations"
+    ko: "법적 구속력을 창출하려는 의사"
+
+  - en: "privity of contract"
+    ko: "계약의 사적 관계 (계약 당사자성)"
+
+  - en: "misrepresentation"
+    ko: "사실 오인 유발 (허위진술)"
+
+  - en: "duress"
+    ko: "강박"
+
+  - en: "undue influence"
+    ko: "부당 압력"
+
+  - en: "frustration"
+    ko: "계약 이행불능 (후발적 불능)"
+
+  - en: "breach of contract"
+    ko: "계약 위반"
+
+  - en: "remoteness of damage"
+    ko: "손해의 원격성"
+
+  - en: "mitigation"
+    ko: "손해 경감 의무"
+
+  - en: "liquidated damages"
+    ko: "손해배상 예정액"
+
+  - en: "penalty clause"
+    ko: "위약벌 조항"
+
+  - en: "specific performance"
+    ko: "특정 이행"
+
+  - en: "injunction"
+    ko: "금지명령"
+
+  - en: "rescission"
+    ko: "계약 취소"
+
+  - en: "rectification"
+    ko: "계약서 정정"
+
+  - en: "implied term"
+    ko: "묵시적 조항"
+
+  - en: "express term"
+    ko: "명시적 조항"
+
+  - en: "exemption clause"
+    ko: "면책 조항"
+
+  - en: "exclusion clause"
+    ko: "배제 조항"
+
+  - en: "UCTA"
+    ko: "Unfair Contract Terms Act 1977 (불공정 계약 조항법)"
+
+  - en: "CRA 2015"
+    ko: "Consumer Rights Act 2015 (소비자권리법)"
+
+# ─────────────────────────────────────────────
+# Tort Law (불법행위법)
+# ─────────────────────────────────────────────
+
+  - en: "duty of care"
+    ko: "주의의무"
+
+  - en: "breach of duty"
+    ko: "의무 위반"
+
+  - en: "causation"
+    ko: "인과관계"
+
+  - en: "but-for test"
+    ko: "하지 않았더라면 테스트 (조건인과관계 검사)"
+
+  - en: "novus actus interveniens"
+    ko: "새로운 개입 행위 (인과관계 단절)"
+
+  - en: "res ipsa loquitur"
+    ko: "사실 자체가 증명한다 (과실 추정)"
+
+  - en: "volenti non fit injuria"
+    ko: "동의한 자에게는 불법행위가 성립하지 않는다"
+
+  - en: "contributory negligence"
+    ko: "기여 과실"
+
+  - en: "vicarious liability"
+    ko: "사용자 책임 (대위 책임)"
+
+  - en: "occupiers' liability"
+    ko: "점유자 책임"
+
+  - en: "nuisance"
+    ko: "방해 행위"
+    note: "private nuisance(사적 방해)와 public nuisance(공적 방해) 구분"
+
+  - en: "defamation"
+    ko: "명예훼손"
+
+  - en: "negligent misstatement"
+    ko: "과실에 의한 허위진술"
+
+  - en: "psychiatric injury"
+    ko: "정신적 손해"
+
+  - en: "primary victim"
+    ko: "직접 피해자"
+
+  - en: "secondary victim"
+    ko: "간접 피해자"
+
+  - en: "pure economic loss"
+    ko: "순수 경제적 손실"
+
+  - en: "Rylands v Fletcher rule"
+    ko: "Rylands v Fletcher 원칙 (위험물 누출 책임)"
+
+# ─────────────────────────────────────────────
+# Public Law (공법)
+# ─────────────────────────────────────────────
+
+  - en: "judicial review"
+    ko: "사법심사"
+
+  - en: "ultra vires"
+    ko: "권한 초과"
+
+  - en: "Wednesbury unreasonableness"
+    ko: "Wednesbury 비합리성"
+
+  - en: "proportionality"
+    ko: "비례성"
+
+  - en: "legitimate expectation"
+    ko: "정당한 기대"
+
+  - en: "natural justice"
+    ko: "자연적 정의"
+
+  - en: "nemo judex in causa sua"
+    ko: "자기 사건의 재판관이 될 수 없다 (편향 금지)"
+
+  - en: "audi alteram partem"
+    ko: "양 당사자의 말을 들어라 (청문권)"
+
+  - en: "Parliamentary sovereignty"
+    ko: "의회 주권"
+
+  - en: "rule of law"
+    ko: "법의 지배"
+
+  - en: "separation of powers"
+    ko: "권력 분립"
+
+  - en: "prerogative"
+    ko: "대권 (국왕 대권)"
+
+  - en: "ECHR"
+    ko: "European Convention on Human Rights (유럽인권협약)"
+
+  - en: "HRA 1998"
+    ko: "Human Rights Act 1998 (인권법)"
+
+# ─────────────────────────────────────────────
+# Criminal Law (형사법)
+# ─────────────────────────────────────────────
+
+  - en: "actus reus"
+    ko: "범죄 행위 (행위 요건)"
+
+  - en: "mens rea"
+    ko: "범의 (정신 요건)"
+
+  - en: "intention"
+    ko: "의도"
+
+  - en: "recklessness"
+    ko: "무모함 (무분별한 위험 감수)"
+
+  - en: "negligence"
+    ko: "과실"
+
+  - en: "strict liability"
+    ko: "엄격 책임"
+
+  - en: "murder"
+    ko: "살인죄 (murder)"
+    note: "영국법상 murder는 malice aforethought 요건"
+
+  - en: "manslaughter"
+    ko: "과실치사"
+
+  - en: "gross negligence manslaughter"
+    ko: "중대 과실에 의한 과실치사"
+
+  - en: "constructive manslaughter"
+    ko: "구성적 과실치사"
+
+  - en: "defence"
+    ko: "항변"
+
+  - en: "diminished responsibility"
+    ko: "감경된 책임능력"
+
+  - en: "loss of control"
+    ko: "자제력 상실"
+
+  - en: "self-defence"
+    ko: "정당방위"
+
+  - en: "duress"
+    ko: "강박 (강요)"
+
+  - en: "insanity"
+    ko: "심신상실"
+
+  - en: "automatism"
+    ko: "자동행위증"
+
+# ─────────────────────────────────────────────
+# Equity Law (형평법)
+# ─────────────────────────────────────────────
+
+  - en: "trust"
+    ko: "신탁"
+
+  - en: "trustee"
+    ko: "수탁자"
+
+  - en: "beneficiary"
+    ko: "수익자"
+
+  - en: "fiduciary duty"
+    ko: "신인의무 (수탁자 의무)"
+
+  - en: "constructive trust"
+    ko: "추정 신탁"
+
+  - en: "resulting trust"
+    ko: "복귀 신탁"
+
+  - en: "express trust"
+    ko: "명시 신탁"
+
+  - en: "three certainties"
+    ko: "신탁 성립 3요소 (의도·대상·수익자 확정성)"
+
+  - en: "certainty of intention"
+    ko: "의도의 확정성"
+
+  - en: "certainty of subject matter"
+    ko: "대상의 확정성"
+
+  - en: "certainty of objects"
+    ko: "수익자의 확정성"
+
+  - en: "unconscionability"
+    ko: "형평법상 비양심성"
+
+  - en: "tracing"
+    ko: "재산 추적"
+
+# ─────────────────────────────────────────────
+# Land Law (토지법)
+# ─────────────────────────────────────────────
+
+  - en: "freehold"
+    ko: "자유보유권 (완전 소유권)"
+
+  - en: "leasehold"
+    ko: "임차권"
+
+  - en: "easement"
+    ko: "지역권"
+
+  - en: "covenant"
+    ko: "약정 (토지에 부착된 의무)"
+
+  - en: "mortgage"
+    ko: "저당권"
+
+  - en: "adverse possession"
+    ko: "시효취득"
+
+  - en: "overreaching"
+    ko: "권리 소멸 (부동산 매매 시)"
+
+  - en: "overriding interest"
+    ko: "우선적 권리 (등기 없이도 대항 가능)"
+
+  - en: "LRA 2002"
+    ko: "Land Registration Act 2002 (토지등록법)"
+
+  - en: "Land Registry"
+    ko: "토지등기소"
+
+# ─────────────────────────────────────────────
+# General Legal Terms
+# ─────────────────────────────────────────────
+
+  - en: "obiter dicta"
+    ko: "방론 (판결 이유 외의 언급)"
+
+  - en: "ratio decidendi"
+    ko: "판결 이유 (판례 구속력의 핵심)"
+
+  - en: "stare decisis"
+    ko: "선례 구속의 원칙"
+
+  - en: "per incuriam"
+    ko: "부주의한 판결 (선례로 인정되지 않음)"
+
+  - en: "distinguishing"
+    ko: "선례 구별"
+
+  - en: "overruling"
+    ko: "선례 파기"
+
+  - en: "reversing"
+    ko: "상소심의 원심 파기"
+
+  - en: "claimant"
+    ko: "원고"
+
+  - en: "defendant"
+    ko: "피고"
+
+  - en: "appellant"
+    ko: "항소인"
+
+  - en: "respondent"
+    ko: "피항소인"
+
+  - en: "House of Lords"
+    ko: "상원 (영국 최고법원, 2009년 이전)"
+
+  - en: "Supreme Court"
+    ko: "영국 대법원 (2009년 이후)"
+
+  - en: "Court of Appeal"
+    ko: "항소법원"
+
+  - en: "High Court"
+    ko: "고등법원"
+
+  - en: "Privy Council"
+    ko: "추밀원 (영연방 최고법원)"
+
+  - en: "EWCA"
+    ko: "England and Wales Court of Appeal"
+
+  - en: "UKSC"
+    ko: "United Kingdom Supreme Court"
+
+  - en: "AC"
+    ko: "Appeal Cases (법원 보고서 시리즈)"
+
+  - en: "WLR"
+    ko: "Weekly Law Reports"
+
+  - en: "All ER"
+    ko: "All England Law Reports"
+
+  - en: "QB"
+    ko: "Queen's Bench (현 King's Bench, KB)"
+
+  - en: "Ch"
+    ko: "Chancery Division"
