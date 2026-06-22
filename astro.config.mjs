@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
+import rehypeExternalLinks from 'rehype-external-links';
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,6 +19,11 @@ export default defineConfig({
     }),
     mdx(),
   ],
+  markdown: {
+    rehypePlugins: [
+      [rehypeExternalLinks, { target: '_blank' }]
+    ]
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'ko'],

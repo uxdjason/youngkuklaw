@@ -4,7 +4,7 @@ pubDate: '2025-06-27T00:59:00+00:00'
 lang: ko
 category: contract-law-cases
 slug: fisher-v-bell
-title: Fisher v Bell 판례 | 청약의 유인
+title: Fisher v Bell
 description: Fisher v Bell 판례에서 상점 진열창의 물품 전시는 청약이 아닌 청약의 유인으로 판단되었다. 영국 계약법 핵심 판례를
   정리한다.
 seoTitle: Fisher v Bell 판례 | 청약의 유인
@@ -19,6 +19,11 @@ longTailKeywords:
 - Fisher v Bell ratio decidendi
 sourceOrigin: migrated
 humanReviewed: true
+citation: Fisher v Bell [1961] 1 QB 394
+court: Divisional Court
+claimant: Chief Inspector George Fisher
+defendant: James Charles Bell
+courtLink: https://en.wikipedia.org/wiki/Fisher_v_Bell
 ---
 
 ## Case Facts

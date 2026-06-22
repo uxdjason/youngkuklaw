@@ -4,7 +4,7 @@ pubDate: '2025-06-27T00:59:00+00:00'
 lang: en
 category: contract-law-cases
 slug: fisher-v-bell
-title: Fisher v Bell [1961] – Invitation to Treat Explained
+title: Fisher v Bell
 description: 'Fisher v Bell [1961]: a shop window display with a price tag is an invitation
   to treat, not an offer for sale. Key English contract law case explained.'
 seoTitle: Fisher v Bell [1961] – Invitation to Treat Explained
@@ -19,6 +19,11 @@ longTailKeywords:
 - Fisher v Bell ratio decidendi
 sourceOrigin: migrated
 humanReviewed: true
+citation: Fisher v Bell [1961] 1 QB 394
+court: Divisional Court
+claimant: Chief Inspector George Fisher
+defendant: James Charles Bell
+courtLink: https://en.wikipedia.org/wiki/Fisher_v_Bell
 ---
 
 ## Case Facts

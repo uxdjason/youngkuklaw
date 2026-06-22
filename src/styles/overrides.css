@@ -315,3 +315,12 @@ body {
 
 
 
+
+.article-body a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.article-body a:hover {
+  color: var(--base-color-brand--yellow-dark);
+}

@@ -32,6 +32,23 @@ def synthesize_frontmatter(post_row, meta_data, lang: str):
         category_val = category_val.split(",")[0].strip()
 
     seo = meta_data.get(lang, {})
+    shared = meta_data.get("shared", {})
+    
+    # 판례의 경우 title을 순수 사건 이름으로 정리 ([, ( 앞부분까지)
+    title_raw = post_row["wp_title_ko"]
+    clean_title = title_raw
+    if "case" in category_val:
+        import re
+        # '[' 또는 '(' 기준으로 스플릿하여 앞부분만 추출
+        match = re.split(r'\[|\(', title_raw)
+        if match:
+            clean_title = match[0].strip()
+            
+    # SEO title이 없을 경우 대비
+    if not seo.get("seo_title"):
+        seo_title = clean_title
+    else:
+        seo_title = seo["seo_title"]
     
     frontmatter = {
         "wpId": post_row["id"],
@@ -39,15 +56,23 @@ def synthesize_frontmatter(post_row, meta_data, lang: str):
         "lang": lang,
         "category": category_val,
         "slug": slug,
-        "title": seo.get("seo_title", ""),
+        "title": clean_title,
         "description": seo.get("meta_description", ""),
-        "seoTitle": seo.get("seo_title", ""),
+        "seoTitle": seo_title,
         "metaDescription": seo.get("meta_description", ""),
         "focusKeyphrase": seo.get("focus_keyphrase", ""),
         "longTailKeywords": seo.get("long_tail_keywords", []),
         "sourceOrigin": "migrated",
         "humanReviewed": True,
+        "citation": shared.get("citation"),
+        "court": shared.get("court"),
+        "claimant": shared.get("claimant"),
+        "defendant": shared.get("defendant"),
+        "courtLink": shared.get("courtLink"),
     }
+    
+    # None 값인 속성은 프론트매터에서 제거
+    frontmatter = {k: v for k, v in frontmatter.items() if v is not None}
         
     # YAML 문자열로 변환 (allow_unicode=True 중요)
     yaml_str = yaml.dump(frontmatter, allow_unicode=True, sort_keys=False)
