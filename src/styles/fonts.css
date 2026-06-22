@@ -77,7 +77,59 @@
   font-display: swap;
 }
 
-/* ---------- Nanum Myeongjo (Korean Serif) ---------- */
+/* ---------- Kimjungchul Myungjo (Korean Serif) ---------- */
+@font-face {
+  font-family: 'Kimjungchul Myungjo';
+  src: url('/fonts/KimjungchulMyungjo-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+@font-face {
+  font-family: 'Kimjungchul Myungjo';
+  src: url('/fonts/KimjungchulMyungjo-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+@font-face {
+  font-family: 'Kimjungchul Myungjo';
+  src: url('/fonts/KimjungchulMyungjo-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+
+/* ---------- Kimjungchul Gothic (Korean Sans-Serif) ---------- */
+@font-face {
+  font-family: 'Kimjungchul Gothic';
+  src: url('/fonts/KimjungchulGothic-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+@font-face {
+  font-family: 'Kimjungchul Gothic';
+  src: url('/fonts/KimjungchulGothic-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+@font-face {
+  font-family: 'Kimjungchul Gothic';
+  src: url('/fonts/KimjungchulGothic-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+3130-318F, U+AC00-D7A3;
+}
+
+/* ---------- Nanum (kept as fallback alias, not used on ko pages) ---------- */
 @font-face {
   font-family: 'Nanum Myeongjo';
   src: url('/fonts/NanumMyeongjo-Regular.woff2') format('woff2');

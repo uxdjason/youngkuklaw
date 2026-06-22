@@ -19,8 +19,9 @@ const { Content } = await render(post);
 
 const isCase = post.data.category.endsWith('-cases') || post.data.category === 'case-law';
 
-// Use seoTitle / metaDescription overrides when available (migrated content)
-const displayTitle       = post.data.seoTitle       || post.data.title;
+// seoTitle is used ONLY for SEO meta tags, NOT for H1
+// H1 always uses post.data.title (clean case name, e.g. "Williams v Carwardine")
+const displayTitle       = post.data.seoTitle       || post.data.title; // for SEO / NoteLayout
 const displayDescription = post.data.metaDescription || post.data.description;
 ---
 {isCase ? (
@@ -28,7 +29,8 @@ const displayDescription = post.data.metaDescription || post.data.description;
     lang="ko"
     slug={post.data.slug}
     category={post.data.category}
-    title={displayTitle}
+    title={post.data.title}
+    seoTitle={post.data.seoTitle}
     description={displayDescription}
     citation={post.data.citation}
     court={post.data.court}

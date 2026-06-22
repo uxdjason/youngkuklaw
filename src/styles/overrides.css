@@ -71,7 +71,7 @@
   text-align: center;
 }
 .adblock-banner.ko {
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'Kimjungchul Gothic', sans-serif;
 }
 .adblock-banner__close {
   position: absolute;
@@ -125,6 +125,57 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ---------- Korean Font Override: Nanum → Kimjungchul ---------- */
+/*
+  youngkuklaw.webflow.css 파일에 박혀있는 Nanum 폰트들을 건드리지 않고,
+  html[lang^="ko"] 범위 내에서 CSS specificity를 높여 전체 교체합니다.
+  (BaseLayout은 html lang="ko-KR"로 설정)
+  - Nanum Myeongjo  →  Kimjungchul Myungjo (serif, 본문)
+  - Nanum Gothic    →  Kimjungchul Gothic  (sans-serif, UI)
+*/
+html[lang^="ko"] .nav_menu_link,
+html[lang^="ko"] .dropdown,
+html[lang^="ko"] .nav_brand,
+html[lang^="ko"] .dropdown-link,
+html[lang^="ko"] .footer-menu,
+html[lang^="ko"] .footer-bottom-menu,
+html[lang^="ko"] .footer-link,
+html[lang^="ko"] .footer_legal,
+html[lang^="ko"] .column-label,
+html[lang^="ko"] .column-text,
+html[lang^="ko"] .heading-style-h1,
+html[lang^="ko"] .heading-style-h2,
+html[lang^="ko"] .heading-style-h3,
+html[lang^="ko"] .heading-style-h4,
+html[lang^="ko"] .article-paragraph,
+html[lang^="ko"] .adblock-banner,
+html[lang^="ko"] .btn-read-more,
+html[lang^="ko"] .keyword-link,
+html[lang^="ko"] .article-list-left-heading,
+html[lang^="ko"] .pagination-div,
+html[lang^="ko"] .subject-tag,
+html[lang^="ko"] .sort-by-radio,
+html[lang^="ko"] .featured-content-desc,
+html[lang^="ko"] .note-row,
+html[lang^="ko"] .link-block-generic,
+html[lang^="ko"] .article-text h2,
+html[lang^="ko"] .article-text h3,
+html[lang^="ko"] .article-text h4,
+html[lang^="ko"] .article-text li,
+html[lang^="ko"] .bookmarked-only-label,
+html[lang^="ko"] .print-only-footer,
+html[lang^="ko"] button,
+html[lang^="ko"] input,
+html[lang^="ko"] select,
+html[lang^="ko"] textarea {
+  font-family: 'Kimjungchul Gothic', sans-serif !important;
+}
+
+html[lang^="ko"] .article-text p,
+html[lang^="ko"] .article-text h1 {
+  font-family: 'Kimjungchul Myungjo', serif !important;
+}
+
 /* ---------- Header/Navigation Font Weight Adjustments ---------- */
 .nav_menu_link,
 .dropdown {
@@ -149,7 +200,7 @@ body {
   font-weight: 400;  /* Ensure regular weight is used */
   line-height: 1.6;
   color: var(--text-color--text-primary);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 .article-text h1 {
@@ -312,13 +363,16 @@ body {
   }
 }
 
-
-
-
-
+/* ---------- Article Body In-text Links ---------- */
+/* 
+  본문 링크: 색상 변경 없이 볼드체만 적용.
+  마우스 hover 시에만 yellow-dark 색상으로 전환.
+  link-block-generic과 동일한 hover 패턴을 따름.
+*/
 .article-body a {
-  font-weight: bold;
+  font-weight: 700;
   text-decoration: none;
+  color: inherit; /* 글 본문 색상 그대로 유지, hover 시에만 변경 */
 }
 
 .article-body a:hover {

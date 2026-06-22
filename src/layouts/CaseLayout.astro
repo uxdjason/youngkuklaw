@@ -8,7 +8,8 @@ interface Props {
   lang: Lang;
   slug: string;
   category: string;
-  title: string;
+  title: string;       // clean H1 title, e.g. "Williams v Carwardine"
+  seoTitle?: string;   // SEO browser tab title, e.g. "Williams v Carwardine (1833) | Unilateral Contracts"
   description: string;
   citation?: string;
   court?: string;
@@ -26,6 +27,7 @@ const {
   slug,
   category,
   title,
+  seoTitle,
   description,
   citation,
   court,
@@ -54,7 +56,7 @@ function formatDate(date: Date, locale: string) {
 ---
 <BaseLayout
   lang={lang}
-  title={`${title} · YoungkukLaw`}
+  title={`${seoTitle || title} · YoungkukLaw`}
   description={description}
   type="article"
   publishedTime={pubDate.toISOString()}
