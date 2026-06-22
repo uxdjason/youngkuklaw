@@ -404,3 +404,55 @@ html[lang^="ko"] body.ko {
   margin-top: 0;
   justify-content: flex-start;
 }
+
+/* ---------- Korean dropdown-link ---------- */
+html[lang^="ko"] .dropdown-link.w-dropdown-link {
+  font-family: 'Kimjungchul Gothic', sans-serif !important;
+}
+
+/* ---------- Korean heading size scale-down (80%) ---------- */
+/*
+  EN/KO 모두 동일한 font-size 값을 쓰고 있으나,
+  김정철명조의 시각적 크기가 Playfair보다 크게 보이므로
+  한국어 페이지에서 헤딩들을 80%로 축소합니다.
+  h1: 3.3rem → 2.64rem, h2: 2.5rem → 2rem,
+  h3: 2rem → 1.6rem, h4: 1.5rem → 1.2rem
+*/
+html[lang^="ko"] .heading-style-h1 {
+  font-size: 2.64rem !important;
+}
+html[lang^="ko"] .heading-style-h2 {
+  font-size: 2rem !important;
+}
+html[lang^="ko"] .heading-style-h3 {
+  font-size: 1.6rem !important;
+}
+html[lang^="ko"] .heading-style-h4 {
+  font-size: 1.2rem !important;
+}
+html[lang^="ko"] .article-text h1 {
+  font-size: 2.64rem !important;
+}
+html[lang^="ko"] .article-text h2 {
+  font-size: 2rem !important;
+}
+html[lang^="ko"] .article-text h3 {
+  font-size: 1.6rem !important;
+}
+html[lang^="ko"] .article-text h4 {
+  font-size: 1.2rem !important;
+}
+
+/* ---------- article-hero-lower-right 내 링크 스타일 통일 ---------- */
+/*
+  하단 버튼 영역 내에서 .article-body a 규칙의 bold + 색상 변경이
+  Bookmark 버튼 레이블 텍스트에도 적용되어 상단과 차이가 생기는 것을 방지합니다.
+*/
+.article-hero-lower-right a,
+.article-hero-lower-right a:hover,
+.article-post-bottom-actions a,
+.article-post-bottom-actions a:hover {
+  font-weight: inherit !important;
+  color: inherit !important;
+  text-decoration: none !important;
+}
