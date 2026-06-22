@@ -12,7 +12,9 @@ interface Props {
   description: string;
   citation?: string;
   court?: string;
+  claimantRole?: string;
   claimant?: string;
+  defendantRole?: string;
   defendant?: string;
   courtLink?: string;
   pubDate: Date;
@@ -27,7 +29,9 @@ const {
   description,
   citation,
   court,
+  claimantRole,
   claimant,
+  defendantRole,
   defendant,
   courtLink,
   pubDate,
@@ -93,7 +97,7 @@ function formatDate(date: Date, locale: string) {
               <>
                 <div class="vr-div"></div>
                 <div class="article-hero-column">
-                  <div class="column-label">Claimant</div>
+                  <div class="column-label">{claimantRole || 'Claimant'}</div>
                   <div class="column-text">{claimant}</div>
                 </div>
               </>
@@ -102,7 +106,7 @@ function formatDate(date: Date, locale: string) {
               <>
                 <div class="vr-div"></div>
                 <div class="article-hero-column">
-                  <div class="column-label">Defendant</div>
+                  <div class="column-label">{defendantRole || 'Defendant'}</div>
                   <div class="column-text">{defendant}</div>
                 </div>
               </>

@@ -395,6 +395,20 @@ with col_right:
                     st.markdown("**Long-tail Keywords:**")
                     for kw in kws_ko:
                         st.markdown(f"- {kw}")
+                        
+            st.markdown("---")
+            st.markdown("#### 📄 실제 페이지 H1 타이틀 (미리보기)")
+            st.caption("위의 SEO Title과 별개로 실제 판례 글 상단에 H1으로 노출될 정제된 이름입니다.")
+            
+            # publish.py와 동일한 H1 타이틀 추출 로직 시뮬레이션
+            title_raw = post["wp_title_ko"]
+            clean_title = title_raw
+            if "case" in post["wp_category"]:
+                import re
+                match = re.split(r'\[|\(', title_raw)
+                if match:
+                    clean_title = match[0].strip()
+            st.markdown(f"**{clean_title}**")
 
         # Case metadata preview (only for case law)
         is_case_post = "case" in post["wp_category"]
@@ -402,13 +416,24 @@ with col_right:
             st.markdown("---")
             st.markdown("#### ⚖️ 판례 헤더 메타데이터")
             st.caption("아래 정보는 본문이 아닌 판례 페이지 상단 헤더 영역에 표시됩니다. 빈칸이 있으면 재작업이 필요합니다.")
+            
+            # Citation 정제 로직 시뮬레이션 (publish.py와 동일)
+            citation_raw = en_fm.get('citation', '')
+            if citation_raw and ("[" in citation_raw or "(" in citation_raw):
+                import re
+                match = re.search(r'(\[|\().*', citation_raw)
+                if match:
+                    citation_raw = match.group(0).strip()
+            
             meta_col1, meta_col2 = st.columns(2)
             with meta_col1:
-                st.markdown(f"**Citation:** {en_fm.get('citation', '❌ 없음')}")
+                st.markdown(f"**Citation:** {citation_raw or '❌ 없음'}")
                 st.markdown(f"**Court:** {en_fm.get('court', '❌ 없음')}")
             with meta_col2:
-                st.markdown(f"**Claimant:** {en_fm.get('claimant', '❌ 없음')}")
-                st.markdown(f"**Defendant:** {en_fm.get('defendant', '❌ 없음')}")
+                c_role = en_fm.get('claimantRole') or 'Claimant'
+                d_role = en_fm.get('defendantRole') or 'Defendant'
+                st.markdown(f"**{c_role}:** {en_fm.get('claimant', '❌ 없음')}")
+                st.markdown(f"**{d_role}:** {en_fm.get('defendant', '❌ 없음')}")
 
             # CourtLink 편집 필드
             current_court_link = en_fm.get("courtLink", "")

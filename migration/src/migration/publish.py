@@ -73,7 +73,9 @@ def synthesize_frontmatter(post_row, meta_data, lang: str):
         "humanReviewed": True,
         "citation": citation_raw,
         "court": shared.get("court"),
+        "claimantRole": shared.get("claimantRole"),
         "claimant": shared.get("claimant"),
+        "defendantRole": shared.get("defendantRole"),
         "defendant": shared.get("defendant"),
         "courtLink": shared.get("courtLink"),
     }

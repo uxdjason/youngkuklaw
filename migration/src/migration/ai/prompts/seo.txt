@@ -32,8 +32,10 @@ If the category contains "case" (e.g. case-law, contract-law-cases, tort-law-cas
 
 - **citation**: The legal citation string, e.g. `[1932] AC 562`. Extract from the article text. DO NOT include the case name (e.g. do not output "Donoghue v Stevenson [1932] AC 562", just output "[1932] AC 562"). Use null if not found.
 - **court**: The court name in UPPERCASE, e.g. `HOUSE OF LORDS`. Use null if not found.
-- **claimant**: The claimant/plaintiff party name in UPPERCASE, e.g. `MAY DONOGHUE`. Use null if not found.
-- **defendant**: The defendant party name in UPPERCASE, e.g. `DAVID STEVENSON`. Use null if not found.
+- **claimantRole**: The legal role of the first party (e.g. Claimant, Plaintiff, Appellant, Prosecutor). Capitalize the first letter. Use null if not found.
+- **claimant**: The name of the first party in UPPERCASE, e.g. `MAY DONOGHUE`. Use null if not found.
+- **defendantRole**: The legal role of the second party (e.g. Defendant, Respondent). Capitalize the first letter. Use null if not found.
+- **defendant**: The name of the second party in UPPERCASE, e.g. `DAVID STEVENSON`. Use null if not found.
 
 ## Output Format
 
