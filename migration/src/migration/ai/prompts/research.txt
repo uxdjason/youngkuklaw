@@ -28,6 +28,7 @@ You must:
      `## Obiter Dicta`
    - If not a case, propose a logical H2/H3 outline based on the WP original text's flow, but improved.
 5. **Search the web** using the web_search tool ONLY IF the provided PDFs/URLs are insufficient to verify a claim in the WP original, or to check for recent overrulings. Use UK-specific queries.
+6. **Legislation URLs**: If the WP original text mentions any UK, EU, US, or other legislation (Acts, statutes, etc.) without an official URL, you MUST search the web to find its official URL (e.g. legislation.gov.uk) and include this URL in the `key_facts_to_include` section so the writer can use it.
 
 ## Output Format
 
@@ -55,5 +56,5 @@ Return a single valid JSON object with EXACTLY this structure:
 
 - Output ONLY the JSON object. No preamble, no explanation outside the JSON.
 - Do NOT fabricate cases, statutes, or facts.
-- All citations must use exact English law format: `Case Name [Year] Court Reporter PageNo` or `s X Act Year`.
+- All citations must use ONLY the party names and the year: `Case Name [Year]` or `s X Act Year`. Do not use reporter citations.
 - If `is_case_law` is true, your `outline_proposed` MUST be exactly the 4 required headings.

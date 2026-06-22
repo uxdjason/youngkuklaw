@@ -336,10 +336,10 @@ terms:
 # ─────────────────────────────────────────────
 
   - en: "obiter dicta"
-    ko: "방론 (판결 이유 외의 언급)"
+    ko: "Obiter"
 
   - en: "ratio decidendi"
-    ko: "판결 이유 (판례 구속력의 핵심)"
+    ko: "Ratio"
 
   - en: "stare decisis"
     ko: "선례 구속의 원칙"
@@ -369,19 +369,22 @@ terms:
     ko: "피항소인"
 
   - en: "House of Lords"
-    ko: "상원 (영국 최고법원, 2009년 이전)"
+    ko: "House of Lords"
 
   - en: "Supreme Court"
-    ko: "영국 대법원 (2009년 이후)"
+    ko: "Supreme Court"
 
   - en: "Court of Appeal"
-    ko: "항소법원"
+    ko: "Court of Appeal"
 
   - en: "High Court"
-    ko: "고등법원"
+    ko: "High Court"
+
+  - en: "County Court"
+    ko: "County Court"
 
   - en: "Privy Council"
-    ko: "추밀원 (영연방 최고법원)"
+    ko: "Privy Council"
 
   - en: "EWCA"
     ko: "England and Wales Court of Appeal"

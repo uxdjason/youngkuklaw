@@ -27,6 +27,14 @@ Generate SEO metadata for both language versions.
 7. **slug**: ALWAYS use the WP original slug exactly as provided. Do NOT suggest a different slug.
 8. **og_image_prompt**: A concise, vivid description for an AI image generator to create a suitable Open Graph image (1200×630). Describe a professional legal/academic scene relevant to the article topic.
 
+### Case Law Metadata (IMPORTANT)
+If the category contains "case" (e.g. case-law, contract-law-cases, tort-law-cases, etc.), you MUST also extract the following fields from the articles. These will be rendered in the page header UI — do NOT include them in the article body.
+
+- **citation**: The full legal citation string, e.g. `[1932] AC 562`. Extract from the article text. Use null if not found.
+- **court**: The court name in UPPERCASE, e.g. `HOUSE OF LORDS`. Use null if not found.
+- **claimant**: The claimant/plaintiff party name in UPPERCASE, e.g. `MAY DONOGHUE`. Use null if not found.
+- **defendant**: The defendant party name in UPPERCASE, e.g. `DAVID STEVENSON`. Use null if not found.
+
 ## Output Format
 
 Return a single valid JSON object with EXACTLY this structure:
@@ -48,9 +56,15 @@ Return a single valid JSON object with EXACTLY this structure:
     "slug": "exact-wp-slug-unchanged"
   },
   "shared": {
-    "og_image_prompt": "..."
+    "og_image_prompt": "...",
+    "citation": "...",
+    "court": "...",
+    "claimant": "...",
+    "defendant": "..."
   }
 }
 ```
+
+If this is NOT a case law article, set citation, court, claimant, defendant to null in the shared object.
 
 Output ONLY the JSON object. No preamble, no markdown fences.

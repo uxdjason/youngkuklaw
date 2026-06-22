@@ -4,29 +4,43 @@ Your task is to REWRITE and IMPROVE a provided Korean draft (WP Original Text) i
 ## Style Rules (NON-NEGOTIABLE)
 
 1. **Tone**: Formal, academic Korean (하십시오체 / 한다체). Do not use honorifics (해요체/합쇼체).
-2. **Case citations**: Keep citations in English and use exact format — `Case Name [Year] Court Reporter PageNo`.
+2. **Case citations**: DO NOT use quotation marks around case names. Use ONLY the party names and the year (e.g. Party A v Party B [Year]), omitting the reporter citation (e.g. omit 'AC 207, HL'). If the case is listed in the "Available Cases Database" below, you MUST format it as a markdown link using the provided slug. For example, if the database has "- Party A v Party B [Year]: /party-a", you should output `[Party A v Party B [Year]](/ko/party-a)`. Citations belong in the body text, not in headings or subheadings.
 3. **Legal Terms**: Use the provided glossary. If a term is not in the glossary, provide the English term in parentheses on first use, e.g., consideration (약인).
 4. **No frontmatter**: Do not include YAML frontmatter.
+5. **Court Names**: Do NOT translate court names into Korean. Use the original English names (e.g. County Court, Court of Appeal, High Court, House of Lords, Supreme Court).
+6. **Statutes & Legislation**: Do NOT translate section numbers into Korean formats like "제1조 제1항". Use the exact English format (e.g., "s 1(1) Restriction of Offensive Weapons Act 1959"). When mentioning any legislation, you MUST include a markdown link to its official URL. If only the Act is mentioned, link to the Act's main page. If a specific section is mentioned, link to the specific section's URL. For example: `[s 1(1) Restriction of Offensive Weapons Act 1959](https://www.legislation.gov.uk/ukpga/Eliz2/7-8/37/section/1)`. If the WP Original Text already contains the correct URL, reuse it. If not, search for and insert the correct official URL.
 
 ## Formatting Rules (CRITICAL)
 
 - Your structure MUST perfectly mirror the structure of the provided English Markdown (`en_md`).
 - **Do NOT use horizontal rules (`---` or `***`) anywhere in the document.**
 - **Do NOT include case names, statute names, or legal citations in any heading or subheading.** Mention them in the body text immediately following the heading.
-- **If this is Case Law (`is_case_law: true`), you MUST use EXACTLY these 4 H2 headings. Use these EXACT English strings — do NOT translate them into Korean under any circumstances:**
+- **Do NOT add an H1 heading** — the page title is rendered separately by the site layout.
+- **Do NOT include a metadata block** (Citation, Court, Judges, Claimant, Defendant, etc.) at the top of the body. This information is rendered separately in the page header by the site layout. These details must NOT appear in the body text.
+- **Do NOT mention the names of the judges** who decided the case in the body text (e.g. in the Case Facts or Held sections). This information is already in the metadata header.
+- **If this is Case Law (category contains "case"), you MUST use EXACTLY these 4 H2 headings. Use these EXACT English strings — do NOT translate them into Korean under any circumstances:**
   `## Case Facts`
   `## Held`
   `## Ratio Decidendi`
   `## Obiter Dicta`
-  (If Obiter Dicta is absent in the English text, omit it. Do not add any other H2 headings.)
+  (Do NOT add any other H2 headings. If there is no Obiter Dicta content, you MUST still include the heading followed only by: 특이 내용 없음.)
+- **Do NOT translate "Ratio Decidendi" or "Obiter Dicta" in the body text.** Simply refer to them as "Ratio" or "Obiter". Do not use terms like "판결 이유" or "방론".
+- **Do NOT mention the name of the current case being discussed in the body text.** Do not start with "Smith v Hughes 사건은...". Instead, refer to it simply as "이 사건은..." or start directly with the facts (e.g., "원고는...").
+- **Do NOT create a self-referencing link** to the article being written. The current article's slug is `{wp_slug}`. Never link to `/{wp_slug}` or `/ko/{wp_slug}` anywhere in the body.
 
 ## Glossary (use these terms consistently)
 
 {glossary}
 
+## Available Cases Database
+
+{available_cases}
+
 ## Inputs
 
 **Category**: {category}
+
+**Current article slug** (do NOT self-link to this): {wp_slug}
 
 **WP Original Text (Korean)**:
 {wp_original_plaintext}

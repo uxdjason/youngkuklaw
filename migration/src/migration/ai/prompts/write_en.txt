@@ -5,30 +5,41 @@ Your task is to REWRITE and TRANSLATE a provided Korean draft (WP Original Text)
 
 1. **British English spelling**: organisation, **judgement** (NOT judgment), behaviour, labour, colour, favour, honour, recognise, analyse, programme. NEVER use American spellings under any circumstances.
 2. **English only**: This is the English version. Do NOT include ANY Korean characters or Korean text anywhere in the output, including parenthetical glosses. This is an absolute rule with no exceptions.
-3. **Case citations**: Always use the exact English law format — `Case Name [Year] Court Reporter PageNo`. NEVER add a full stop after "v" (write `Smith v Jones`, NOT `Smith v. Jones`). Citations belong in the body text, not in headings or subheadings.
-4. **Statute references**: Always in full on first mention — `s 4 Unfair Contract Terms Act 1977`. Abbreviate thereafter only if standard (e.g., UCTA 1977). Statute names belong in the body text, not in headings or subheadings.
+3. **Case citations**: DO NOT use quotation marks around case names. Use ONLY the party names and the year (e.g. Party A v Party B [Year]), omitting the reporter citation (e.g. omit 'AC 207, HL'). If the case is listed in the "Available Cases Database" below, you MUST format it as a markdown link using the provided slug. For example, if the database has "- Party A v Party B [Year]: /party-a", you should output `[Party A v Party B [Year]](/party-a)`. NEVER add a full stop after "v". Citations belong in the body text only.
+4. **Statute references & Legislation**: Always in full on first mention — `s 4 Unfair Contract Terms Act 1977`. Abbreviate thereafter only if standard (e.g., UCTA 1977). When mentioning any legislation, you MUST include a markdown link to its official URL. If only the Act is mentioned, link to the Act's main page. If a specific section is mentioned, link to the specific section's URL. For example: `[s 1(1) Restriction of Offensive Weapons Act 1959](https://www.legislation.gov.uk/ukpga/Eliz2/7-8/37/section/1)`. If the WP Original Text already contains the correct URL, reuse it. If not, search for and insert the correct official URL. Statute names belong in the body text, not in headings or subheadings.
 5. **Tone**: Formal but accessible. Written for a law student who needs to understand and apply the law.
 6. **No frontmatter**: Do not include YAML frontmatter. The pipeline adds it separately.
 
 ## Formatting Rules (CRITICAL)
 
-- Follow the `outline_proposed` from the Research JSON exactly.
+- Follow the `outline_proposed` from the Research JSON exactly, but the mandatory case headings below ALWAYS override it.
 - **Do NOT use horizontal rules (`---` or `***`) anywhere in the document.** Use whitespace and headings for separation instead.
 - **Do NOT include case names, statute names, or legal citations in any heading or subheading.** Mention them in the body paragraph immediately following the heading.
-- **If the research indicates this is Case Law (`is_case_law: true`), you MUST use EXACTLY these 4 H2 headings, and NO OTHER H2 HEADINGS:**
+- **Do NOT add an H1 heading** — the page title is rendered separately by the site layout.
+- **Do NOT include a metadata block** (Citation, Court, Judges, Claimant, Defendant, etc.) at the top of the body. This information is rendered separately in the page header by the site layout. These details must NOT appear in the body text.
+- **Do NOT mention the names of the judges** who decided the case in the body text (e.g. in the Case Facts or Held sections). This information is already in the metadata header.
+- **Do NOT mention the name of the current case being discussed in the body text.** Do not start with "Smith v Hughes concerned...". Instead, refer to it simply as "In this case," or start directly with the facts (e.g., "The claimant...").
+- **Do NOT create a self-referencing link** to the article being written. The current article's slug is `{wp_slug}`. Never link to `/{wp_slug}` anywhere in the body.
+- **If the research indicates this is Case Law (`is_case_law: true`), you MUST use EXACTLY these 4 H2 headings and NO OTHERS:**
   `## Case Facts`
   `## Held`
   `## Ratio Decidendi`
   `## Obiter Dicta`
-  (If there is no Obiter Dicta, omit the heading. Do not create any other H2 headings.)
+  (Do NOT add any other H2 headings such as Overview, Background, Significance, or Introduction. If there is no Obiter Dicta content, you MUST still include the heading followed only by: Not applicable.)
 
 ## Glossary (use these terms consistently)
 
 {glossary}
 
+## Available Cases Database
+
+{available_cases}
+
 ## Inputs
 
 **Category**: {category}
+
+**Current article slug** (do NOT self-link to this): {wp_slug}
 
 **WP Original Text (Korean)**:
 {wp_original_plaintext}

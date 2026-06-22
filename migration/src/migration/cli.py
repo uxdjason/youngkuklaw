@@ -101,6 +101,12 @@ def cmd_run(args: argparse.Namespace) -> None:
     print(f"🏃 큐 러너 시작: workers={args.workers}, limit={limit or '전체'}")
     asyncio.run(run_queue(workers=args.workers, limit=limit))
 
+def cmd_publish(args: argparse.Namespace) -> None:
+    """승인된 글 퍼블리싱."""
+    from migration.publish import publish_approved_posts
+    print("🚀 승인된 판례 퍼블리싱 시작...")
+    publish_approved_posts()
+
 
 def cmd_resolve_sources(args: argparse.Namespace) -> None:
     """
@@ -339,6 +345,9 @@ def main() -> None:
         help="Streamlit 기반 통합 마이그레이션 UI 실행",
     )
 
+    # publish 서브커맨드
+    subparsers.add_parser("publish", help="승인된 글 퍼블리싱 실행")
+
     args = parser.parse_args()
 
     if args.command == "extract":
@@ -351,6 +360,8 @@ def main() -> None:
         cmd_process(args)
     elif args.command == "run":
         cmd_run(args)
+    elif args.command == "publish":
+        cmd_publish(args)
     elif args.command == "ui":
         import os
         import sys

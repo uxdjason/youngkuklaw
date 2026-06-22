@@ -84,15 +84,29 @@ with st.sidebar:
             p['wp_pub_date'] or ""                          # 그 다음 날짜 오름차순
         ))
 
-    st.markdown("### Select a Post by Category")
-    for cat, cat_posts in grouped.items():
-        with st.expander(f"📁 {cat} ({len(cat_posts)})"):
-            for p in cat_posts:
-                # 상태별 색상 아이콘
+    view_mode = st.radio("보기 옵션", ["발행 순서대로 보기", "카테고리별 보기"], index=0)
+    
+    if view_mode == "카테고리별 보기":
+        st.markdown("### Select a Post by Category")
+        for cat, cat_posts in grouped.items():
+            with st.expander(f"📁 {cat} ({len(cat_posts)})"):
+                for p in cat_posts:
+                    icon = {"pending": "⬜", "awaiting_review": "🟡", "approved": "✅",
+                            "failed": "❌", "researching": "⏳", "awaiting_sources": "🔵"}.get(p["status"], "⬜")
+                    label = f"{icon} {p['wp_title_ko']}"
+                    if st.button(label, key=f"btn_cat_{p['id']}", use_container_width=True):
+                        st.session_state.selected_post_id = p['id']
+                        st.session_state.is_processing = False
+                        st.session_state.process_error = None
+                        st.rerun()
+    else:
+        st.markdown("### 발행 순서대로 보기")
+        with st.expander(f"전체 글 ({len(posts_all)})", expanded=True):
+            for p in posts_all:
                 icon = {"pending": "⬜", "awaiting_review": "🟡", "approved": "✅",
                         "failed": "❌", "researching": "⏳", "awaiting_sources": "🔵"}.get(p["status"], "⬜")
                 label = f"{icon} {p['wp_title_ko']}"
-                if st.button(label, key=f"btn_{p['id']}", use_container_width=True):
+                if st.button(label, key=f"btn_all_{p['id']}", use_container_width=True):
                     st.session_state.selected_post_id = p['id']
                     st.session_state.is_processing = False
                     st.session_state.process_error = None
@@ -121,8 +135,20 @@ conn2.close()
 categories = post["wp_category"]
 title = post["wp_title_ko"]
 
-st.title(title)
-st.markdown(f"**Slug:** `{slug}` &nbsp;|&nbsp; **Category:** `{categories}` &nbsp;|&nbsp; **Status:** `{current_status}`")
+col1, col2 = st.columns([7, 3])
+with col1:
+    st.title(title)
+    st.markdown(f"**Slug:** `{slug}` &nbsp;|&nbsp; **Category:** `{categories}` &nbsp;|&nbsp; **Status:** `{current_status}`")
+with col2:
+    st.markdown("<br>", unsafe_allow_html=True)
+    migration_mode = st.radio(
+        "마이그레이션 모드", 
+        ["기존 WP 우선 모드", "대폭 개선 옵션"], 
+        index=0, 
+        horizontal=True,
+        label_visibility="collapsed",
+        key=f"mode_{selected_post_id}"
+    )
 st.markdown("---")
 
 # WP 원문 텍스트 파싱
@@ -181,6 +207,14 @@ with col_right:
         progress_val = {"researching": 0.15, "writing_en": 0.40, "writing_ko": 0.65, "seo": 0.90}.get(row["status"], 0.1)
         st.progress(progress_val, text=f"Step {step_num} — {step_label}")
         st.markdown(f"현재 단계에서 경과 시간: **{elapsed_str}** (이 단계 시작 이후)")
+        
+        # progress.log 내용 읽어서 표시
+        from pathlib import Path
+        log_path = Path("output-storage/migration") / slug / "progress.log"
+        if log_path.exists():
+            log_content = log_path.read_text(encoding="utf-8")
+            st.code(log_content, language="bash")
+        
         st.caption("새로고침을 눌러 현 상태를 업데이트할 수 있습니다.")
 
         col_r, col_c = st.columns([1, 1])
@@ -242,19 +276,33 @@ with col_right:
             if missing:
                 st.error(f"파일을 찾을 수 없습니다: {missing}")
             else:
-                with st.spinner("AI 처리 중... 몇 분이 소요될 수 있습니다."):
+                import threading
+                import time
+                def run_in_bg(post_id, pdfs, urls, inst, mode):
+                    import asyncio
                     try:
-                        result = asyncio.run(process_post(
-                            post_id=selected_post_id,
-                            pdf_paths=final_pdfs,
-                            web_urls=final_urls,
-                            user_instructions=user_instructions.strip(),
+                        asyncio.run(process_post(
+                            post_id=post_id,
+                            pdf_paths=pdfs,
+                            web_urls=urls,
+                            user_instructions=inst,
+                            mode=mode,
                             verbose=False,
                         ))
-                        st.success(f"완료: {result}")
-                        st.rerun()
                     except Exception as e:
-                        st.error(f"Migration Failed: {e}")
+                        import traceback
+                        print(f"Background thread error: {e}")
+                        traceback.print_exc()
+
+                threading.Thread(
+                    target=run_in_bg,
+                    args=(selected_post_id, final_pdfs, final_urls, user_instructions.strip(), migration_mode),
+                    daemon=True
+                ).start()
+                
+                # DB 업데이트를 위해 아주 잠깐 대기한 후 새로고침
+                time.sleep(0.3)
+                st.rerun()
 
     # ── VIEW 2: 검수 및 승인 ───────────────────────────────
     elif current_status in ("awaiting_review", "approved"):
@@ -348,6 +396,47 @@ with col_right:
                     for kw in kws_ko:
                         st.markdown(f"- {kw}")
 
+        # Case metadata preview (only for case law)
+        is_case_post = "case" in post["wp_category"]
+        if is_case_post:
+            st.markdown("---")
+            st.markdown("#### ⚖️ 판례 헤더 메타데이터")
+            st.caption("아래 정보는 본문이 아닌 판례 페이지 상단 헤더 영역에 표시됩니다. 빈칸이 있으면 재작업이 필요합니다.")
+            meta_col1, meta_col2 = st.columns(2)
+            with meta_col1:
+                st.markdown(f"**Citation:** {en_fm.get('citation', '❌ 없음')}")
+                st.markdown(f"**Court:** {en_fm.get('court', '❌ 없음')}")
+            with meta_col2:
+                st.markdown(f"**Claimant:** {en_fm.get('claimant', '❌ 없음')}")
+                st.markdown(f"**Defendant:** {en_fm.get('defendant', '❌ 없음')}")
+
+            # CourtLink 편집 필드
+            current_court_link = en_fm.get("courtLink", "")
+            new_court_link = st.text_input(
+                "🔗 Citation URL (WP 원본 링크, 필요 시 변경 가능)",
+                value=current_court_link,
+                placeholder="https://...",
+                key=f"court_link_{selected_post_id}",
+            )
+            if st.button("💾 Citation URL 저장", key="save_court_link"):
+                import yaml as _yaml
+                def _update_fm_field(md_text: str, field: str, value: str) -> str:
+                    if md_text.startswith("---"):
+                        parts = md_text.split("---", 2)
+                        if len(parts) >= 3:
+                            fm_data = _yaml.safe_load(parts[1]) or {}
+                            fm_data[field] = value
+                            new_yaml = _yaml.dump(fm_data, allow_unicode=True, sort_keys=False, default_flow_style=False)
+                            return f"---\n{new_yaml}---\n\n{parts[2].strip()}"
+                    return md_text
+                for md_path in (en_path, ko_path):
+                    if md_path.exists():
+                        md_path.write_text(
+                            _update_fm_field(md_path.read_text(encoding="utf-8"), "courtLink", new_court_link),
+                            encoding="utf-8"
+                        )
+                st.success("Citation URL 저장 완료!")
+
         with tab_meta:
             st.code(meta_text, language="yaml")
 
@@ -358,7 +447,7 @@ with col_right:
         st.markdown("---")
 
         if current_status == "awaiting_review":
-            col_a, col_b = st.columns(2)
+            col_a, col_b, col_c = st.columns(3)
             with col_a:
                 if st.button("✅ Approve Post", use_container_width=True):
                     _update_status(selected_post_id, "approved")
@@ -371,10 +460,22 @@ with col_right:
                         _update_status(selected_post_id, "failed", f"Revision: {revise_comment}")
                         st.warning("재작업 큐로 돌려보냈습니다.")
                         st.rerun()
+            with col_c:
+                if st.button("🔄 Pending으로 되돌리기", use_container_width=True, type="secondary"):
+                    _update_status(selected_post_id, "pending")
+                    st.warning("Pending 상태로 초기화했습니다. 처음부터 다시 시작할 수 있습니다.")
+                    st.rerun()
         else:
             st.success("이 글은 이미 승인(APPROVED) 상태입니다.")
-            if st.button("승인 취소 (검수 화면으로 복귀)"):
-                _update_status(selected_post_id, "awaiting_review")
-                st.rerun()
+            col_ap1, col_ap2 = st.columns(2)
+            with col_ap1:
+                if st.button("승인 취소 (검수 화면으로 복귀)", use_container_width=True):
+                    _update_status(selected_post_id, "awaiting_review")
+                    st.rerun()
+            with col_ap2:
+                if st.button("🔄 Pending으로 되돌리기", use_container_width=True, type="secondary", key="reset_approved"):
+                    _update_status(selected_post_id, "pending")
+                    st.warning("Pending 상태로 초기화했습니다. 처음부터 다시 시작할 수 있습니다.")
+                    st.rerun()
     else:
         st.warning(f"알 수 없는 상태: `{current_status}`. 사이드바에서 다른 글을 선택하십시오.")

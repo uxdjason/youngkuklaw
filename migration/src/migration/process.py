@@ -23,9 +23,19 @@ import json
 import re
 import shutil
 import sqlite3
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
+
+def cprint(msg: str, out: Path = None):
+    print(msg)
+    if out:
+        try:
+            with open(out / "progress.log", "a", encoding="utf-8") as f:
+                f.write(msg + "\n")
+        except Exception:
+            pass
 
 import yaml
 from bs4 import BeautifulSoup
@@ -131,7 +141,7 @@ def get_post(post_id: int) -> Optional[sqlite3.Row]:
 # ─────────────────────────────────────────────
 
 def html_to_plaintext(html: str) -> str:
-    """HTML → 평문 (참조용 컨텍스트 빌드)."""
+    """HTML → 평문 (참조용 컨텍스트 빌드). 링크는 [텍스트](URL) 형태로 보존."""
     if not html:
         return ""
     soup = BeautifulSoup(html, "lxml")
@@ -140,9 +150,46 @@ def html_to_plaintext(html: str) -> str:
             comment.extract()
         except Exception:
             pass
+    # <a> 태그를 마크다운 링크로 변환
+    for a in soup.find_all("a", href=True):
+        href = a.get("href", "")
+        text = a.get_text()
+        if href and text:
+            a.replace_with(f"[{text}]({href})")
     text = soup.get_text(separator="\n")
     text = re.sub(r"\n{3,}", "\n\n", text).strip()
     return text[:8000]
+
+
+def extract_wp_case_metadata(html: str) -> dict:
+    """WP HTML에서 판례 메타데이터(Citation, Court, Claimant, Defendant, CourtLink)를 직접 파싱."""
+    if not html:
+        return {}
+    soup = BeautifulSoup(html, "lxml")
+    result = {}
+    headings = soup.find_all(["h2", "h3"])
+    field_map = {
+        "citation:": "citation",
+        "court:": "court",
+        "claimant:": "claimant",
+        "defendant:": "defendant",
+        "judges:": "judges",
+    }
+    for h in headings:
+        key = h.get_text(strip=True).lower()
+        if key in field_map:
+            field = field_map[key]
+            sibling = h.find_next_sibling(["p", "div"])
+            if sibling:
+                # courtLink: Citation 필드의 <a> href
+                if field == "citation":
+                    a_tag = sibling.find("a", href=True)
+                    if a_tag:
+                        result["courtLink"] = a_tag.get("href", "")
+                    result["citation"] = sibling.get_text(strip=True)
+                else:
+                    result[field] = sibling.get_text(strip=True)
+    return result
 
 
 def extract_pdf_texts(pdf_paths: list[str], max_chars_per_pdf: int = 10000) -> list[str]:
@@ -431,7 +478,7 @@ async def _step_research(
 
     _update_status(post["id"], "researching")
     source_mode = "web search (폴백)" if use_web_search else f"PDF {len(pdf_texts)}개 (web search 없음)"
-    print(f"  🔍 Research 시작 [{source_mode}]...")
+    cprint(f"  🔍 Research 시작 [{source_mode}]...", out)
 
     system = load_prompt("research")
     pdf_combined = "\n\n".join(pdf_texts) if pdf_texts else "(PDF 없음 — web search 사용)"
@@ -471,7 +518,7 @@ async def _step_research(
     _set_research_path(post["id"], str(research_cache_path))
 
     _save_web_research_md(slug, research_json)
-    print(f"  ✅ Research 완료 (웹검색 {result.usage.tool_calls}회, ${result.cost_usd:.4f})")
+    cprint(f"  ✅ Research 완료 (웹검색 {result.usage.tool_calls}회, ${result.cost_usd:.4f})", out)
     return research_json
 
 
@@ -481,6 +528,7 @@ async def _step_write_en(
     out: Path,
     research_json: dict,
     glossary_text: str,
+    available_cases_text: str,
     revision_scope: Optional[str],
 ) -> str:
     if revision_scope == "seo_only":
@@ -490,20 +538,23 @@ async def _step_write_en(
             return en_path.read_text(encoding="utf-8")
 
     _update_status(post["id"], "writing_en")
-    print(f"  ✍️  영문 작성 중...")
+    cprint(f"  ✍️  영문 작성 중...", out)
 
     system = load_prompt("write_en")
     prompt = system.replace("{glossary}", glossary_text) \
+                   .replace("{available_cases}", available_cases_text) \
+                   .replace("{wp_slug}", post["wp_slug"]) \
                    .replace("{category}", post["wp_category"]) \
                    .replace("{research_json}", json.dumps(research_json, ensure_ascii=False))
 
     result = await llm.acall(
-        prompt, system="", post_id=post["id"], phase="write_en", max_tokens=4096, cache_system=False,
+        prompt, system="", post_id=post["id"], phase="write_en", max_tokens=8192, cache_system=False,
     )
 
     en_md = result.text.strip()
+    en_md = _remove_self_links(en_md, post["wp_slug"])
     (out / "en.md").write_text(en_md, encoding="utf-8")
-    print(f"  ✅ 영문 작성 완료 ({len(en_md)}자, ${result.cost_usd:.4f})")
+    cprint(f"  ✅ 영문 작성 완료 ({len(en_md)}자, ${result.cost_usd:.4f})", out)
     return en_md
 
 
@@ -514,6 +565,7 @@ async def _step_write_ko(
     research_json: dict,
     en_md: str,
     glossary_text: str,
+    available_cases_text: str,
     revision_scope: Optional[str],
 ) -> str:
     if revision_scope == "seo_only":
@@ -523,22 +575,103 @@ async def _step_write_ko(
             return ko_path.read_text(encoding="utf-8")
 
     _update_status(post["id"], "writing_ko")
-    print(f"  ✍️  한국어 작성 중...")
+    cprint(f"  ✍️  한국어 작성 중...", out)
 
     system = load_prompt("write_ko")
     prompt = system.replace("{glossary}", glossary_text) \
+                   .replace("{available_cases}", available_cases_text) \
+                   .replace("{wp_slug}", post["wp_slug"]) \
                    .replace("{category}", post["wp_category"]) \
                    .replace("{research_json}", json.dumps(research_json, ensure_ascii=False)) \
-                   .replace("{en_md}", en_md[:3000])
+                   .replace("{en_md}", en_md)
 
     result = await llm.acall(
-        prompt, system="", post_id=post["id"], phase="write_ko", max_tokens=4096, cache_system=False,
+        prompt, system="", post_id=post["id"], phase="write_ko", max_tokens=8192, cache_system=False,
     )
 
     ko_md = result.text.strip()
+    ko_md = _remove_self_links(ko_md, post["wp_slug"])
     (out / "ko.md").write_text(ko_md, encoding="utf-8")
-    print(f"  ✅ 한국어 작성 완료 ({len(ko_md)}자, ${result.cost_usd:.4f})")
+    cprint(f"  ✅ 한국어 작성 완료 ({len(ko_md)}자, ${result.cost_usd:.4f})", out)
     return ko_md
+
+
+async def _step_wp_priority_en(
+    llm: LLMClient,
+    post: sqlite3.Row,
+    out: Path,
+    ko_md: str,
+    glossary_text: str,
+    available_cases_text: str,
+    revision_scope: Optional[str],
+) -> str:
+    if revision_scope == "seo_only":
+        en_path = out / "en.md"
+        if en_path.exists():
+            return en_path.read_text(encoding="utf-8")
+
+    _update_status(post["id"], "writing_en")
+    cprint(f"  ✍️  영문 번역 중 (기존 WP 우선 모드 — KO 번역)...", out)
+
+    system = load_prompt("wp_priority_en")
+    prompt = system.replace("{available_cases}", available_cases_text) \
+                   .replace("{wp_slug}", post["wp_slug"]) \
+                   .replace("{category}", post["wp_category"]) \
+                   .replace("{ko_md}", ko_md)
+
+    result = await llm.acall(
+        prompt, system="", post_id=post["id"], phase="write_en", max_tokens=8192, cache_system=False,
+    )
+
+    en_md = result.text.strip()
+    en_md = _remove_self_links(en_md, post["wp_slug"])
+    (out / "en.md").write_text(en_md, encoding="utf-8")
+    cprint(f"  ✅ 영문 번역 완료 ({len(en_md)}자, ${result.cost_usd:.4f})", out)
+    return en_md
+
+
+async def _step_wp_priority_ko(
+    llm: LLMClient,
+    post: sqlite3.Row,
+    out: Path,
+    wp_plaintext: str,
+    glossary_text: str,
+    available_cases_text: str,
+    revision_scope: Optional[str],
+) -> str:
+    if revision_scope == "seo_only":
+        ko_path = out / "ko.md"
+        if ko_path.exists():
+            return ko_path.read_text(encoding="utf-8")
+
+    _update_status(post["id"], "writing_ko")
+    cprint(f"  ✍️  한국어 작성 중 (기존 WP 우선 모드)...", out)
+
+    system = load_prompt("wp_priority_ko")
+    prompt = system.replace("{glossary}", glossary_text) \
+                   .replace("{available_cases}", available_cases_text) \
+                   .replace("{wp_slug}", post["wp_slug"]) \
+                   .replace("{category}", post["wp_category"]) \
+                   .replace("{wp_original_plaintext}", wp_plaintext)
+
+    result = await llm.acall(
+        prompt, system="", post_id=post["id"], phase="write_ko", max_tokens=8192, cache_system=False,
+    )
+
+    ko_md = result.text.strip()
+    ko_md = _remove_self_links(ko_md, post["wp_slug"])
+    (out / "ko.md").write_text(ko_md, encoding="utf-8")
+    cprint(f"  ✅ 한국어 작성 완료 ({len(ko_md)}자, ${result.cost_usd:.4f})", out)
+    return ko_md
+
+
+def _remove_self_links(text: str, slug: str) -> str:
+    """자기 자신에 대한 마크다운 링크를 제거하고 링크 텍스트만 남긴다."""
+    # [Link Text](/slug) 또는 [Link Text](/ko/slug) 패턴 제거 (nested brackets 지원)
+    pattern = re.compile(
+        r'\[(.*?)\]\(\/?(?:ko\/)?%s\/?\)' % re.escape(slug)
+    )
+    return pattern.sub(r'\1', text)
 
 
 async def _step_seo(
@@ -549,15 +682,15 @@ async def _step_seo(
     ko_md: str,
 ) -> dict:
     _update_status(post["id"], "seo")
-    print(f"  🔖 SEO 메타 생성 중...")
+    cprint(f"  🔖 SEO 메타 생성 중...", out)
 
     wp_seo = json.loads(post["wp_seo"] or "{}")
     system = load_prompt("seo")
     prompt = system.replace("{category}", post["wp_category"]) \
                    .replace("{wp_slug}", post["wp_slug"]) \
                    .replace("{wp_seo_legacy}", json.dumps(wp_seo, ensure_ascii=False)) \
-                   .replace("{en_md_final}", en_md[:3000]) \
-                   .replace("{ko_md_final}", ko_md[:3000])
+                   .replace("{en_md_final}", en_md) \
+                   .replace("{ko_md_final}", ko_md)
 
     result = await llm.acall(
         prompt, system="", post_id=post["id"], phase="seo", max_tokens=1024, cache_system=False,
@@ -568,7 +701,7 @@ async def _step_seo(
         if lang in seo_json:
             seo_json[lang]["slug"] = post["wp_slug"]
 
-    print(f"  ✅ SEO 메타 생성 완료 (${result.cost_usd:.4f})")
+    cprint(f"  ✅ SEO 메타 생성 완료 (${result.cost_usd:.4f})", out)
     return seo_json
 
 
@@ -596,6 +729,7 @@ def _save_meta_yaml(slug: str, post: sqlite3.Row, seo_json: dict, sources_info: 
 
 def _build_frontmatter(slug: str, post: sqlite3.Row, seo_json: dict, lang: str) -> str:
     seo = seo_json.get(lang, {})
+    shared = seo_json.get("shared", {})
     fm = {
         "title": seo.get("seo_title", post["wp_title_ko"]),
         "slug": slug,
@@ -613,8 +747,41 @@ def _build_frontmatter(slug: str, post: sqlite3.Row, seo_json: dict, lang: str) 
         "reviewed_at": None,
         "is_dummy": False,
     }
+    # Case law metadata — inject only if present
+    is_case = "case" in post["wp_category"]
+    if is_case:
+        if shared.get("citation"):
+            fm["citation"] = shared["citation"]
+        if shared.get("court"):
+            fm["court"] = shared["court"]
+        if shared.get("claimant"):
+            fm["claimant"] = shared["claimant"]
+        if shared.get("defendant"):
+            fm["defendant"] = shared["defendant"]
+        if shared.get("courtLink"):
+            fm["courtLink"] = shared["courtLink"]
+
     yaml_str = yaml.dump(fm, allow_unicode=True, sort_keys=False, default_flow_style=False)
     return f"---\n{yaml_str}---\n\n"
+
+
+
+def get_available_cases_db() -> str:
+    """DB에서 판례 목록을 불러와 프롬프트에 주입할 텍스트 생성"""
+    conn = _db()
+    rows = conn.execute("SELECT wp_title_ko, wp_slug FROM posts WHERE wp_category LIKE '%case%'").fetchall()
+    conn.close()
+    
+    if not rows:
+        return "None"
+        
+    cases = []
+    for r in rows:
+        title = r["wp_title_ko"]
+        m = re.match(r"^(.*? (?:\[\d{4}\]|\(\d{4}\)))", title)
+        short_title = m.group(1) if m else title
+        cases.append(f"- {short_title}: /{r['wp_slug']}")
+    return "\n".join(cases)
 
 
 # ─────────────────────────────────────────────
@@ -627,6 +794,7 @@ async def process_post(
     web_urls: list[str],
     user_instructions: str = "",
     revision_scope: Optional[str] = None,
+    mode: str = "대폭 개선 옵션",
     verbose: bool = True,
 ) -> str:
     """
@@ -638,6 +806,14 @@ async def process_post(
         raise ValueError(f"post_id={post_id}를 DB에서 찾을 수 없습니다.")
 
     slug = post["wp_slug"]
+    # 출력 폴더
+    out = _ensure_output_dirs(slug)
+    _set_output_dir(post_id, str(out))
+    
+    # 이전 로그 초기화
+    if (out / "progress.log").exists():
+        (out / "progress.log").unlink()
+
     if verbose:
         print(f"\n{'='*60}")
         print(f"🚀 처리 시작: [{post_id}] {slug}")
@@ -652,7 +828,7 @@ async def process_post(
     use_web_search_mode = len(pdf_paths) == 0
 
     pdf_texts = extract_pdf_texts(pdf_paths)
-    print(f"  📄 PDF: {len(pdf_paths)}개 로드 | web search: {'주 소스' if use_web_search_mode else '보완용'}")
+    cprint(f"  📄 PDF: {len(pdf_paths)}개 로드 | web search: {'주 소스' if use_web_search_mode else '보완용'}", out)
 
     # WP 원문 HTML → 평문
     wp_html_path = Path(post["wp_html_path"]) if post["wp_html_path"] else None
@@ -660,36 +836,49 @@ async def process_post(
     if wp_html_path and wp_html_path.exists():
         wp_plaintext = html_to_plaintext(wp_html_path.read_text(encoding="utf-8"))
 
-    # 출력 폴더
-    out = _ensure_output_dirs(slug)
-    _set_output_dir(post_id, str(out))
-
     log_path = str(out / "ai_log.jsonl")
     llm = LLMClient(db_path=DB_PATH, log_path=log_path)
 
     try:
         glossary_text = load_glossary()
+        available_cases_text = get_available_cases_db()
         sources_info = {
             "pdf_paths": pdf_paths,
             "web_urls": web_urls,
             "user_instructions": user_instructions
         }
 
-        # Step 1: Research
-        research_json = await _step_research(
-            llm, post, slug, out, web_urls, user_instructions, pdf_texts, wp_plaintext,
-            revision_scope, use_web_search=use_web_search_mode,
-        )
-        post = get_post(post_id)
+        if mode == "기존 WP 우선 모드":
+            # 리서치 건너뛰기: KO 먼저 작성, EN은 KO를 번역
+            research_json = {}
+            ko_md = await _step_wp_priority_ko(llm, post, out, wp_plaintext, glossary_text, available_cases_text, revision_scope)
+            en_md = await _step_wp_priority_en(llm, post, out, ko_md, glossary_text, available_cases_text, revision_scope)
+        else:
+            # Step 1: Research
+            research_json = await _step_research(
+                llm, post, slug, out, web_urls, user_instructions, pdf_texts, wp_plaintext,
+                revision_scope, use_web_search=use_web_search_mode,
+            )
+            post = get_post(post_id)
 
-        # Step 2: write_en
-        en_md = await _step_write_en(llm, post, out, research_json, glossary_text, revision_scope)
+            # Step 2: write_en
+            en_md = await _step_write_en(llm, post, out, research_json, glossary_text, available_cases_text, revision_scope)
 
-        # Step 3: write_ko
-        ko_md = await _step_write_ko(llm, post, out, research_json, en_md, glossary_text, revision_scope)
+            # Step 3: write_ko
+            ko_md = await _step_write_ko(llm, post, out, research_json, en_md, glossary_text, available_cases_text, revision_scope)
 
         # Step 4: SEO
         seo_json = await _step_seo(llm, post, out, en_md, ko_md)
+
+        # WP HTML에서 판례 메타데이터 직접 파싱 (AI 추출보다 신뢰도 높음)
+        is_case = "case" in post["wp_category"]
+        if is_case and wp_html_path and wp_html_path.exists():
+            wp_meta = extract_wp_case_metadata(wp_html_path.read_text(encoding="utf-8"))
+            shared = seo_json.setdefault("shared", {})
+            # WP에서 파싱한 값으로 덮어쓰기 (비어있으면 AI 추출값 유지)
+            for field in ("citation", "court", "claimant", "defendant", "courtLink"):
+                if wp_meta.get(field):
+                    shared[field] = wp_meta[field]
 
         # 산출물 저장
         (out / "en.md").write_text(_build_frontmatter(slug, post, seo_json, "en") + en_md, encoding="utf-8")
