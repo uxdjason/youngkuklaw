@@ -51,7 +51,7 @@ with st.sidebar:
 
     status_icons = {
         "approved": "✅", "awaiting_review": "🟡", "pending": "⬜",
-        "researching": "⏳", "failed": "❌", "awaiting_sources": "🔵",
+        "researching": "⏳", "failed": "❌", "awaiting_sources": "🔵", "published": "🌐"
     }
     for row in stats:
         icon = status_icons.get(row[0], "•")
@@ -92,7 +92,7 @@ with st.sidebar:
             with st.expander(f"📁 {cat} ({len(cat_posts)})"):
                 for p in cat_posts:
                     icon = {"pending": "⬜", "awaiting_review": "🟡", "approved": "✅",
-                            "failed": "❌", "researching": "⏳", "awaiting_sources": "🔵"}.get(p["status"], "⬜")
+                            "failed": "❌", "researching": "⏳", "awaiting_sources": "🔵", "published": "🌐"}.get(p["status"], "⬜")
                     label = f"{icon} {p['wp_title_ko']}"
                     if st.button(label, key=f"btn_cat_{p['id']}", use_container_width=True):
                         st.session_state.selected_post_id = p['id']
@@ -305,7 +305,7 @@ with col_right:
                 st.rerun()
 
     # ── VIEW 2: 검수 및 승인 ───────────────────────────────
-    elif current_status in ("awaiting_review", "approved"):
+    elif current_status in ("awaiting_review", "approved", "published"):
         st.header("✅ Step 2: Review & Approve")
 
         out_dir = Path(OUTPUT_DIR) / "migration" / slug
@@ -449,9 +449,11 @@ with col_right:
         if current_status == "awaiting_review":
             col_a, col_b, col_c = st.columns(3)
             with col_a:
-                if st.button("✅ Approve Post", use_container_width=True):
+                if st.button("✅ Approve & Publish", use_container_width=True):
                     _update_status(selected_post_id, "approved")
-                    st.success("승인 완료!")
+                    from migration.publish import publish_approved_posts
+                    publish_approved_posts()
+                    st.success("승인 및 퍼블리시 완료!")
                     st.rerun()
             with col_b:
                 with st.expander("✏️ 재작업 요청"):
@@ -466,10 +468,10 @@ with col_right:
                     st.warning("Pending 상태로 초기화했습니다. 처음부터 다시 시작할 수 있습니다.")
                     st.rerun()
         else:
-            st.success("이 글은 이미 승인(APPROVED) 상태입니다.")
+            st.success(f"이 글은 현재 **{current_status}** 상태입니다.")
             col_ap1, col_ap2 = st.columns(2)
             with col_ap1:
-                if st.button("승인 취소 (검수 화면으로 복귀)", use_container_width=True):
+                if st.button("⏪ 승인/발행 취소 (Revert to Review)", use_container_width=True):
                     _update_status(selected_post_id, "awaiting_review")
                     st.rerun()
             with col_ap2:

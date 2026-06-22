@@ -50,6 +50,13 @@ def synthesize_frontmatter(post_row, meta_data, lang: str):
     else:
         seo_title = seo["seo_title"]
     
+    citation_raw = shared.get("citation")
+    if citation_raw and ("[" in citation_raw or "(" in citation_raw):
+        import re
+        match = re.search(r'(\[|\().*', citation_raw)
+        if match:
+            citation_raw = match.group(0).strip()
+            
     frontmatter = {
         "wpId": post_row["id"],
         "pubDate": pub_date,
@@ -64,7 +71,7 @@ def synthesize_frontmatter(post_row, meta_data, lang: str):
         "longTailKeywords": seo.get("long_tail_keywords", []),
         "sourceOrigin": "migrated",
         "humanReviewed": True,
-        "citation": shared.get("citation"),
+        "citation": citation_raw,
         "court": shared.get("court"),
         "claimant": shared.get("claimant"),
         "defendant": shared.get("defendant"),
