@@ -20,6 +20,7 @@ export default defineConfig({
     mdx(),
   ],
   markdown: {
+    smartypants: false,
     rehypePlugins: [
       [rehypeExternalLinks, { target: '_blank' }]
     ]

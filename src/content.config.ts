@@ -37,6 +37,8 @@ const posts = defineCollection({
     metaDescription: z.string().optional(),
     focusKeyphrase: z.string().optional(),
     longTailKeywords: z.array(z.string()).default([]),
+    uiTags: z.array(z.string()).default([]),
+    uiDescription: z.string().optional(),
     ogImage: z.string().optional(),
     wpId: z.number().int().optional(),
     sourceOrigin: z.enum(['migrated', 'newly-written']).default('newly-written'),

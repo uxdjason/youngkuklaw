@@ -24,7 +24,10 @@ const isActive = (href: string) =>
         ]}
         aria-current={isActive("/ko/") ? "page" : undefined}
       >
-        <div class="text-block-11">영국 Law</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <img src="/images/youngkuklaw-logo-260519.png" alt="영국 Law Logo" style="width: 40px; height: 40px; object-fit: contain;" />
+          <div class="text-block-11">영국 Law</div>
+        </div>
       </a>
       <nav role="navigation" class="nav_menu w-nav-menu">
         <a href="/ko/english-law/" class="nav_menu_link ko w-nav-link"

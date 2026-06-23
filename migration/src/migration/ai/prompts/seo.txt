@@ -23,9 +23,16 @@ Generate SEO metadata for both language versions.
 3. **Korean seo_title**: STRICTLY ≤30 characters (Korean characters count as 1 each). Shorten aggressively if needed.
 4. **Korean meta_description**: ≤80 characters. No honorifics (경어 금지) — use plain declarative style ending in ~다.
 5. **focus_keyphrase**: Single most important search phrase. English version should target English-speaking law students; Korean version should target Korean-speaking learners.
-6. **long_tail_keywords**: 3–5 specific, low-competition variants.
-7. **slug**: ALWAYS use the WP original slug exactly as provided. Do NOT suggest a different slug.
-8. **og_image_prompt**: A concise, vivid description for an AI image generator to create a suitable Open Graph image (1200×630). Describe a professional legal/academic scene relevant to the article topic.
+6. **long_tail_keywords**: 3–5 specific, low-competition variants for SEO.
+7. **ui_tags**: 1 to 2 tags strictly for the UI. Each tag MUST be VERY short (max 2 words per tag). E.g. ["Unilateral Offer", "Acceptance"].
+8. **ui_description**: A very concise 1-2 sentence summary for the UI card. DO NOT start with the case name or year (e.g. do NOT say "Fisher v Bell (1961): ..."). Just jump straight into the facts/rule, e.g., "The display of a flick knife in a shop window is an invitation to treat, not an offer."
+9. **slug**: ALWAYS use the WP original slug exactly as provided. Do NOT suggest a different slug.
+10. **og_image_prompt**: A concise, vivid description for an AI image generator to create a suitable Open Graph image (1200×630). Describe a professional legal/academic scene relevant to the article topic.
+
+### Non-Case Law Metadata (IMPORTANT)
+If the category does NOT contain "case" (e.g. it is a regular note/article), you MUST extract and provide:
+- **title_ko**: The clean H1 title for the Korean version. You MUST default to using the WP original Korean title as much as possible.
+- **title_en**: The clean H1 title for the English version. You MUST provide an accurate English translation of the WP original Korean title.
 
 ### Case Law Metadata (IMPORTANT)
 If the category contains "case" (e.g. case-law, contract-law-cases, tort-law-cases, etc.), you MUST also extract the following fields from the articles. These will be rendered in the page header UI — do NOT include them in the article body.
@@ -46,16 +53,22 @@ Return a single valid JSON object with EXACTLY this structure:
   "en": {
     "seo_title": "...",
     "meta_description": "...",
+    "ui_tags": ["...", "..."],
+    "ui_description": "...",
     "focus_keyphrase": "...",
     "long_tail_keywords": ["...", "...", "..."],
-    "slug": "exact-wp-slug-unchanged"
+    "slug": "exact-wp-slug-unchanged",
+    "title_en": "..."
   },
   "ko": {
     "seo_title": "...",
     "meta_description": "...",
+    "ui_tags": ["...", "..."],
+    "ui_description": "...",
     "focus_keyphrase": "...",
     "long_tail_keywords": ["...", "...", "..."],
-    "slug": "exact-wp-slug-unchanged"
+    "slug": "exact-wp-slug-unchanged",
+    "title_ko": "..."
   },
   "shared": {
     "og_image_prompt": "...",

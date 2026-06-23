@@ -19,9 +19,7 @@ const { Content } = await render(post);
 
 const isCase = post.data.category.endsWith('-cases') || post.data.category === 'case-law';
 
-// seoTitle is used ONLY for SEO meta tags, NOT for H1
-// H1 always uses post.data.title (clean case name, e.g. "Williams v Carwardine")
-const displayTitle       = post.data.seoTitle       || post.data.title; // for SEO / NoteLayout
+// H1 always uses post.data.title
 const displayDescription = post.data.metaDescription || post.data.description;
 ---
 {isCase ? (
@@ -49,7 +47,8 @@ const displayDescription = post.data.metaDescription || post.data.description;
     lang="ko"
     slug={post.data.slug}
     category={post.data.category}
-    title={displayTitle}
+    title={post.data.title}
+    seoTitle={post.data.seoTitle}
     description={displayDescription}
     pubDate={post.data.pubDate}
     modifiedDate={post.data.updatedDate}

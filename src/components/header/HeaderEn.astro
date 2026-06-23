@@ -19,7 +19,10 @@ const isActive = (href: string) =>
         class:list={['nav_brand', 'w-nav-brand', isActive('/') && 'w--current']}
         aria-current={isActive('/') ? 'page' : undefined}
       >
-        <div class="text-block-11">YoungkukLaw</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <img src="/images/youngkuklaw-logo-260519.png" alt="YoungkukLaw Logo" style="width: 40px; height: 40px; object-fit: contain;" />
+          <div class="text-block-11">YoungkukLaw</div>
+        </div>
       </a>
       <nav role="navigation" class="nav_menu w-nav-menu">
         <a href="/english-law/" class="nav_menu_link w-nav-link">English Law</a>

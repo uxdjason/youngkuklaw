@@ -3594,6 +3594,10 @@ html[lang^="ko"] .article-text h4 {
   font-weight: 700;
   text-decoration: none;
   color: inherit;
+  transition: color 0.2s ease;
+}
+.article-body a:hover {
+  color: var(--base-color-brand--yellow-dark);
 }
 
 

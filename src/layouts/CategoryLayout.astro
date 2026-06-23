@@ -285,7 +285,7 @@ const seoDescription =
                   <div class="article-row"
                        data-pubdate={post.data.pubDate.valueOf()}
                        data-title={post.data.title.toLowerCase()}
-                       data-views={post.data.views || 940}
+                       data-views={post.data.views || 0}
                        data-created={post.data.pubDate.valueOf()}
                        data-keywords={post.data.longTailKeywords?.join(',').toLowerCase() || ''}
                        data-slug={post.data.slug}
@@ -293,7 +293,7 @@ const seoDescription =
 
                     <div class="article-row-upper">
                       <div class="keyword-tag-container">
-                        {post.data.longTailKeywords?.slice(0, 2).map((k) => (
+                        {(post.data.uiTags && post.data.uiTags.length > 0 ? post.data.uiTags : post.data.longTailKeywords?.slice(0, 2) || []).map((k) => (
                           <div class="keyword-tag">{k}</div>
                         ))}
                       </div>
@@ -323,7 +323,7 @@ const seoDescription =
                     
                     <div class="spacer-small"></div>
                     <div class="article-row-description">
-                      <div class={`featured-content-desc${lang === 'ko' ? ' ko' : ''}`}>{post.data.description}</div>
+                      <div class={`featured-content-desc${lang === 'ko' ? ' ko' : ''}`}>{post.data.uiDescription || post.data.description}</div>
                     </div>
                     <div class="spacer-small"></div>
                     
@@ -335,7 +335,7 @@ const seoDescription =
                               <path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"></path>
                             </svg>
                           </div>
-                          <div class="view-number-num">{post.data.views || 940} views</div>
+                          <div class="view-number-num view-counter-batch" data-slug={post.data.slug}>0 views</div>
                         </div>
                         <div class="note-row-timestamp">{formatDate(post.data.pubDate, lang)}</div>
                       </div>

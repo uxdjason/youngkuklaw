@@ -104,7 +104,7 @@ with st.sidebar:
         with st.expander(f"전체 글 ({len(posts_all)})", expanded=True):
             for p in posts_all:
                 icon = {"pending": "⬜", "awaiting_review": "🟡", "approved": "✅",
-                        "failed": "❌", "researching": "⏳", "awaiting_sources": "🔵"}.get(p["status"], "⬜")
+                        "failed": "❌", "researching": "⏳", "awaiting_sources": "🔵", "published": "🌐"}.get(p["status"], "⬜")
                 label = f"{icon} {p['wp_title_ko']}"
                 if st.button(label, key=f"btn_all_{p['id']}", use_container_width=True):
                     st.session_state.selected_post_id = p['id']
@@ -305,7 +305,7 @@ with col_right:
                 st.rerun()
 
     # ── VIEW 2: 검수 및 승인 ───────────────────────────────
-    elif current_status in ("awaiting_review", "approved", "published"):
+    elif current_status in ("awaiting_review", "approved"):
         st.header("✅ Step 2: Review & Approve")
 
         out_dir = Path(OUTPUT_DIR) / "migration" / slug
@@ -396,19 +396,40 @@ with col_right:
                     for kw in kws_ko:
                         st.markdown(f"- {kw}")
                         
-            st.markdown("---")
-            st.markdown("#### 📄 실제 페이지 H1 타이틀 (미리보기)")
-            st.caption("위의 SEO Title과 별개로 실제 판례 글 상단에 H1으로 노출될 정제된 이름입니다.")
+            st.markdown("#### 📄 실제 페이지 H1 타이틀 (미리보기 및 편집)")
+            st.caption("실제 글 상단에 H1으로 노출되고 목록 카드에 사용될 깔끔한 제목입니다.")
             
-            # publish.py와 동일한 H1 타이틀 추출 로직 시뮬레이션
-            title_raw = post["wp_title_ko"]
-            clean_title = title_raw
-            if "case" in post["wp_category"]:
+            # 메타데이터 파싱 (from meta_text)
+            import yaml as _yaml
+            meta_data = _yaml.safe_load(meta_text) or {}
+            
+            is_case_post = "case" in post["wp_category"]
+            
+            if is_case_post:
+                # 판례는 단일 제목 (수정 불가, 자동 추출값 표시만)
+                title_raw = post["wp_title_ko"]
+                clean_title = title_raw
                 import re
                 match = re.split(r'\[|\(', title_raw)
                 if match:
                     clean_title = match[0].strip()
-            st.markdown(f"**{clean_title}**")
+                st.markdown(f"**Case Title:** {clean_title} (판례 글은 언어 공통 제목을 사용합니다)")
+            else:
+                # 일반 노트는 EN/KO 분리 입력
+                col_t1, col_t2 = st.columns(2)
+                with col_t1:
+                    current_title_en = meta_data.get("en", {}).get("title_en", "")
+                    new_title_en = st.text_input("Title EN", value=current_title_en, key=f"title_en_{selected_post_id}")
+                with col_t2:
+                    current_title_ko = meta_data.get("ko", {}).get("title_ko", post["wp_title_ko"])
+                    new_title_ko = st.text_input("Title KO", value=current_title_ko, key=f"title_ko_{selected_post_id}")
+                    
+                if st.button("💾 Titles 저장", key="save_titles"):
+                    meta_data.setdefault("en", {})["title_en"] = new_title_en
+                    meta_data.setdefault("ko", {})["title_ko"] = new_title_ko
+                    new_meta_text = _yaml.dump(meta_data, allow_unicode=True, sort_keys=False, default_flow_style=False)
+                    meta_path.write_text(new_meta_text, encoding="utf-8")
+                    st.success("Titles 저장 완료! (반영을 위해 페이지를 새로고침하거나 탭을 다시 눌러주세요)")
 
         # Case metadata preview (only for case law)
         is_case_post = "case" in post["wp_category"]
@@ -436,7 +457,7 @@ with col_right:
                 st.markdown(f"**{d_role}:** {en_fm.get('defendant', '❌ 없음')}")
 
             # CourtLink 편집 필드
-            current_court_link = en_fm.get("courtLink", "")
+            current_court_link = meta_data.get("shared", {}).get("courtLink", "")
             new_court_link = st.text_input(
                 "🔗 Citation URL (WP 원본 링크, 필요 시 변경 가능)",
                 value=current_court_link,
@@ -444,22 +465,9 @@ with col_right:
                 key=f"court_link_{selected_post_id}",
             )
             if st.button("💾 Citation URL 저장", key="save_court_link"):
-                import yaml as _yaml
-                def _update_fm_field(md_text: str, field: str, value: str) -> str:
-                    if md_text.startswith("---"):
-                        parts = md_text.split("---", 2)
-                        if len(parts) >= 3:
-                            fm_data = _yaml.safe_load(parts[1]) or {}
-                            fm_data[field] = value
-                            new_yaml = _yaml.dump(fm_data, allow_unicode=True, sort_keys=False, default_flow_style=False)
-                            return f"---\n{new_yaml}---\n\n{parts[2].strip()}"
-                    return md_text
-                for md_path in (en_path, ko_path):
-                    if md_path.exists():
-                        md_path.write_text(
-                            _update_fm_field(md_path.read_text(encoding="utf-8"), "courtLink", new_court_link),
-                            encoding="utf-8"
-                        )
+                meta_data.setdefault("shared", {})["courtLink"] = new_court_link
+                new_meta_text = _yaml.dump(meta_data, allow_unicode=True, sort_keys=False, default_flow_style=False)
+                meta_path.write_text(new_meta_text, encoding="utf-8")
                 st.success("Citation URL 저장 완료!")
 
         with tab_meta:
@@ -493,16 +501,32 @@ with col_right:
                     st.warning("Pending 상태로 초기화했습니다. 처음부터 다시 시작할 수 있습니다.")
                     st.rerun()
         else:
+            # For "approved" status before it gets published (though it publishes instantly now)
             st.success(f"이 글은 현재 **{current_status}** 상태입니다.")
-            col_ap1, col_ap2 = st.columns(2)
-            with col_ap1:
-                if st.button("⏪ 승인/발행 취소 (Revert to Review)", use_container_width=True):
-                    _update_status(selected_post_id, "awaiting_review")
-                    st.rerun()
-            with col_ap2:
-                if st.button("🔄 Pending으로 되돌리기", use_container_width=True, type="secondary", key="reset_approved"):
-                    _update_status(selected_post_id, "pending")
-                    st.warning("Pending 상태로 초기화했습니다. 처음부터 다시 시작할 수 있습니다.")
-                    st.rerun()
+            if st.button("⏪ 승인 취소 (Revert to Review)", use_container_width=True):
+                _update_status(selected_post_id, "awaiting_review")
+                st.rerun()
+
+    # ── VIEW 3: 퍼블리시 완료 ───────────────────────────────
+    elif current_status == "published":
+        st.header("🌐 Step 3: Published Successfully")
+        st.success("🎉 이 글은 성공적으로 퍼블리시되어 실제 사이트에 반영되었습니다!")
+        st.info("더 이상 에디터에서 내용을 수정할 수 없습니다. 수정을 원하시면 '발행 취소'를 누르거나, Astro 코드베이스의 마크다운 파일을 직접 수정하십시오.")
+        
+        st.markdown("---")
+        
+        col_ap1, col_ap2 = st.columns(2)
+        with col_ap1:
+            if st.button("⏪ 승인 및 발행 취소 (Return to Review)", use_container_width=True):
+                # Note: This just changes the DB status back to awaiting_review.
+                # It does not delete the .md files from src/content/posts/.
+                _update_status(selected_post_id, "awaiting_review")
+                st.warning("상태를 리뷰 대기로 되돌렸습니다. (참고: 빌드용 마크다운 파일은 수동 삭제가 필요할 수 있습니다)")
+                st.rerun()
+        with col_ap2:
+            if st.button("🔄 Pending으로 되돌리기 (처음부터 다시)", use_container_width=True, type="secondary", key="reset_published"):
+                _update_status(selected_post_id, "pending")
+                st.warning("Pending 상태로 초기화했습니다.")
+                st.rerun()
     else:
         st.warning(f"알 수 없는 상태: `{current_status}`. 사이드바에서 다른 글을 선택하십시오.")

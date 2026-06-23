@@ -43,6 +43,11 @@ def synthesize_frontmatter(post_row, meta_data, lang: str):
         match = re.split(r'\[|\(', title_raw)
         if match:
             clean_title = match[0].strip()
+    else:
+        # 일반 노트의 경우 입력된(또는 AI가 생성한) 언어별 title 사용
+        lang_title = seo.get("title_en") if lang == "en" else seo.get("title_ko")
+        if lang_title:
+            clean_title = lang_title
             
     # SEO title이 없을 경우 대비
     if not seo.get("seo_title"):
@@ -69,6 +74,8 @@ def synthesize_frontmatter(post_row, meta_data, lang: str):
         "metaDescription": seo.get("meta_description", ""),
         "focusKeyphrase": seo.get("focus_keyphrase", ""),
         "longTailKeywords": seo.get("long_tail_keywords", []),
+        "uiTags": seo.get("ui_tags", []),
+        "uiDescription": seo.get("ui_description", ""),
         "sourceOrigin": "migrated",
         "humanReviewed": True,
         "citation": citation_raw,
