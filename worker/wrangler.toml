@@ -1,0 +1,9 @@
+name = "youngkuklaw-views"
+main = "src/index.ts"
+compatibility_date = "2024-03-20"
+
+# Bind the D1 database
+[[d1_databases]]
+binding = "DB"
+database_name = "youngkuklaw-views-db"
+database_id = "bf077423-8ca7-4690-aa11-e903b7c52272"
