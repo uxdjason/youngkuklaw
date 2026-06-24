@@ -25,7 +25,11 @@ const isActive = (href: string) =>
         aria-current={isActive("/ko/") ? "page" : undefined}
       >
         <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="/images/youngkuklaw-logo-260519.png" alt="영국 Law Logo" style="width: 40px; height: 40px; object-fit: contain;" />
+          <img
+            src="/images/youngkuklaw-logo-260519.png"
+            alt="영국 Law Logo"
+            style="width: 40px; height: 40px; object-fit: contain;"
+          />
           <div class="text-block-11">영국 Law</div>
         </div>
       </a>
@@ -80,7 +84,7 @@ const isActive = (href: string) =>
               >
               <a
                 href="/ko/criminal-law-cases/"
-                class="dropdown-link w-dropdown-link">형사법 판례</a
+                class="dropdown-link w-dropdown-link">형법 판례</a
               >
               <a
                 href="/ko/equity-law-cases/"
@@ -100,9 +104,7 @@ const isActive = (href: string) =>
           >불법행위법</a
         >
         <a href="/ko/public-law/" class="nav_menu_link ko w-nav-link">공법</a>
-        <a href="/ko/criminal-law/" class="nav_menu_link ko w-nav-link"
-          >형사법</a
-        >
+        <a href="/ko/criminal-law/" class="nav_menu_link ko w-nav-link">형법</a>
         <a href="/ko/equity-law/" class="nav_menu_link ko w-nav-link">형평법</a>
         <a href="/ko/land-law/" class="nav_menu_link ko w-nav-link">토지법</a>
       </nav>

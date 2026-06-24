@@ -1,10 +1,10 @@
 ---
-import BaseLayout from './BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import type { CategorySlug } from '../content.config';
-import type { Lang } from '../utils/i18n';
-import { CATEGORY_LABELS } from '../utils/i18n';
-import AdSlot from '../components/AdSlot.astro';
+import BaseLayout from "./BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { CategorySlug } from "../content.config";
+import type { Lang } from "../utils/i18n";
+import { CATEGORY_LABELS } from "../utils/i18n";
+import AdSlot from "../components/AdSlot.astro";
 
 interface Props {
   lang: Lang;
@@ -14,14 +14,14 @@ interface Props {
 const { lang, category } = Astro.props;
 
 // Fetch posts that belong to this category and language, and are not drafts
-const allPosts = await getCollection('posts', ({ data }) => {
+const allPosts = await getCollection("posts", ({ data }) => {
   if (data.lang !== lang || data.draft) return false;
-  
-  if (category === 'case-law') {
+
+  if (category === "case-law") {
     // case-law page aggregates all cases from *-cases categories
-    return data.category.endsWith('-cases');
+    return data.category.endsWith("-cases");
   }
-  
+
   return data.category === category;
 });
 
@@ -42,7 +42,7 @@ function getCitationYear(citation?: string, pubDate?: Date): number {
   return pubDate ? pubDate.getFullYear() : 0;
 }
 
-const isCaseCategory = category === 'case-law' || category.endsWith('-cases');
+const isCaseCategory = category === "case-law" || category.endsWith("-cases");
 
 // Sort posts: default is latest (citation year descending for cases, pubDate descending for notes)
 const sortedPosts = allPosts.sort((a, b) => {
@@ -61,82 +61,149 @@ const sortedPosts = allPosts.sort((a, b) => {
 const label = CATEGORY_LABELS[category][lang];
 const totalCount = sortedPosts.length;
 
-const unitText = lang === 'en' 
-  ? (isCaseCategory ? 'cases' : 'notes') 
-  : (isCaseCategory ? '개 판례' : '개 노트');
+const unitText =
+  lang === "en"
+    ? isCaseCategory
+      ? "cases"
+      : "notes"
+    : isCaseCategory
+      ? "개 판례"
+      : "개 노트";
 
-const countLabel = lang === 'en' ? `${totalCount} ${unitText} Available` : `${totalCount}${unitText} 이용 가능`;
+const countLabel =
+  lang === "en"
+    ? `${totalCount} ${unitText} Available`
+    : `${totalCount}${unitText} 이용 가능`;
 
 // Extract unique keywords for the keyword cloud from the posts
 const allKeywords = Array.from(
-  new Set(sortedPosts.flatMap(post => post.data.longTailKeywords || []))
+  new Set(sortedPosts.flatMap((post) => post.data.longTailKeywords || [])),
 ).slice(0, 10); // Limit to top 10 unique keywords
 
 // Date formatter helper
 function formatDate(date: Date, locale: string) {
-  return date.toLocaleDateString(locale === 'ko' ? 'ko-KR' : 'en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
+  return date.toLocaleDateString(locale === "ko" ? "ko-KR" : "en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 }
 
 const allSortOptions = [
   {
-    id: 'latest',
-    en: 'Latest',
-    ko: '최근 판례부터',
+    id: "latest",
+    en: "Latest",
+    ko: "최근 판례부터",
     caseOnly: true,
   },
   {
-    id: 'oldest',
-    en: 'Oldest',
-    ko: '오래된 판례부터',
+    id: "oldest",
+    en: "Oldest",
+    ko: "오래된 판례부터",
     caseOnly: true,
   },
   {
-    id: 'recently-added',
-    en: 'Recently Added',
-    ko: '최근 추가 먼저',
+    id: "recently-added",
+    en: "Recently Added",
+    ko: "최근 추가 먼저",
     caseOnly: false,
   },
   {
-    id: 'most-popular',
-    en: 'Most Popular',
-    ko: '조회수 기준',
+    id: "most-popular",
+    en: "Most Popular",
+    ko: "조회수 기준",
     caseOnly: false,
   },
   {
-    id: 'alphabetical',
-    en: 'Alphabetical',
-    ko: '알파벳 순서',
+    id: "alphabetical",
+    en: "Alphabetical",
+    ko: "알파벳 순서",
     caseOnly: false,
-  }
+  },
 ];
 
 // For case categories: show all 5 options (Latest active by default)
 // For note categories: show only 3 options (Recently Added active by default)
-const sortOptions = allSortOptions.filter(opt => !opt.caseOnly || isCaseCategory);
-const defaultSortId = isCaseCategory ? 'latest' : 'recently-added';
+const sortOptions = allSortOptions.filter(
+  (opt) => !opt.caseOnly || isCaseCategory,
+);
+const defaultSortId = isCaseCategory ? "latest" : "recently-added";
 
 // Build richer SEO title and description for category pages
 const isCaseCat = isCaseCategory;
 const seoTitle =
-  lang === 'en'
-    ? `${label} ${isCaseCat ? 'Cases' : 'Notes'} · YoungkukLaw`
-    : `${label} ${isCaseCat ? '판례' : '노트'} · YoungkukLaw`;
+  lang === "en"
+    ? `${label} ${isCaseCat ? "Cases" : "Notes"} · YoungkukLaw`
+    : `${label} ${isCaseCat ? "판례" : "노트"} · YoungkukLaw`;
+
+const CATEGORY_INTROS: Record<string, { en: string; ko: string }> = {
+  "english-law": {
+    en: "Explore the foundations and development of English law.",
+    ko: "영국법의 기초와 발전 과정을 학습합니다.",
+  },
+  "contract-law": {
+    en: "Explore the principles governing contractual obligations.",
+    ko: "영미 계약법의 다양한 원칙들과 법리들을 살펴보세요.",
+  },
+  "tort-law": {
+    en: "Explore the law of civil liability and compensation.",
+    ko: "불법행위에 대한 민사상 책임과 손해배상 및 항변에 관하여 학습합니다.",
+  },
+  "public-law": {
+    en: "Explore the legal framework governing public power.",
+    ko: "공권력의 행사와 통제를 규율하는 법체계를 살펴보세요.",
+  },
+  "criminal-law": {
+    en: "Explore the principles of criminal liability and justice.",
+    ko: "형사 책임과 형법의 여러 원칙들을 살펴보세요.",
+  },
+  "equity-law": {
+    en: "Explore the equitable principles that complement the common law.",
+    ko: "보통법의 한계를 보완하는 형평법의 원칙들을 학습합니다.",
+  },
+  "land-law": {
+    en: "Explore the law governing rights and interests in land.",
+    ko: "토지에 대한 권리와 이익을 규율하는 법리와 원칙들을 살펴보세요.",
+  },
+  "case-law": {
+    en: "Browse cases from every major area of English law.",
+    ko: "영국법의 주요 분야별 판례들을 한 곳에서 살펴보세요.",
+  },
+  "contract-law-cases": {
+    en: "Browse leading cases in contract law.",
+    ko: "영국 계약법의 주요 판례들을 살펴보세요.",
+  },
+  "tort-law-cases": {
+    en: "Browse leading cases in tort law.",
+    ko: "영국 불법행위법의 주요 판례들을 살펴보세요.",
+  },
+  "public-law-cases": {
+    en: "Browse leading cases in public law.",
+    ko: "영국 공법의 주요 판례들을 살펴보세요.",
+  },
+  "criminal-law-cases": {
+    en: "Browse leading cases in criminal law.",
+    ko: "영국 형법의 주요 판례들을 살펴보세요.",
+  },
+  "equity-law-cases": {
+    en: "Browse leading cases in equity.",
+    ko: "영국 형평법의 주요 판례들을 살펴보세요.",
+  },
+  "land-law-cases": {
+    en: "Browse leading cases in land law.",
+    ko: "영국 토지법의 주요 판례들을 살펴보세요.",
+  },
+};
+
+const categoryIntro = CATEGORY_INTROS[category];
 
 const seoDescription =
-  lang === 'en'
-    ? `Browse ${totalCount} ${isCaseCat ? 'case summaries' : 'lecture notes'} for ${label}. Free, clear and well-structured English law resources for law students worldwide.`
-    : `YoungkukLaw에서 ${label} 관련 ${isCaseCat ? '판례' : '노트'} ${totalCount}개를 무료로 제공합니다. 영국법 학습자를 위한 명확하고 체계적인 학습 자료입니다.`;
-
+  lang === "en"
+    ? `Browse ${totalCount} ${isCaseCat ? "case summaries" : "lecture notes"} for ${label}. Free, clear and well-structured English law resources for law students worldwide.`
+    : `YoungkukLaw에서 ${label} 관련 ${isCaseCat ? "판례" : "노트"} ${totalCount}개를 무료로 제공합니다. 영국법 학습자를 위한 명확하고 체계적인 학습 자료입니다.`;
 ---
-<BaseLayout
-  lang={lang}
-  title={seoTitle}
-  description={seoDescription}
->
+
+<BaseLayout lang={lang} title={seoTitle} description={seoDescription}>
   <section>
     <div class="padding-global">
       <div class="container-large">
@@ -146,9 +213,14 @@ const seoDescription =
             <h1 class="heading-style-h1">{label}</h1>
             <div class="spacer-small"></div>
             <div class="text-size-medium">
-              {lang === 'en' 
-                ? `Key learning resources and academic guidelines for ${label}.`
-                : `영국법 ${label} 과목의 핵심 학습 원칙 및 가이드라인 정리.`
+              {
+                categoryIntro
+                  ? lang === "en"
+                    ? categoryIntro.en
+                    : categoryIntro.ko
+                  : lang === "en"
+                    ? `Explore ${label}.`
+                    : `${label} 살펴보기.`
               }
             </div>
           </div>
@@ -163,51 +235,104 @@ const seoDescription =
     </div>
   </section>
 
-  {category === 'case-law' && (
-    <section class="section">
-      <div class="padding-global">
-        <div class="container-large">
-          <div class="spacer-large"></div>
-          <div class="heading-style-h2">{lang === 'en' ? 'Cases by Subjects' : '과목별 판례'}</div>
-          <div class="spacer-small"></div>
-          <div class="case-subject-card-container">
-            <div class="case-subject-card">
-              <a href={lang === 'en' ? '/contract-law-cases/' : '/ko/contract-law-cases/'} class="link-block w-inline-block">
-                <div class="heading-style-h4">{lang === 'en' ? 'Contract Law Cases' : '계약법 판례'}</div>
-              </a>
+  {
+    category === "case-law" && (
+      <section class="section">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="spacer-large" />
+            <div class="heading-style-h2">
+              {lang === "en" ? "Cases by Subjects" : "과목별 판례"}
             </div>
-            <div class="case-subject-card">
-              <a href={lang === 'en' ? '/tort-law-cases/' : '/ko/tort-law-cases/'} class="link-block w-inline-block">
-                <div class="heading-style-h4">{lang === 'en' ? 'Tort Law Cases' : '불법행위법 판례'}</div>
-              </a>
+            <div class="spacer-small" />
+            <div class="case-subject-card-container">
+              <div class="case-subject-card">
+                <a
+                  href={
+                    lang === "en"
+                      ? "/contract-law-cases/"
+                      : "/ko/contract-law-cases/"
+                  }
+                  class="link-block w-inline-block"
+                >
+                  <div class="heading-style-h4">
+                    {lang === "en" ? "Contract Law Cases" : "계약법 판례"}
+                  </div>
+                </a>
+              </div>
+              <div class="case-subject-card">
+                <a
+                  href={
+                    lang === "en" ? "/tort-law-cases/" : "/ko/tort-law-cases/"
+                  }
+                  class="link-block w-inline-block"
+                >
+                  <div class="heading-style-h4">
+                    {lang === "en" ? "Tort Law Cases" : "불법행위법 판례"}
+                  </div>
+                </a>
+              </div>
+              <div class="case-subject-card">
+                <a
+                  href={
+                    lang === "en"
+                      ? "/public-law-cases/"
+                      : "/ko/public-law-cases/"
+                  }
+                  class="link-block w-inline-block"
+                >
+                  <div class="heading-style-h4">
+                    {lang === "en" ? "Public Law Cases" : "공법 판례"}
+                  </div>
+                </a>
+              </div>
+              <div class="case-subject-card">
+                <a
+                  href={
+                    lang === "en"
+                      ? "/criminal-law-cases/"
+                      : "/ko/criminal-law-cases/"
+                  }
+                  class="link-block w-inline-block"
+                >
+                  <div class="heading-style-h4">
+                    {lang === "en" ? "Criminal Law Cases" : "형사법 판례"}
+                  </div>
+                </a>
+              </div>
+              <div class="case-subject-card">
+                <a
+                  href={
+                    lang === "en"
+                      ? "/equity-law-cases/"
+                      : "/ko/equity-law-cases/"
+                  }
+                  class="link-block w-inline-block"
+                >
+                  <div class="heading-style-h4">
+                    {lang === "en" ? "Equity Law Cases" : "형평법 판례"}
+                  </div>
+                </a>
+              </div>
+              <div class="case-subject-card">
+                <a
+                  href={
+                    lang === "en" ? "/land-law-cases/" : "/ko/land-law-cases/"
+                  }
+                  class="link-block w-inline-block"
+                >
+                  <div class="heading-style-h4">
+                    {lang === "en" ? "Land Law Cases" : "토지법 판례"}
+                  </div>
+                </a>
+              </div>
             </div>
-            <div class="case-subject-card">
-              <a href={lang === 'en' ? '/public-law-cases/' : '/ko/public-law-cases/'} class="link-block w-inline-block">
-                <div class="heading-style-h4">{lang === 'en' ? 'Public Law Cases' : '공법 판례'}</div>
-              </a>
-            </div>
-            <div class="case-subject-card">
-              <a href={lang === 'en' ? '/criminal-law-cases/' : '/ko/criminal-law-cases/'} class="link-block w-inline-block">
-                <div class="heading-style-h4">{lang === 'en' ? 'Criminal Law Cases' : '형사법 판례'}</div>
-              </a>
-            </div>
-            <div class="case-subject-card">
-              <a href={lang === 'en' ? '/equity-law-cases/' : '/ko/equity-law-cases/'} class="link-block w-inline-block">
-                <div class="heading-style-h4">{lang === 'en' ? 'Equity Law Cases' : '형평법 판례'}</div>
-              </a>
-            </div>
-            <div class="case-subject-card">
-              <a href={lang === 'en' ? '/land-law-cases/' : '/ko/land-law-cases/'} class="link-block w-inline-block">
-                <div class="heading-style-h4">{lang === 'en' ? 'Land Law Cases' : '토지법 판례'}</div>
-              </a>
-            </div>
+            <div class="spacer-large" />
           </div>
-          <div class="spacer-large"></div>
         </div>
-      </div>
-    </section>
-  )}
-
+      </section>
+    )
+  }
 
   <section>
     <div class="padding-global">
@@ -218,59 +343,114 @@ const seoDescription =
           <div class="article-list-left">
             <div class="sort-by">
               <div class="sort-by-upper">
-                <div class="article-list-left-heading">{lang === 'en' ? 'Sort by' : '정렬 방법'}</div>
+                <div class="article-list-left-heading">
+                  {lang === "en" ? "Sort by" : "정렬 방법"}
+                </div>
               </div>
               <div class="sort-by-lower">
-                {sortOptions.map((opt) => (
-                  <a href="#" class="sort-by-radio w-inline-block" data-sort-type={opt.id} data-active={opt.id === defaultSortId ? 'true' : 'false'}>
-                    <div class="radio-on w-embed">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
-                        <path d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"></path>
-                      </svg>
-                    </div>
-                    <div class="radio-off w-embed">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
-                        <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"></path>
-                      </svg>
-                    </div>
-                    <div class={opt.id === defaultSortId ? 'text-block-8' : 'text-block-9'}>{lang === 'en' ? opt.en : opt.ko}</div>
-                  </a>
-                ))}
+                {
+                  sortOptions.map((opt) => (
+                    <a
+                      href="#"
+                      class="sort-by-radio w-inline-block"
+                      data-sort-type={opt.id}
+                      data-active={opt.id === defaultSortId ? "true" : "false"}
+                    >
+                      <div class="radio-on w-embed">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="1em"
+                          viewBox="0 -960 960 960"
+                          width="1em"
+                          fill="currentColor"
+                        >
+                          <path d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z" />
+                        </svg>
+                      </div>
+                      <div class="radio-off w-embed">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="1em"
+                          viewBox="0 -960 960 960"
+                          width="1em"
+                          fill="currentColor"
+                        >
+                          <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z" />
+                        </svg>
+                      </div>
+                      <div
+                        class={
+                          opt.id === defaultSortId
+                            ? "text-block-8"
+                            : "text-block-9"
+                        }
+                      >
+                        {lang === "en" ? opt.en : opt.ko}
+                      </div>
+                    </a>
+                  ))
+                }
               </div>
             </div>
 
-            
             <div class="sort-by">
               <div class="sort-by-upper">
-                <div class="article-list-left-heading">{lang === 'en' ? 'Keywords' : '핵심 키워드'}</div>
+                <div class="article-list-left-heading">
+                  {lang === "en" ? "Keywords" : "핵심 키워드"}
+                </div>
               </div>
               <div class="keyword-cloud">
-                <div class="keyword-tag all">{lang === 'en' ? 'All' : '전체'}</div>
-                {allKeywords.map(keyword => (
-                  <a href="#" class="keyword-link w-inline-block">
-                    <div class="keyword-tag">{keyword}</div>
-                  </a>
-                ))}
+                <div class="keyword-tag all">
+                  {lang === "en" ? "All" : "전체"}
+                </div>
+                {
+                  allKeywords.map((keyword) => (
+                    <a href="#" class="keyword-link w-inline-block">
+                      <div class="keyword-tag">{keyword}</div>
+                    </a>
+                  ))
+                }
               </div>
             </div>
 
             <div class="sort-by">
               <div class="sort-by-upper">
-                <div class="article-list-left-heading">{lang === 'en' ? 'Bookmark' : '북마크'}</div>
+                <div class="article-list-left-heading">
+                  {lang === "en" ? "Bookmark" : "즐겨찾기"}
+                </div>
               </div>
               <a href="#" class="bookmarked-only w-inline-block">
                 <div class="bookmark-icon-off w-embed">
-                  <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
-                    <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"></path>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="1em"
+                    viewBox="0 -960 960 960"
+                    width="1em"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"
+                    ></path>
                   </svg>
                 </div>
                 <div class="bookmark-icon-on w-embed">
-                  <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="7" y="5" width="10" height="13" fill="#FFC400"></rect>
-                    <path d="M5 21V5C5 4.45 5.19583 3.97917 5.5875 3.5875C5.97917 3.19583 6.45 3 7 3H17C17.55 3 18.0208 3.19583 18.4125 3.5875C18.8042 3.97917 19 4.45 19 5V21L12 18L5 21ZM7 17.95L12 15.8L17 17.95V5H7V17.95Z" fill="currentColor"></path>
+                  <svg
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect x="7" y="5" width="10" height="13" fill="#FFC400"
+                    ></rect>
+                    <path
+                      d="M5 21V5C5 4.45 5.19583 3.97917 5.5875 3.5875C5.97917 3.19583 6.45 3 7 3H17C17.55 3 18.0208 3.19583 18.4125 3.5875C18.8042 3.97917 19 4.45 19 5V21L12 18L5 21ZM7 17.95L12 15.8L17 17.95V5H7V17.95Z"
+                      fill="currentColor"></path>
                   </svg>
                 </div>
-                <div class="bookmarked-only-label">{lang === 'en' ? 'Bookmarked Only' : '북마크한 글만 보기'}</div>
+                <div class="bookmarked-only-label">
+                  {lang === "en" ? "Bookmarked Only" : "즐겨찾기한 글만 보기"}
+                </div>
               </a>
             </div>
 
@@ -281,83 +461,181 @@ const seoDescription =
 
           {/* Right Articles List Section */}
           <div class="article-list-wrapper">
-            {totalCount === 0 ? (
-              <div class="note-container">
-                <div class="div-block-2">
-                  <div class={`featured-content-desc${lang === 'ko' ? ' ko' : ''}`}>
-                    {lang === 'en' ? 'No posts yet.' : '아직 게시된 글이 없습니다.'}
+            {
+              totalCount === 0 ? (
+                <div class="note-container">
+                  <div class="div-block-2">
+                    <div
+                      class={`featured-content-desc${lang === "ko" ? " ko" : ""}`}
+                    >
+                      {lang === "en"
+                        ? "No posts yet."
+                        : "아직 게시된 글이 없습니다."}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div class="article-list" data-is-case-category={isCaseCategory ? "true" : "false"}>
-                {sortedPosts.map((post) => (
-                  <div class="article-row"
-                       data-pubdate={post.data.pubDate.valueOf()}
-                       data-title={post.data.title.toLowerCase()}
-                       data-views={(post.data as any).views || 0}
-                       data-created={post.data.pubDate.valueOf()}
-                       data-keywords={post.data.longTailKeywords?.join(',').toLowerCase() || ''}
-                       data-slug={post.data.slug}
-                       data-citation-year={getCitationYear(post.data.citation, post.data.pubDate)}>
-
-                    <div class="article-row-upper">
-                      <div class="keyword-tag-container">
-                        {(post.data.uiTags && post.data.uiTags.length > 0 ? post.data.uiTags : post.data.longTailKeywords?.slice(0, 2) || []).map((k) => (
-                          <div class="keyword-tag">{k}</div>
-                        ))}
+              ) : (
+                <>
+                  <div
+                    class="note-container no-bookmark-filter-msg"
+                    style="display:none"
+                  >
+                    <div class="div-block-2">
+                      <div
+                        class={`featured-content-desc${lang === "ko" ? " ko" : ""}`}
+                      >
+                        {lang === "en"
+                          ? "You have no bookmarked article."
+                          : "즐겨찾기에 추가된 내용이 없습니다."}
                       </div>
-                      <a href="#" class="bookmark w-inline-block" data-slug={post.data.slug}>
-                        <div class="bookmark-empty w-embed">
-                          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
-                            <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z"></path>
-                          </svg>
-                        </div>
-                        <div class="bookmark-filled w-embed">
-                          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 24 24" fill="none">
-                            <rect x="7" y="5" width="10" height="13" fill="#FFC400"></rect>
-                            <path d="M5 21V5C5 4.45 5.19583 3.97917 5.5875 3.5875C5.97917 3.19583 6.45 3 7 3H17C17.55 3 18.0208 3.19583 18.4125 3.5875C18.8042 3.97917 19 4.45 19 5V21L12 18L5 21ZM7 17.95L12 15.8L17 17.95V5H7V17.95Z" fill="currentColor"></path>
-                          </svg>
-                        </div>
-                      </a>
-                    </div>
-                    <div class="spacer-xsmall"></div>
-                    
-                    {/* Title binding */}
-                    <a href={lang === 'en' ? `/${post.data.slug}/` : `/ko/${post.data.slug}/`} class="article-row-heading w-inline-block">
-                      <h3 class={`heading-style-h3${lang === 'ko' ? ' ko' : ''}`}>{post.data.title}</h3>
-                      {isCaseCategory && post.data.citation && (
-                        <div class="case-citation-text">{post.data.citation}</div>
-                      )}
-                    </a>
-                    
-                    <div class="spacer-small"></div>
-                    <div class="article-row-description">
-                      <div class={`featured-content-desc${lang === 'ko' ? ' ko' : ''}`}>{post.data.uiDescription || post.data.description}</div>
-                    </div>
-                    <div class="spacer-small"></div>
-                    
-                    <div class="article-row-lower">
-                      <div class="article-row-lower-left">
-                        <div class="view-number">
-                          <div class="eye-icon w-embed">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 -960 960 960" width="1em" fill="currentColor">
-                              <path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"></path>
-                            </svg>
-                          </div>
-                          <div class="view-number-num view-counter-batch" data-slug={post.data.slug}>0 views</div>
-                        </div>
-                        <div class="note-row-timestamp">{formatDate(post.data.pubDate, lang)}</div>
-                      </div>
-                      <a href={lang === 'en' ? `/${post.data.slug}/` : `/ko/${post.data.slug}/`} class="btn-read-more w-inline-block">
-                        <div class="featured-content-desc">{lang === 'en' ? 'Read More' : '자세히 보기'}</div>
-                      </a>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-            
+                  <div
+                    class="article-list"
+                    data-is-case-category={isCaseCategory ? "true" : "false"}
+                  >
+                    {sortedPosts.map((post) => (
+                      <div
+                        class="article-row"
+                        data-pubdate={post.data.pubDate.valueOf()}
+                        data-title={post.data.title.toLowerCase()}
+                        data-views={(post.data as any).views || 0}
+                        data-created={post.data.pubDate.valueOf()}
+                        data-keywords={
+                          post.data.longTailKeywords?.join(",").toLowerCase() ||
+                          ""
+                        }
+                        data-slug={post.data.slug}
+                        data-citation-year={getCitationYear(
+                          post.data.citation,
+                          post.data.pubDate,
+                        )}
+                      >
+                        <div class="article-row-upper">
+                          <div class="keyword-tag-container">
+                            {(post.data.uiTags && post.data.uiTags.length > 0
+                              ? post.data.uiTags
+                              : post.data.longTailKeywords?.slice(0, 2) || []
+                            ).map((k) => (
+                              <div class="keyword-tag">{k}</div>
+                            ))}
+                          </div>
+                          <a
+                            href="#"
+                            class="bookmark w-inline-block"
+                            data-slug={post.data.slug}
+                          >
+                            <div class="bookmark-empty w-embed">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="1em"
+                                viewBox="0 -960 960 960"
+                                width="1em"
+                                fill="currentColor"
+                              >
+                                <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z" />
+                              </svg>
+                            </div>
+                            <div class="bookmark-filled w-embed">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="1em"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                              >
+                                <rect
+                                  x="7"
+                                  y="5"
+                                  width="10"
+                                  height="13"
+                                  fill="#FFC400"
+                                />
+                                <path
+                                  d="M5 21V5C5 4.45 5.19583 3.97917 5.5875 3.5875C5.97917 3.19583 6.45 3 7 3H17C17.55 3 18.0208 3.19583 18.4125 3.5875C18.8042 3.97917 19 4.45 19 5V21L12 18L5 21ZM7 17.95L12 15.8L17 17.95V5H7V17.95Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                          </a>
+                        </div>
+                        <div class="spacer-xsmall" />
+
+                        {/* Title binding */}
+                        <a
+                          href={
+                            lang === "en"
+                              ? `/${post.data.slug}/`
+                              : `/ko/${post.data.slug}/`
+                          }
+                          class="article-row-heading w-inline-block"
+                        >
+                          <h3
+                            class={`heading-style-h3${lang === "ko" ? " ko" : ""}`}
+                          >
+                            {post.data.title}
+                          </h3>
+                          {isCaseCategory && post.data.citation && (
+                            <div class="case-citation-text">
+                              {post.data.citation}
+                            </div>
+                          )}
+                        </a>
+
+                        <div class="spacer-small" />
+                        <div class="article-row-description">
+                          <div
+                            class={`featured-content-desc${lang === "ko" ? " ko" : ""}`}
+                          >
+                            {post.data.uiDescription || post.data.description}
+                          </div>
+                        </div>
+                        <div class="spacer-small" />
+
+                        <div class="article-row-lower">
+                          <div class="article-row-lower-left">
+                            <div class="view-number">
+                              <div class="eye-icon w-embed">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  height="1em"
+                                  viewBox="0 -960 960 960"
+                                  width="1em"
+                                  fill="currentColor"
+                                >
+                                  <path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z" />
+                                </svg>
+                              </div>
+                              <div
+                                class="view-number-num view-counter-batch"
+                                data-slug={post.data.slug}
+                              >
+                                0 views
+                              </div>
+                            </div>
+                            <div class="note-row-timestamp">
+                              {formatDate(post.data.pubDate, lang)}
+                            </div>
+                          </div>
+                          <a
+                            href={
+                              lang === "en"
+                                ? `/${post.data.slug}/`
+                                : `/ko/${post.data.slug}/`
+                            }
+                            class="btn-read-more w-inline-block"
+                          >
+                            <div class="featured-content-desc">
+                              {lang === "en" ? "Read More" : "자세히 보기"}
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )
+            }
+
             <div class="spacer-large"></div>
           </div>
         </div>
@@ -391,7 +669,7 @@ const seoDescription =
   .bookmarked-only[data-active="true"] .bookmark-icon-on {
     display: block !important;
   }
-  
+
   /* Active states for Keyword filters */
   .keyword-tag[data-active="true"] {
     background-color: var(--base-color-brand--blue-dark) !important;
@@ -409,166 +687,202 @@ const seoDescription =
 
 <script>
   // DOM Elements
-  const container = document.querySelector('.article-list');
+  const container = document.querySelector(".article-list");
   if (container) {
-    const radioButtons = document.querySelectorAll('.sort-by-radio');
-    const keywordCloud = document.querySelector('.keyword-cloud');
-    const bookmarkToggle = document.querySelector('.bookmarked-only');
-    
-    let activeKeyword = 'all';
+    const radioButtons = document.querySelectorAll(".sort-by-radio");
+    const keywordCloud = document.querySelector(".keyword-cloud");
+    const bookmarkToggle = document.querySelector(".bookmarked-only");
+
+    let activeKeyword = "all";
     let showBookmarkedOnly = false;
-    
+
     // Filter Function
     function applyFilters() {
-      const items = Array.from(container!.querySelectorAll('.article-row'));
-      const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
-      
-      items.forEach(item => {
-        const itemKeywords = item.getAttribute('data-keywords') || '';
-        const itemSlug = item.getAttribute('data-slug') || '';
-        
-        const keywordsArray = itemKeywords.split(',').map(k => k.trim().toLowerCase()).filter(Boolean);
-        const matchesKeyword = activeKeyword === 'all' || keywordsArray.includes(activeKeyword.toLowerCase());
-        const matchesBookmark = !showBookmarkedOnly || bookmarkedSlugs.includes(itemSlug);
-        
+      const items = Array.from(container!.querySelectorAll(".article-row"));
+      const bookmarkedSlugs = JSON.parse(
+        localStorage.getItem("bookmarked_posts") || "[]",
+      );
+      const noBookmarkMsg = document.querySelector(
+        ".no-bookmark-filter-msg",
+      ) as HTMLElement | null;
+
+      let visibleCount = 0;
+      items.forEach((item) => {
+        const itemKeywords = item.getAttribute("data-keywords") || "";
+        const itemSlug = item.getAttribute("data-slug") || "";
+
+        const keywordsArray = itemKeywords
+          .split(",")
+          .map((k) => k.trim().toLowerCase())
+          .filter(Boolean);
+        const matchesKeyword =
+          activeKeyword === "all" ||
+          keywordsArray.includes(activeKeyword.toLowerCase());
+        const matchesBookmark =
+          !showBookmarkedOnly || bookmarkedSlugs.includes(itemSlug);
+
         if (matchesKeyword && matchesBookmark) {
-          (item as HTMLElement).style.display = '';
+          (item as HTMLElement).style.display = "";
+          visibleCount++;
         } else {
-          (item as HTMLElement).style.display = 'none';
+          (item as HTMLElement).style.display = "none";
         }
       });
+
+      // Show friendly message when bookmark filter is on but no items match
+      if (noBookmarkMsg) {
+        noBookmarkMsg.style.display =
+          showBookmarkedOnly && visibleCount === 0 ? "block" : "none";
+      }
     }
-    
+
     // 1. Sort Handling
-    radioButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    radioButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.preventDefault();
-        
-        const sortType = btn.getAttribute('data-sort-type');
-        
-        radioButtons.forEach(b => {
-          b.setAttribute('data-active', b === btn ? 'true' : 'false');
-          const textBlock = b.querySelector('.text-block-8, .text-block-9');
+
+        const sortType = btn.getAttribute("data-sort-type");
+
+        radioButtons.forEach((b) => {
+          b.setAttribute("data-active", b === btn ? "true" : "false");
+          const textBlock = b.querySelector(".text-block-8, .text-block-9");
           if (textBlock) {
-            textBlock.className = b === btn ? 'text-block-8' : 'text-block-9';
+            textBlock.className = b === btn ? "text-block-8" : "text-block-9";
           }
         });
-        
-        const isCaseCategory = container!.getAttribute('data-is-case-category') === 'true';
-        const items = Array.from(container!.querySelectorAll('.article-row'));
-        
+
+        const isCaseCategory =
+          container!.getAttribute("data-is-case-category") === "true";
+        const items = Array.from(container!.querySelectorAll(".article-row"));
+
         items.sort((a, b) => {
-          if (sortType === 'latest') {
+          if (sortType === "latest") {
             if (isCaseCategory) {
-              const yearA = parseInt(a.getAttribute('data-citation-year') || '0', 10);
-              const yearB = parseInt(b.getAttribute('data-citation-year') || '0', 10);
+              const yearA = parseInt(
+                a.getAttribute("data-citation-year") || "0",
+                10,
+              );
+              const yearB = parseInt(
+                b.getAttribute("data-citation-year") || "0",
+                10,
+              );
               if (yearB !== yearA) {
                 return yearB - yearA;
               }
-              const titleA = a.getAttribute('data-title') || '';
-              const titleB = b.getAttribute('data-title') || '';
+              const titleA = a.getAttribute("data-title") || "";
+              const titleB = b.getAttribute("data-title") || "";
               return titleA.localeCompare(titleB);
             } else {
-              const valA = parseInt(a.getAttribute('data-pubdate') || '0', 10);
-              const valB = parseInt(b.getAttribute('data-pubdate') || '0', 10);
+              const valA = parseInt(a.getAttribute("data-pubdate") || "0", 10);
+              const valB = parseInt(b.getAttribute("data-pubdate") || "0", 10);
               return valB - valA;
             }
-          } else if (sortType === 'oldest') {
+          } else if (sortType === "oldest") {
             if (isCaseCategory) {
-              const yearA = parseInt(a.getAttribute('data-citation-year') || '0', 10);
-              const yearB = parseInt(b.getAttribute('data-citation-year') || '0', 10);
+              const yearA = parseInt(
+                a.getAttribute("data-citation-year") || "0",
+                10,
+              );
+              const yearB = parseInt(
+                b.getAttribute("data-citation-year") || "0",
+                10,
+              );
               if (yearA !== yearB) {
                 return yearA - yearB;
               }
-              const titleA = a.getAttribute('data-title') || '';
-              const titleB = b.getAttribute('data-title') || '';
+              const titleA = a.getAttribute("data-title") || "";
+              const titleB = b.getAttribute("data-title") || "";
               return titleA.localeCompare(titleB);
             } else {
-              const valA = parseInt(a.getAttribute('data-pubdate') || '0', 10);
-              const valB = parseInt(b.getAttribute('data-pubdate') || '0', 10);
+              const valA = parseInt(a.getAttribute("data-pubdate") || "0", 10);
+              const valB = parseInt(b.getAttribute("data-pubdate") || "0", 10);
               return valA - valB;
             }
-          } else if (sortType === 'recently-added') {
-            const valA = parseInt(a.getAttribute('data-created') || '0', 10);
-            const valB = parseInt(b.getAttribute('data-created') || '0', 10);
+          } else if (sortType === "recently-added") {
+            const valA = parseInt(a.getAttribute("data-created") || "0", 10);
+            const valB = parseInt(b.getAttribute("data-created") || "0", 10);
             return valB - valA;
-          } else if (sortType === 'most-popular') {
-            const valA = parseInt(a.getAttribute('data-views') || '0', 10);
-            const valB = parseInt(b.getAttribute('data-views') || '0', 10);
+          } else if (sortType === "most-popular") {
+            const valA = parseInt(a.getAttribute("data-views") || "0", 10);
+            const valB = parseInt(b.getAttribute("data-views") || "0", 10);
             return valB - valA;
-          } else if (sortType === 'alphabetical') {
-            const valA = a.getAttribute('data-title') || '';
-            const valB = b.getAttribute('data-title') || '';
+          } else if (sortType === "alphabetical") {
+            const valA = a.getAttribute("data-title") || "";
+            const valB = b.getAttribute("data-title") || "";
             return valA.localeCompare(valB);
           }
           return 0;
         });
-        
-        items.forEach(item => container!.appendChild(item));
+
+        items.forEach((item) => container!.appendChild(item));
       });
     });
 
     // 2. Keyword Filter Handling
     if (keywordCloud) {
-      const keywordTags = keywordCloud.querySelectorAll('.keyword-tag, .keyword-link');
-      
-      keywordTags.forEach(tag => {
-        tag.addEventListener('click', (e) => {
+      const keywordTags = keywordCloud.querySelectorAll(
+        ".keyword-tag, .keyword-link",
+      );
+
+      keywordTags.forEach((tag) => {
+        tag.addEventListener("click", (e) => {
           e.preventDefault();
-          
-          let rawKeyword = tag.textContent || '';
+
+          let rawKeyword = tag.textContent || "";
           const cleanKeyword = rawKeyword.trim();
-          
-          if (cleanKeyword === 'All' || cleanKeyword === '전체') {
-            activeKeyword = 'all';
+
+          if (cleanKeyword === "All" || cleanKeyword === "전체") {
+            activeKeyword = "all";
           } else {
             activeKeyword = cleanKeyword;
           }
-          
-          keywordCloud.querySelectorAll('.keyword-tag').forEach(t => {
-            const isAllTag = t.classList.contains('all');
-            const tText = t.textContent?.trim() || '';
-            
-            if (activeKeyword === 'all') {
+
+          keywordCloud.querySelectorAll(".keyword-tag").forEach((t) => {
+            const isAllTag = t.classList.contains("all");
+            const tText = t.textContent?.trim() || "";
+
+            if (activeKeyword === "all") {
               if (isAllTag) {
-                t.setAttribute('data-active', 'true');
+                t.setAttribute("data-active", "true");
               } else {
-                t.removeAttribute('data-active');
+                t.removeAttribute("data-active");
               }
             } else {
               if (tText.toLowerCase() === activeKeyword.toLowerCase()) {
-                t.setAttribute('data-active', 'true');
+                t.setAttribute("data-active", "true");
               } else {
-                t.removeAttribute('data-active');
+                t.removeAttribute("data-active");
               }
             }
           });
-          
+
           applyFilters();
         });
       });
-      
-      const allTag = keywordCloud.querySelector('.keyword-tag.all');
+
+      const allTag = keywordCloud.querySelector(".keyword-tag.all");
       if (allTag) {
-        allTag.setAttribute('data-active', 'true');
+        allTag.setAttribute("data-active", "true");
       }
     }
-    
+
     // 3. Bookmark Filter Handling
     if (bookmarkToggle) {
-      bookmarkToggle.addEventListener('click', (e) => {
+      bookmarkToggle.addEventListener("click", (e) => {
         e.preventDefault();
-        
+
         showBookmarkedOnly = !showBookmarkedOnly;
-        bookmarkToggle.setAttribute('data-active', showBookmarkedOnly ? 'true' : 'false');
-        
+        bookmarkToggle.setAttribute(
+          "data-active",
+          showBookmarkedOnly ? "true" : "false",
+        );
+
         applyFilters();
       });
     }
 
     // Sync filters on page load/bookmark updates
-    window.addEventListener('bookmark-updated', applyFilters);
+    window.addEventListener("bookmark-updated", applyFilters);
     applyFilters();
   }
 </script>
-

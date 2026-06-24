@@ -3560,22 +3560,38 @@ html[lang^="ko"] .article-text h4 {
     position: static;
     width: 100%;
     text-align: center;
-    font-family: inherit;
-    font-size: 11px;
-    color: #555;
     border-top: 1px solid #ddd;
-    padding: 12px 0 6px;
-    margin-top: 32px;
+    padding: 20px 0 10px;
+    margin-top: 40px;
     page-break-before: avoid;
     break-before: avoid;
   }
   .print-footer-brand {
-    font-weight: bold;
-    margin-bottom: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .print-footer-brand img {
+    width: 36px !important;
+    height: 36px !important;
+    object-fit: contain;
+  }
+  .print-footer-brand .text-block-11 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0d2240;
+  }
+  .print-footer-url-wrapper {
+    margin-top: 8px;
   }
   .print-footer-url {
-    font-size: 10px;
-    color: #777;
+    display: block;
+    font-size: 13px;
+    color: #0d2240;
+    text-decoration: underline;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    white-space: normal;
   }
   @page {
     margin-top: 1.5cm;

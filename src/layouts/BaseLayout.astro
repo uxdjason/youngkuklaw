@@ -115,9 +115,21 @@ const FONT_PRELOADS =
 
     <div class="print-only-footer">
       <div class="print-footer-brand">
-        {lang === "ko" ? "영국 Law / Youngkuk Law" : "Youngkuk Law"}
+        {lang === "ko" ? (
+          <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+            <img src="/images/youngkuklaw-logo-260519.png" alt="영국 Law Logo" style="width: 40px; height: 40px; object-fit: contain;" />
+            <div class="text-block-11">영국 Law</div>
+          </div>
+        ) : (
+          <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+            <img src="/images/youngkuklaw-logo-260519.png" alt="YoungkukLaw Logo" style="width: 40px; height: 40px; object-fit: contain;" />
+            <div class="text-block-11">YoungkukLaw</div>
+          </div>
+        )}
       </div>
-      <div class="print-footer-url" id="print-url"></div>
+      <div class="print-footer-url-wrapper">
+        <a class="print-footer-url" id="print-url" href="" target="_blank" rel="noopener"></a>
+      </div>
     </div>
 
     {lang === "ko" ? <FooterKo /> : <FooterEn />}
@@ -159,7 +171,9 @@ const FONT_PRELOADS =
         // Populate print URL
         const printUrlEl = document.getElementById("print-url");
         if (printUrlEl) {
-          printUrlEl.textContent = window.location.href;
+          const url = window.location.href;
+          printUrlEl.textContent = url;
+          (printUrlEl as HTMLAnchorElement).href = url;
         }
 
         // Bind clicks
