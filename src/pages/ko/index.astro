@@ -176,6 +176,7 @@ function formatDate(date: Date) {
         const noBookmarksMsg = listContainer.querySelector('.no-bookmarks-msg');
         
         const bookmarkedSlugs = JSON.parse(localStorage.getItem('bookmarked_posts') || '[]');
+        const bookmarkDates: Record<string, string> = JSON.parse(localStorage.getItem('bookmark_dates') || '{}');
         const bookmarkedPosts = bookmarkDb.filter(post => bookmarkedSlugs.includes(post.slug));
         
         if (bookmarkedPosts.length > 0) {
@@ -210,12 +211,17 @@ function formatDate(date: Date) {
             const timestamp = document.createElement('div');
             timestamp.className = 'note-row-timestamp ko';
             
-            const formattedDate = new Date(post.pubDate).toLocaleDateString('ko-KR', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric'
-            });
-            timestamp.textContent = formattedDate;
+            const rawDate = bookmarkDates[post.slug];
+            if (rawDate) {
+              const formattedDate = new Date(rawDate).toLocaleDateString('ko-KR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              });
+              timestamp.textContent = formattedDate + '에 추가';
+            } else {
+              timestamp.textContent = '추가 날짜 불명';
+            }
             
             rowRight.appendChild(timestamp);
             row.appendChild(rowLeft);

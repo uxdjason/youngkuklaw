@@ -176,13 +176,19 @@ const FONT_PRELOADS =
           let slugs = JSON.parse(
             localStorage.getItem("bookmarked_posts") || "[]",
           );
+          let dates: Record<string, string> = JSON.parse(
+            localStorage.getItem("bookmark_dates") || "{}",
+          );
           if (slugs.includes(slug)) {
             slugs = slugs.filter((s: string) => s !== slug);
+            delete dates[slug];
           } else {
             slugs.push(slug);
+            dates[slug] = new Date().toISOString();
           }
 
           localStorage.setItem("bookmarked_posts", JSON.stringify(slugs));
+          localStorage.setItem("bookmark_dates", JSON.stringify(dates));
           updateUI();
 
           // Dispatch event to notify other pages/components
@@ -243,6 +249,10 @@ const FONT_PRELOADS =
                       el.textContent = `${data[slug]} views`;
                     } else {
                       el.textContent = data[slug];
+                    }
+                    const row = el.closest(".article-row");
+                    if (row) {
+                      row.setAttribute("data-views", data[slug]);
                     }
                   }
                 });

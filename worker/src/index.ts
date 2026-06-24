@@ -18,16 +18,17 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
-    // Match /api/views/:slug
-    const match = path.match(/^\/api\/views\/([a-zA-Z0-9_-]+)$/);
+    // Match /api/views or /api/views/:slug
+    const match = path.match(/^\/api\/views(?:\/([a-zA-Z0-9_-]+))?$/);
     if (!match) {
       return new Response("Not found", { status: 404, headers: corsHeaders });
     }
 
-    const slug = match[1];
+    const slug = match[1]; // may be undefined for batch
 
     try {
       if (request.method === "POST") {
+        if (!slug) return new Response("Slug required", { status: 400, headers: corsHeaders });
         // Increment view count (upsert)
         await env.DB.prepare(
           `INSERT INTO views (slug, count) VALUES (?1, 1)
