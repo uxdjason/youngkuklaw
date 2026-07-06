@@ -754,8 +754,12 @@ def _build_frontmatter(slug: str, post: sqlite3.Row, seo_json: dict, lang: str) 
             fm["citation"] = shared["citation"]
         if shared.get("court"):
             fm["court"] = shared["court"]
+        if shared.get("claimantRole"):
+            fm["claimantRole"] = shared["claimantRole"]
         if shared.get("claimant"):
             fm["claimant"] = shared["claimant"]
+        if shared.get("defendantRole"):
+            fm["defendantRole"] = shared["defendantRole"]
         if shared.get("defendant"):
             fm["defendant"] = shared["defendant"]
         if shared.get("courtLink"):
@@ -876,7 +880,7 @@ async def process_post(
             wp_meta = extract_wp_case_metadata(wp_html_path.read_text(encoding="utf-8"))
             shared = seo_json.setdefault("shared", {})
             # WP에서 파싱한 값으로 덮어쓰기 (비어있으면 AI 추출값 유지)
-            for field in ("citation", "court", "claimant", "defendant", "courtLink"):
+            for field in ("citation", "court", "claimantRole", "claimant", "defendantRole", "defendant", "courtLink"):
                 if wp_meta.get(field):
                     shared[field] = wp_meta[field]
 

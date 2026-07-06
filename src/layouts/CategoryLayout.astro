@@ -19,7 +19,7 @@ const allPosts = await getCollection("posts", ({ data }) => {
 
   if (category === "case-law") {
     // case-law page aggregates all cases from *-cases categories
-    return data.category.endsWith("-cases");
+    return data.category.endsWith("-cases") || data.category === "case-law";
   }
 
   return data.category === category;
@@ -30,7 +30,13 @@ function getCitationYear(citation?: string, pubDate?: Date): number {
   if (!citation) {
     return pubDate ? pubDate.getFullYear() : 0;
   }
-  const fourDigitMatch = citation.match(/\b(1[5-9]\d{2}|20\d{2})\b/);
+  // Try to find a 4-digit year in brackets or parentheses first: e.g. [1953] or (1220)
+  const bracketMatch = citation.match(/[\(\[](\d{4})[\)\]]/);
+  if (bracketMatch) {
+    return parseInt(bracketMatch[1], 10);
+  }
+  // Fallback to any 4-digit number starting with 1 or 2
+  const fourDigitMatch = citation.match(/\b(1\d{3}|20\d{2})\b/);
   if (fourDigitMatch) {
     return parseInt(fourDigitMatch[1], 10);
   }
@@ -77,8 +83,8 @@ const countLabel =
 
 // Extract unique keywords for the keyword cloud from the posts
 const allKeywords = Array.from(
-  new Set(sortedPosts.flatMap((post) => post.data.longTailKeywords || [])),
-).slice(0, 10); // Limit to top 10 unique keywords
+  new Set(sortedPosts.flatMap((post) => post.data.uiTags || [])),
+);
 
 // Date formatter helper
 function formatDate(date: Date, locale: string) {
@@ -399,18 +405,44 @@ const seoDescription =
                   {lang === "en" ? "Keywords" : "핵심 키워드"}
                 </div>
               </div>
-              <div class="keyword-cloud">
-                <div class="keyword-tag all">
-                  {lang === "en" ? "All" : "전체"}
-                </div>
-                {
-                  allKeywords.map((keyword) => (
-                    <a href="#" class="keyword-link w-inline-block">
-                      <div class="keyword-tag">{keyword}</div>
-                    </a>
-                  ))
-                }
+              <div class="keyword-cloud" id="keyword-cloud-container">
+                <a href="#" class="keyword-link w-inline-block">
+                  <div class="keyword-tag all">
+                    {lang === "en" ? "All" : "전체"}
+                  </div>
+                </a>
               </div>
+              <script is:inline define:vars={{ allKeywords, lang }}>
+                const container = document.getElementById("keyword-cloud-container");
+                if (container && allKeywords.length > 0) {
+                  let selected = [...allKeywords];
+                  // If there are more than 20 keywords, randomly select 20
+                  if (selected.length > 20) {
+                    // Fisher-Yates shuffle
+                    for (let i = selected.length - 1; i > 0; i--) {
+                      const j = Math.floor(Math.random() * (i + 1));
+                      const temp = selected[i];
+                      selected[i] = selected[j];
+                      selected[j] = temp;
+                    }
+                    selected = selected.slice(0, 20);
+                  }
+                  
+                  // Sort alphabetically based on language
+                  selected.sort((a, b) => a.localeCompare(b, lang === "ko" ? "ko" : "en"));
+                  
+                  selected.forEach((keyword) => {
+                    const a = document.createElement("a");
+                    a.href = "#";
+                    a.className = "keyword-link w-inline-block";
+                    const div = document.createElement("div");
+                    div.className = "keyword-tag";
+                    div.textContent = keyword;
+                    a.appendChild(div);
+                    container.appendChild(a);
+                  });
+                }
+              </script>
             </div>
 
             <div class="sort-by">
@@ -490,6 +522,7 @@ const seoDescription =
                       </div>
                     </div>
                   </div>
+                  <div class="pagination-wrapper top-pagination"></div>
                   <div
                     class="article-list"
                     data-is-case-category={isCaseCategory ? "true" : "false"}
@@ -502,7 +535,7 @@ const seoDescription =
                         data-views={(post.data as any).views || 0}
                         data-created={post.data.pubDate.valueOf()}
                         data-keywords={
-                          post.data.longTailKeywords?.join(",").toLowerCase() ||
+                          post.data.uiTags?.join(",").toLowerCase() ||
                           ""
                         }
                         data-slug={post.data.slug}
@@ -513,10 +546,7 @@ const seoDescription =
                       >
                         <div class="article-row-upper">
                           <div class="keyword-tag-container">
-                            {(post.data.uiTags && post.data.uiTags.length > 0
-                              ? post.data.uiTags
-                              : post.data.longTailKeywords?.slice(0, 2) || []
-                            ).map((k) => (
+                            {(post.data.uiTags || []).map((k) => (
                               <div class="keyword-tag">{k}</div>
                             ))}
                           </div>
@@ -632,6 +662,7 @@ const seoDescription =
                       </div>
                     ))}
                   </div>
+                  <div class="pagination-wrapper bottom-pagination"></div>
                 </>
               )
             }
@@ -683,6 +714,52 @@ const seoDescription =
     color: var(--base-color-brand--blue-dark) !important;
     background-color: var(--base-color-brand--blue-light) !important;
   }
+
+  /* Pagination Styles */
+  .pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 32px 0;
+  }
+  .pagination-wrapper.top-pagination {
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+  .pagination-wrapper.bottom-pagination {
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+  .page-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color--border-primary);
+    background-color: transparent;
+    color: var(--text-color--text-primary);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .page-btn:hover:not(:disabled):not(.active) {
+    background-color: var(--base-color-brand--blue-light);
+    color: var(--base-color-brand--blue-dark);
+    border-color: var(--base-color-brand--blue-light);
+  }
+  .page-btn.active {
+    background-color: var(--base-color-brand--blue-dark);
+    color: var(--text-color--text-alternate);
+    border-color: var(--base-color-brand--blue-dark);
+    cursor: default;
+  }
+  .page-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
 </style>
 
 <script>
@@ -695,10 +772,90 @@ const seoDescription =
 
     let activeKeyword = "all";
     let showBookmarkedOnly = false;
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    let currentMatchedItems = [];
+
+    function renderPaginationControls(totalPages) {
+      const topWrapper = document.querySelector(".top-pagination");
+      const bottomWrapper = document.querySelector(".bottom-pagination");
+      if (!topWrapper || !bottomWrapper) return;
+      
+      if (totalPages <= 1) {
+        topWrapper.innerHTML = '';
+        bottomWrapper.innerHTML = '';
+        return;
+      }
+
+      const createControls = () => {
+        const frag = document.createDocumentFragment();
+        
+        const prevBtn = document.createElement("button");
+        prevBtn.className = "page-btn prev";
+        prevBtn.textContent = "Prev";
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener("click", () => changePage(currentPage - 1));
+        frag.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {
+          const pageBtn = document.createElement("button");
+          pageBtn.className = `page-btn ${i === currentPage ? "active" : ""}`;
+          pageBtn.textContent = i;
+          pageBtn.addEventListener("click", () => changePage(i));
+          frag.appendChild(pageBtn);
+        }
+
+        const nextBtn = document.createElement("button");
+        nextBtn.className = "page-btn next";
+        nextBtn.textContent = "Next";
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener("click", () => changePage(currentPage + 1));
+        frag.appendChild(nextBtn);
+
+        return frag;
+      };
+
+      topWrapper.innerHTML = '';
+      topWrapper.appendChild(createControls());
+      
+      bottomWrapper.innerHTML = '';
+      bottomWrapper.appendChild(createControls());
+    }
+
+    function changePage(newPage) {
+      currentPage = newPage;
+      updatePagination(currentMatchedItems);
+      // scroll to top of list
+      const targetElement = document.querySelector('.article-hero-lower');
+      if (targetElement) {
+         targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function updatePagination(matchedItems) {
+      currentMatchedItems = matchedItems;
+      const totalPages = Math.ceil(matchedItems.length / itemsPerPage);
+      
+      if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      renderPaginationControls(totalPages);
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+
+      matchedItems.forEach((item, index) => {
+        if (index >= startIndex && index < endIndex) {
+          item.style.display = "";
+        } else {
+          item.style.display = "none";
+        }
+      });
+    }
 
     // Filter Function
     function applyFilters() {
-      const items = Array.from(container!.querySelectorAll(".article-row"));
+      const items = Array.from(container.querySelectorAll(".article-row"));
       const bookmarkedSlugs = JSON.parse(
         localStorage.getItem("bookmarked_posts") || "[]",
       );
@@ -706,7 +863,8 @@ const seoDescription =
         ".no-bookmark-filter-msg",
       ) as HTMLElement | null;
 
-      let visibleCount = 0;
+      const matchedItems = [];
+
       items.forEach((item) => {
         const itemKeywords = item.getAttribute("data-keywords") || "";
         const itemSlug = item.getAttribute("data-slug") || "";
@@ -722,26 +880,30 @@ const seoDescription =
           !showBookmarkedOnly || bookmarkedSlugs.includes(itemSlug);
 
         if (matchesKeyword && matchesBookmark) {
-          (item as HTMLElement).style.display = "";
-          visibleCount++;
+          matchedItems.push(item);
         } else {
           (item as HTMLElement).style.display = "none";
         }
       });
 
-      // Show friendly message when bookmark filter is on but no items match
       if (noBookmarkMsg) {
         noBookmarkMsg.style.display =
-          showBookmarkedOnly && visibleCount === 0 ? "block" : "none";
+          showBookmarkedOnly && matchedItems.length === 0 ? "block" : "none";
       }
+
+      updatePagination(matchedItems);
     }
 
     // 1. Sort Handling
     radioButtons.forEach((btn) => {
       btn.addEventListener("click", (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
 
         const sortType = btn.getAttribute("data-sort-type");
+        const storageKey = `sort_pref_${window.location.pathname}`;
+        if (sortType) {
+          localStorage.setItem(storageKey, sortType);
+        }
 
         radioButtons.forEach((b) => {
           b.setAttribute("data-active", b === btn ? "true" : "false");
@@ -815,6 +977,8 @@ const seoDescription =
         });
 
         items.forEach((item) => container!.appendChild(item));
+        currentPage = 1;
+        applyFilters();
       });
     });
 
@@ -856,6 +1020,7 @@ const seoDescription =
             }
           });
 
+          currentPage = 1;
           applyFilters();
         });
       });
@@ -877,12 +1042,31 @@ const seoDescription =
           showBookmarkedOnly ? "true" : "false",
         );
 
+        currentPage = 1;
         applyFilters();
       });
     }
 
     // Sync filters on page load/bookmark updates
-    window.addEventListener("bookmark-updated", applyFilters);
-    applyFilters();
+    window.addEventListener("bookmark-updated", () => {
+      currentPage = 1;
+      applyFilters();
+    });
+    // Restore sort preference on load
+    const storageKey = `sort_pref_${window.location.pathname}`;
+    const savedSort = localStorage.getItem(storageKey);
+    let sortRestored = false;
+    
+    if (savedSort) {
+      const savedBtn = Array.from(radioButtons).find(b => b.getAttribute("data-sort-type") === savedSort);
+      if (savedBtn && savedBtn.getAttribute("data-active") !== "true") {
+        savedBtn.dispatchEvent(new Event("click"));
+        sortRestored = true;
+      }
+    }
+    
+    if (!sortRestored) {
+      applyFilters();
+    }
   }
 </script>

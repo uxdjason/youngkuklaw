@@ -7,8 +7,8 @@
 | # | 슬러그 | 카테고리 | 발행일 | notes.md | PDF 수 | instructions.md |
 |---|---|---|---|---|---|---|
 | 1 | `ealdred-v-high-sheriff-of-yorkshire` | case-law | 2025-06-20 | ❌ | 0 | — |
-| 2 | `furrer-v-snelling-case` | case-law | 2025-06-20 | ❌ | 0 | — |
-| 3 | `smith-v-hughes-case` | contract-law-cases,case-law | 2025-06-24 | ❌ | 0 | — |
+| 2 | `furrer-v-snelling` | case-law | 2025-06-20 | ❌ | 0 | — |
+| 3 | `smith-v-hughes` | contract-law-cases,case-law | 2025-06-24 | ❌ | 0 | — |
 | 4 | `allied-marine-ltd-v-vale-do-rio-doce-sa` | contract-law-cases,case-law | 2025-06-24 | ❌ | 0 | — |
 | 5 | `fisher-v-bell` | contract-law-cases,case-law | 2025-06-27 | ❌ | 0 | — |
 | 6 | `pharmaceutical-society-v-boots` | contract-law-cases,case-law | 2025-06-27 | ❌ | 0 | — |

@@ -11,6 +11,7 @@ style_rules:
   - "한국어 콤마 최소화. 꼭 필요한 경우에만."
   - "인명/지명/단체명 고유명사는 영문 원형. 예: Donoghue, House of Lords, EWCA."
   - "핵심 법률 개념은 영문+한국어 병기. 예: duty of care(주의의무), consideration(약인)."
+  - "'The Crown'은 판례 문맥상 '왕실'이 아닌 '정부'로 번역."
 
 # ─────────────────────────────────────────────
 # Contract Law (계약법)
@@ -301,6 +302,10 @@ terms:
 # Land Law (토지법)
 # ─────────────────────────────────────────────
 
+  - en: "rent"
+    ko: "임대료"
+    note: "'임료' 대신 '임대료' 사용"
+
   - en: "freehold"
     ko: "자유보유권 (완전 소유권)"
 
@@ -367,6 +372,26 @@ terms:
 
   - en: "respondent"
     ko: "피항소인"
+  - en: "nonsuit"
+    ko: "소송 각하"
+
+  - en: "rule nisi"
+    ko: "조건부 명령(rule nisi)"
+
+  - en: "freehold"
+    ko: "Freehold"
+
+  - en: "leasehold"
+    ko: "Leasehold"
+
+  - en: "misrepresentation"
+    ko: "허위 진술"
+
+  - en: "building society"
+    ko: "상호저축은행(building society)"
+
+  - en: "warrants"
+    ko: "상품인수권(warrants)"
 
   - en: "House of Lords"
     ko: "House of Lords"
@@ -406,3 +431,11 @@ terms:
 
   - en: "Ch"
     ko: "Chancery Division"
+
+  - en: "equivocal"
+    ko: "모호한"
+    note: "'복의적' 등 어색한 단어 금지. 문맥에 따라 '여러 의미로 해석될 수 있는', '의미가 확실치 않은'으로 번역"
+
+  - en: "unequivocal"
+    ko: "명확한"
+    note: "'단의적' 등 어색한 단어 금지. '모호하지 않은', '명백한' 등으로 번역"

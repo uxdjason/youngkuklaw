@@ -518,15 +518,17 @@ with col_right:
         col_ap1, col_ap2 = st.columns(2)
         with col_ap1:
             if st.button("⏪ 승인 및 발행 취소 (Return to Review)", use_container_width=True):
-                # Note: This just changes the DB status back to awaiting_review.
-                # It does not delete the .md files from src/content/posts/.
+                from migration.publish import unpublish_post
+                unpublish_post(selected_post_id)
                 _update_status(selected_post_id, "awaiting_review")
-                st.warning("상태를 리뷰 대기로 되돌렸습니다. (참고: 빌드용 마크다운 파일은 수동 삭제가 필요할 수 있습니다)")
+                st.warning("발행을 취소하고 상태를 리뷰 대기로 되돌렸습니다.")
                 st.rerun()
         with col_ap2:
             if st.button("🔄 Pending으로 되돌리기 (처음부터 다시)", use_container_width=True, type="secondary", key="reset_published"):
+                from migration.publish import unpublish_post
+                unpublish_post(selected_post_id)
                 _update_status(selected_post_id, "pending")
-                st.warning("Pending 상태로 초기화했습니다.")
+                st.warning("발행을 취소하고 Pending 상태로 초기화했습니다.")
                 st.rerun()
     else:
         st.warning(f"알 수 없는 상태: `{current_status}`. 사이드바에서 다른 글을 선택하십시오.")

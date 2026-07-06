@@ -74,12 +74,14 @@ Return a single valid JSON object with EXACTLY this structure:
     "og_image_prompt": "...",
     "citation": "...",
     "court": "...",
+    "claimantRole": "...",
     "claimant": "...",
+    "defendantRole": "...",
     "defendant": "..."
   }
 }
 ```
 
-If this is NOT a case law article, set citation, court, claimant, defendant to null in the shared object.
+If this is NOT a case law article, set citation, court, claimantRole, claimant, defendantRole, defendant to null in the shared object.
 
 Output ONLY the JSON object. No preamble, no markdown fences.

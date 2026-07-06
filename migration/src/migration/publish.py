@@ -162,5 +162,22 @@ def publish_approved_posts():
     conn.close()
     print(f"\n🎉 총 {success_count}개 글 발행 완료!")
 
+def unpublish_post(post_id):
+    conn = get_db()
+    post = conn.execute("SELECT * FROM posts WHERE id = ?", (post_id,)).fetchone()
+    conn.close()
+    if not post:
+        return
+        
+    slug = post["wp_slug"]
+    en_file = ASTRO_POSTS_EN / f"{slug}.md"
+    ko_file = ASTRO_POSTS_KO / f"{slug}.md"
+    
+    if en_file.exists():
+        en_file.unlink()
+    if ko_file.exists():
+        ko_file.unlink()
+    print(f"🗑️ [{slug}] 발행 취소 완료 (마크다운 파일 삭제)")
+
 if __name__ == "__main__":
     publish_approved_posts()
