@@ -1,29 +1,32 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
+
 <BaseLayout lang="en" title="Page Not Found · YoungkukLaw" noindex>
   <section>
     <div class="padding-global">
       <div class="container-large">
-        <div class="spacer-large"></div>
+        <div class="spacer-large" style="margin-top: 10vh;"></div>
         <div class="heading-style-h1 align-center">404</div>
         <div class="spacer-small"></div>
         <div class="text-size-medium align-center">
           The page you are looking for doesn't exist or has been moved.<br />
-          <span lang="ko">요청하신 페이지를 찾을 수 없습니다. 이동되었거나 삭제된 페이지일 수 있습니다.</span>
+          <span lang="ko"
+            >요청하신 페이지를 찾을 수 없습니다. 이동되었거나 삭제된 페이지일 수
+            있습니다.</span
+          >
         </div>
         <div class="spacer-large"></div>
-        <div class="align-center">
+        <div
+          style="display: flex; justify-content: center; gap: 16px; margin-bottom: 15vh;"
+        >
           <a href="/" class="btn-read-more w-inline-block">
-            <div class="featured-content-desc">Go to Home</div>
+            <div class="featured-content-desc">Go to Home (English)</div>
           </a>
-          &nbsp;&nbsp;
           <a href="/ko/" class="btn-read-more w-inline-block">
-            <div class="featured-content-desc">한국어 홈으로</div>
+            <div class="featured-content-desc">한국어 홈으로 (Korean)</div>
           </a>
         </div>
-        <div class="spacer-large"></div>
-        <div class="spacer-large"></div>
       </div>
     </div>
   </section>

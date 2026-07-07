@@ -20,6 +20,7 @@ interface Props {
   courtLink?: string;
   pubDate: Date;
   modifiedDate?: Date;
+  uiTags?: string[];
 }
 
 const {
@@ -38,13 +39,32 @@ const {
   courtLink,
   pubDate,
   modifiedDate,
+  uiTags,
 } = Astro.props;
+
+const currentTags = uiTags || [];
 
 // Fetch related cases in the same category and language
 const relatedCases = await getCollection('posts', ({ data }) => {
   return data.lang === lang && data.category === category && data.slug !== slug && !data.draft;
 });
-const slicedRelated = relatedCases.slice(0, 3);
+
+// Calculate matching tags and shuffle
+const relatedWithScore = relatedCases.map(post => {
+  const postTags = post.data.uiTags || [];
+  const matchCount = postTags.filter((tag: string) => currentTags.includes(tag)).length;
+  const randomScore = Math.random();
+  return { post, matchCount, randomScore };
+});
+
+relatedWithScore.sort((a, b) => {
+  if (a.matchCount !== b.matchCount) {
+    return b.matchCount - a.matchCount;
+  }
+  return b.randomScore - a.randomScore;
+});
+
+const slicedRelated = relatedWithScore.slice(0, 3).map(item => item.post);
 
 function formatDate(date: Date, locale: string) {
   return date.toLocaleDateString(locale === 'ko' ? 'ko-KR' : 'en-GB', {
@@ -233,7 +253,15 @@ function formatDate(date: Date, locale: string) {
                 {slicedRelated.map(related => (
                   <div class="case-card">
                     <div class="case-card-upper">
-                      <div class="subject-tag">{lang === 'en' ? 'Case' : '판례'}</div>
+                      {related.data.uiTags && related.data.uiTags.length > 0 ? (
+                        <div class="tags-container" style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px;">
+                          {related.data.uiTags.map((tag: string) => (
+                            <div class="subject-tag">{tag}</div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div class="subject-tag">{lang === 'en' ? 'Case' : '판례'}</div>
+                      )}
                       <a href={lang === 'en' ? `/${related.data.slug}/` : `/ko/${related.data.slug}/`} class="link-block w-inline-block">
                         <div class="heading-style-h4">{related.data.title}</div>
                         {related.data.citation && (
@@ -243,7 +271,7 @@ function formatDate(date: Date, locale: string) {
                     </div>
                     <div class="hr-div"></div>
                     <div class="note-row-right">
-                      <div class="featured-content-desc">{related.data.description}</div>
+                      <div class="featured-content-desc">{related.data.uiDescription || related.data.description}</div>
                       <div class="spacer-small"></div>
                       <a href={lang === 'en' ? `/${related.data.slug}/` : `/ko/${related.data.slug}/`} class="btn-read-more w-inline-block">
                         <div class="featured-content-desc">{lang === 'en' ? 'Read More' : '자세히 보기'}</div>

@@ -6,13 +6,37 @@ import SearchBar from '../../components/SearchBar.astro';
 
 const lang = 'ko';
 
-// Featured: 3 cases
 const featuredCases = await getCollection('posts', ({ data }) => {
   return data.lang === lang && (data.category.endsWith('-cases') || data.category === 'case-law') && !data.draft;
 });
-const slicedFeatured = featuredCases
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+
+let viewCounts: Record<string, number> = {};
+try {
+  const slugs = featuredCases.map(p => p.data.slug).join(',');
+  if (slugs) {
+    const res = await fetch(`https://youngkuklaw-views.uxd-jason.workers.dev/api/views?slugs=${slugs}`);
+    if (res.ok) {
+      viewCounts = await res.json();
+    }
+  }
+} catch(e) {
+  console.error("Failed to fetch views for index", e);
+}
+
+const casesWithViews = featuredCases.map(post => {
+  const views = viewCounts[post.data.slug] || 0;
+  return { post, views, randomScore: Math.random() };
+});
+
+casesWithViews.sort((a, b) => {
+  if (b.views !== a.views) return b.views - a.views;
+  return b.randomScore - a.randomScore;
+});
+
+const top10 = casesWithViews.slice(0, 10);
+top10.sort((a, b) => b.randomScore - a.randomScore);
+
+const slicedFeatured = top10.slice(0, 3).map(item => item.post);
 
 // Latest Notes: 12 notes
 const latestNotes = await getCollection('posts', ({ data }) => {
@@ -75,7 +99,15 @@ const bookmarkDb = allPostsForBookmark.map(post => ({
             slicedFeatured.map(post => (
               <div class="case-card">
                 <div class="case-card-upper">
-                  <div class="subject-tag ko">{CATEGORY_LABELS[post.data.category]?.ko || '판례'}</div>
+                  {post.data.uiTags && post.data.uiTags.length > 0 ? (
+                    <div class="tags-container" style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px;">
+                      {post.data.uiTags.map((tag: string) => (
+                        <div class="subject-tag ko">{tag}</div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div class="subject-tag ko">{CATEGORY_LABELS[post.data.category]?.ko || '판례'}</div>
+                  )}
                   <a href={`/ko/${post.data.slug}/`} class="link-block w-inline-block">
                     <div class="heading-style-h4 ko">{post.data.title}</div>
                     {post.data.citation && <div class="case-citation-text ko">{post.data.citation}</div>}
@@ -83,7 +115,7 @@ const bookmarkDb = allPostsForBookmark.map(post => ({
                 </div>
                 <div class="hr-div"></div>
                 <div class="note-row-right">
-                  <div class="featured-content-desc ko">{post.data.description}</div>
+                  <div class="featured-content-desc ko">{post.data.uiDescription || post.data.description}</div>
                   <div class="spacer-small"></div>
                   <a href={`/ko/${post.data.slug}/`} class="btn-read-more ko w-inline-block">
                     <div class="featured-content-desc">더 보기</div>

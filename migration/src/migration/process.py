@@ -591,6 +591,7 @@ async def _step_write_ko(
 
     ko_md = result.text.strip()
     ko_md = _remove_self_links(ko_md, post["wp_slug"])
+    ko_md = _apply_ko_post_processing(ko_md)
     (out / "ko.md").write_text(ko_md, encoding="utf-8")
     cprint(f"  ✅ 한국어 작성 완료 ({len(ko_md)}자, ${result.cost_usd:.4f})", out)
     return ko_md
@@ -660,6 +661,7 @@ async def _step_wp_priority_ko(
 
     ko_md = result.text.strip()
     ko_md = _remove_self_links(ko_md, post["wp_slug"])
+    ko_md = _apply_ko_post_processing(ko_md)
     (out / "ko.md").write_text(ko_md, encoding="utf-8")
     cprint(f"  ✅ 한국어 작성 완료 ({len(ko_md)}자, ${result.cost_usd:.4f})", out)
     return ko_md
@@ -672,6 +674,18 @@ def _remove_self_links(text: str, slug: str) -> str:
         r'\[(.*?)\]\(\/?(?:ko\/)?%s\/?\)' % re.escape(slug)
     )
     return pattern.sub(r'\1', text)
+
+
+def _apply_ko_post_processing(text: str) -> str:
+    """한국어 문서 생성 시 AI가 프롬프트 금지어를 무시하고 출력한 경우(설시, 방론 등) 강제 치환하는 후처리 필터"""
+    text = text.replace("설시하였다", "설명하였다")
+    text = text.replace("설시를", "설명을")
+    text = text.replace("설시", "설명")
+    text = text.replace("방론", "의견")
+    text = text.replace("비소송", "소송 각하")
+    text = text.replace("수교 편지", "직접 전달된 편지")
+    text = text.replace("수교", "직접 전달")
+    return text
 
 
 async def _step_seo(

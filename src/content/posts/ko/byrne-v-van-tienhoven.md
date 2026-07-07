@@ -54,7 +54,7 @@ Lindley J는 판결에서 검토가 필요한 두 가지 구별되는 쟁점을 
 
 <strong>두 번째 쟁점: 철회 서신을 단순히 우편으로 발송하는 것만으로 피청약자에 대한 통지가 이루어지는가?</strong>
 
-Lindley J는 승낙에 관한 우편 규칙(postal rule), 즉 [Harris' Case](https://en.wikipedia.org/wiki/Re_Imperial_Land_Co_of_Marseilles,_ex_p_Harris) 및 [Dunlop v Higgins (1848)](https://en.wikipedia.org/wiki/Dunlop_v_Higgins)에서 확인된 바와 같이 승낙 서신이 발송된 순간에 계약이 성립하며 해당 서신이 실제로 도달하지 않더라도 마찬가지라는 확립된 원칙을 검토하였다. 그러나 그는 이 규칙을 철회에까지 확대 적용하는 것을 거부하였다.
+Lindley J는 승낙에 관한 우편 규칙(postal rule), 즉 [Harris' Case](https://en.wikipedia.org/wiki/Re_Imperial_Land_Co_of_Marseilles,_ex_p_Harris) 및 [Dunlop v Higgins [1848]](https://www.bailii.org/cgi-bin/format.cgi?doc=/uk/cases/UKHL/1848/6_Bell_195.html)에서 확인된 바와 같이 승낙 서신이 발송된 순간에 계약이 성립하며 해당 서신이 실제로 도달하지 않더라도 마찬가지라는 확립된 원칙을 검토하였다. 그러나 그는 이 규칙을 철회에까지 확대 적용하는 것을 거부하였다.
 
 승낙에 관한 우편 규칙의 근거는 청약자의 묵시적 수권에 있다. 즉, 청약자가 우편을 통한 승낙을 요청함으로써 묵시적으로 우체국을 자신의 대리인으로 지정하여 승낙을 수령하도록 한 것이다. 그런데 철회의 경우에는 이에 상응하는 수권 관계가 존재하지 않는다. 피청약자는 단순히 서신을 발송하는 것만으로 철회가 통지될 수 있도록 명시적 또는 묵시적으로 수권한 사실이 없다. 따라서 청약자가 발송한 철회 서신은 피청약자에게 실제로 도달한 시점에서야 효력이 발생하며, 발송 시점에 효력이 생기는 것이 아니다.
 

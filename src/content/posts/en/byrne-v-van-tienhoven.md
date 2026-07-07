@@ -58,7 +58,7 @@ The settled principle, affirmed in [Routledge v Grant (1828)](/routledge-v-grant
 
 **Second question: does the mere posting of a revocation letter constitute communication of it to the offeree?**
 
-Lindley J considered the postal rule for acceptances — the established principle, confirmed in cases such as [Harris' Case](https://en.wikipedia.org/wiki/Re_Imperial_Land_Co_of_Marseilles,_ex_p_Harris) and [Dunlop v Higgins (1848)](https://en.wikipedia.org/wiki/Dunlop_v_Higgins), that a contract is completed at the moment a letter of acceptance is posted, even if it never reaches its destination. He declined to extend that rule to revocations.
+Lindley J considered the postal rule for acceptances — the established principle, confirmed in cases such as [Harris' Case](https://en.wikipedia.org/wiki/Re_Imperial_Land_Co_of_Marseilles,_ex_p_Harris) and [Dunlop v Higgins [1848]](https://www.bailii.org/cgi-bin/format.cgi?doc=/uk/cases/UKHL/1848/6_Bell_195.html), that a contract is completed at the moment a letter of acceptance is posted, even if it never reaches its destination. He declined to extend that rule to revocations.
 
 The rationale for the postal rule as it applies to acceptances rests on the implied authority of the offeror: by inviting acceptance through the post, the offeror impliedly constitutes the post office as their agent to receive the acceptance on their behalf. No equivalent authority operates in the context of revocation. The offeree has given no authority — express or implied — for revocation to be notified by the mere posting of a letter. Accordingly, a revocation posted by an offeror takes effect only when it is actually received by the offeree, not when it is dispatched.
 
