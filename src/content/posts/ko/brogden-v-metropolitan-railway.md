@@ -4,7 +4,7 @@ pubDate: '2025-07-15T09:00:11+00:00'
 lang: ko
 category: contract-law-cases
 slug: brogden-v-metropolitan-railway
-title: Brogden v Metropolitan Railway Company
+title: Brogden v Metropolitan Railway
 description: Brogden v Metropolitan Railway 사건은 행위에 의한 승낙으로 계약이 성립할 수 있음을 확인한 영국 계약법
   주요 판례다.
 seoTitle: Brogden v Metropolitan Railway 판례

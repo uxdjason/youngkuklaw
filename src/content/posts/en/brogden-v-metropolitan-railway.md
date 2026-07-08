@@ -4,7 +4,7 @@ pubDate: '2025-07-15T09:00:11+00:00'
 lang: en
 category: contract-law-cases
 slug: brogden-v-metropolitan-railway
-title: Brogden v Metropolitan Railway Company
+title: Brogden v Metropolitan Railway
 description: Brogden v Metropolitan Railway established that a contract can be formed
   by conduct alone. Learn about counter-offers and acceptance by conduct in English
   contract law.
