@@ -772,7 +772,10 @@ const seoDescription =
 
     let activeKeyword = "all";
     let showBookmarkedOnly = false;
-    let currentPage = 1;
+    const paginationKey = `pagination_pref_${window.location.pathname}`;
+    const savedPage = sessionStorage.getItem(paginationKey);
+    let currentPage = savedPage ? parseInt(savedPage, 10) : 1;
+    if (isNaN(currentPage) || currentPage < 1) currentPage = 1;
     const itemsPerPage = 10;
     let currentMatchedItems = [];
 
@@ -824,6 +827,7 @@ const seoDescription =
 
     function changePage(newPage) {
       currentPage = newPage;
+      sessionStorage.setItem(paginationKey, currentPage.toString());
       updatePagination(currentMatchedItems);
       // scroll to top of list
       const targetElement = document.querySelector('.article-hero-lower');
@@ -978,6 +982,7 @@ const seoDescription =
 
         items.forEach((item) => container!.appendChild(item));
         currentPage = 1;
+        sessionStorage.setItem(paginationKey, "1");
         applyFilters();
       });
     });
@@ -1021,6 +1026,7 @@ const seoDescription =
           });
 
           currentPage = 1;
+          sessionStorage.setItem(paginationKey, "1");
           applyFilters();
         });
       });
@@ -1043,14 +1049,21 @@ const seoDescription =
         );
 
         currentPage = 1;
+        sessionStorage.setItem(paginationKey, "1");
         applyFilters();
       });
     }
 
     // Sync filters on page load/bookmark updates
     window.addEventListener("bookmark-updated", () => {
-      currentPage = 1;
-      applyFilters();
+      // Don't reset pagination if we are not filtering by bookmarked only
+      if (showBookmarkedOnly) {
+        currentPage = 1;
+        sessionStorage.setItem(paginationKey, "1");
+        applyFilters();
+      } else {
+        applyFilters();
+      }
     });
     // Restore sort preference on load
     const storageKey = `sort_pref_${window.location.pathname}`;

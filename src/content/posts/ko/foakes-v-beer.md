@@ -44,7 +44,7 @@ Foakes는 합의서에 규정된 기한 내에 원금 £2,090 19s. 전액을 납
 
 House of Lords는 Court of Appeal의 판결을 인용하고 Beer의 손을 들어주었다. 1876년 12월 21일의 합의는 <em>nudum pactum</em>, 즉 약인(consideration)의 뒷받침이 없는 공허한 약속에 해당하여 법적 구속력이 없다고 판단하였다. Foakes가 판결에 따라 이미 법적으로 지급할 의무가 있는 금액을 납부하겠다는 약속은, Beer가 이자를 청구하지 않겠다는 약속에 대한 유효한 약인이 될 수 없었다. 따라서 Beer는 판결에 기초한 절차를 진행하여 발생한 이자를 회수할 권리가 있었다.
 
-Foakes의 대리인은 [Pinnel's Case [1602]](/ko/pinnels-case)에서 확립되고 [Cumber v Wane (1795)](https://youngkuklaw.com/case-pdf/cumber-v-wane.pdf)에서 확인된 원칙이 잘못된 논거에 기반하고 있으므로 폐기되어야 한다고 주장하였으며, 분할납부 약정 자체가 유효한 약인을 구성한다고도 주장하였다. 이러한 주장들은 모두 배척되었다. Beer의 대리인은 기존의 법적 의무를 이행하는 것은 유효한 약인이 될 수 없다는 원칙을 주장하면서, 동일한 법리를 보여주는 사례로 선원 임금 사건인 [Stilk v Myrick [1809]](/ko/stilk-v-myrick)을 인용하였다.
+Foakes의 대리인은 [Pinnel's Case [1602]](/ko/pinnels-case)에서 확립되고 [Cumber v Wane (1795)](https://youngkuklaw.com/case-archive/cumber-v-wane.html)에서 확인된 원칙이 잘못된 논거에 기반하고 있으므로 폐기되어야 한다고 주장하였으며, 분할납부 약정 자체가 유효한 약인을 구성한다고도 주장하였다. 이러한 주장들은 모두 배척되었다. Beer의 대리인은 기존의 법적 의무를 이행하는 것은 유효한 약인이 될 수 없다는 원칙을 주장하면서, 동일한 법리를 보여주는 사례로 선원 임금 사건인 [Stilk v Myrick [1809]](/ko/stilk-v-myrick)을 인용하였다.
 
 ## Ratio Decidendi
 

@@ -30,7 +30,7 @@ claimantRole: Claimant
 claimant: SCOTSON
 defendantRole: Defendant
 defendant: Pegg
-courtLink: https://youngkuklaw.com/case-pdf/scotson-v-pegg.pdf
+courtLink: https://youngkuklaw.com/case-archive/scotson-v-pegg.html
 ---
 
 ## Case Facts

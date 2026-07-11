@@ -31,12 +31,12 @@ claimantRole: Claimant
 claimant: COLLINS
 defendantRole: Defendant
 defendant: Godefroy
-courtLink: https://youngkuklaw.com/case-pdf/collins-v-godefroy.pdf
+courtLink: https://youngkuklaw.com/case-archive/collins-v-godefroy.html
 ---
 
 ## Case Facts
 
-The claimant was an attorney who was subpoenaed by the defendant to attend as a witness in the civil action of [Godefroy v Dalton [1830]](http://youngkuklaw.com/case-pdf/godefroy-v-dalton.pdf), a suit concerning alleged negligence and unskilfulness by Dalton as an attorney in the conduct of proceedings before the Court of Common Pleas. The claimant duly attended court for six days in compliance with the subpoena but was never actually called to give evidence. The defendant ultimately obtained a verdict in that underlying action, which the Court of Common Pleas subsequently set aside.
+The claimant was an attorney who was subpoenaed by the defendant to attend as a witness in the civil action of [Godefroy v Dalton [1830]](https://youngkuklaw.com/case-archive/godefroy-v-dalton.html), a suit concerning alleged negligence and unskilfulness by Dalton as an attorney in the conduct of proceedings before the Court of Common Pleas. The claimant duly attended court for six days in compliance with the subpoena but was never actually called to give evidence. The defendant ultimately obtained a verdict in that underlying action, which the Court of Common Pleas subsequently set aside.
 
 On 2 November 1829, the claimant demanded six guineas from the defendant as his regular attendance fee, allowing the defendant until the end of the following day to make payment. The defendant's response was that he believed the sum had already been paid by his then-attorney. When no payment was forthcoming, the claimant commenced his action on 3 November 1829, seeking to recover the six guineas as compensation for loss of time.
 

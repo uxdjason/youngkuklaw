@@ -27,12 +27,12 @@ claimantRole: Claimant
 claimant: COLLINS
 defendantRole: Defendant
 defendant: Godefroy
-courtLink: https://youngkuklaw.com/case-pdf/collins-v-godefroy.pdf
+courtLink: https://youngkuklaw.com/case-archive/collins-v-godefroy.html
 ---
 
 ## Case Facts
 
-원고는 변호사로서, 피고로부터 증인 소환장(subpoena)을 받아 [Godefroy v Dalton [1830]](http://youngkuklaw.com/case-pdf/godefroy-v-dalton.pdf) 사건의 민사소송에 증인으로 출석하였다. 해당 소송은 Dalton이 변호사로서 Court of Common Pleas의 소송 수행 과정에서 과실 및 업무상 미숙함을 범하였다는 주장을 다룬 사건이었다. 원고는 소환장에 따라 6일간 법원에 출석하였으나, 실제로 증언을 하도록 요청받은 적은 한 번도 없었다. 피고는 해당 원심 소송에서 결국 판결을 받았으나, Court of Common Pleas는 이후 그 판결을 취소하였다.
+원고는 변호사로서, 피고로부터 증인 소환장(subpoena)을 받아 [Godefroy v Dalton [1830]](https://youngkuklaw.com/case-archive/godefroy-v-dalton.html) 사건의 민사소송에 증인으로 출석하였다. 해당 소송은 Dalton이 변호사로서 Court of Common Pleas의 소송 수행 과정에서 과실 및 업무상 미숙함을 범하였다는 주장을 다룬 사건이었다. 원고는 소환장에 따라 6일간 법원에 출석하였으나, 실제로 증언을 하도록 요청받은 적은 한 번도 없었다. 피고는 해당 원심 소송에서 결국 판결을 받았으나, Court of Common Pleas는 이후 그 판결을 취소하였다.
 
 1829년 11월 2일, 원고는 피고에게 통상적인 출석 수당으로 6기니를 청구하면서 다음 날 말까지 지급할 것을 요구하였다. 이에 대해 피고는 당시 자신의 대리인 변호사가 이미 해당 금액을 지급한 것으로 알고 있다고 답하였다. 지급이 이루어지지 않자, 원고는 1829년 11월 3일에 시간 손실에 대한 보상으로 6기니를 회수하기 위해 소를 제기하였다.
 

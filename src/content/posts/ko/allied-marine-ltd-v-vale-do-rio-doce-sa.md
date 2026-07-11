@@ -25,7 +25,7 @@ citation: '[1985] 1 WLR 925'
 court: Court of Appeal
 claimant: Allied Marine Ltd
 defendant: Vale do Rio Doce SA
-courtLink: https://uk.practicallaw.thomsonreuters.com/Document/I5D200D10E42711DA8FC2A0F0355337E9/View/FullText.html
+courtLink: https://www.iclr.co.uk/document/1981000100/casereport_2860/html
 ---
 
 ## Case Facts

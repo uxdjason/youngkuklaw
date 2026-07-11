@@ -33,7 +33,7 @@ claimantRole: Plaintiff
 claimant: Thomas Routledge
 defendantRole: Defendant
 defendant: Alexander Grant
-courtLink: https://youngkuklaw.com/case-pdf/routledge-v-grant.pdf
+courtLink: https://youngkuklaw.com/case-archive/routledge-v-grant.html
 ---
 
 ## Case Facts

@@ -33,7 +33,7 @@ claimantRole: Plaintiff
 claimant: PINNEL
 defendantRole: Defendant
 defendant: Cole
-courtLink: https://youngkuklaw.com/case-pdf/pinnels-case.pdf
+courtLink: https://youngkuklaw.com/case-archive/pinnels-case.html
 ---
 
 ## Case Facts

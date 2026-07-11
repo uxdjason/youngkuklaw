@@ -28,7 +28,7 @@ citation: '(1220) 145 ER 235'
 court: '?'
 claimant: Furrer
 defendant: Snelling
-courtLink: https://youngkuklaw.com/case-pdf/furrer-v-snelling.pdf
+courtLink: https://youngkuklaw.com/case-archive/furrer-v-snelling.html
 ---
 
 ## Case Facts

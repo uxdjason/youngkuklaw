@@ -30,7 +30,7 @@ claimantRole: Plaintiff
 claimant: ROBERT HARTLEY
 defendantRole: Defendant
 defendant: Ponsonby
-courtLink: https://youngkuklaw.com/case-pdf/hartley-v-ponsonby.pdf
+courtLink: https://youngkuklaw.com/case-archive/hartley-v-ponsonby.html
 ---
 
 ## Case Facts
