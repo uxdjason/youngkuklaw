@@ -4,7 +4,7 @@ pubDate: '2025-07-31T09:00:00+00:00'
 lang: en
 category: contract-law-cases
 slug: pinnels-case
-title: Pinnel's Case
+title: Pinnel’s Case
 description: Pinnel's Case (1602) established that payment of a lesser sum cannot
   satisfy a greater debt. Learn the rule, its exceptions, and its impact on English
   contract law.
@@ -33,7 +33,7 @@ claimantRole: Plaintiff
 claimant: PINNEL
 defendantRole: Defendant
 defendant: Cole
-courtLink: https://youngkuklaw.com/case-archive/pinnels-case.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1572/290.pdf
 ---
 
 ## Case Facts

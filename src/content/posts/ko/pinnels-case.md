@@ -4,7 +4,7 @@ pubDate: '2025-07-31T09:00:00+00:00'
 lang: ko
 category: contract-law-cases
 slug: pinnels-case
-title: Pinnel's Case
+title: Pinnel’s Case
 description: Pinnel's Case(1602)는 더 적은 금액으로 더 큰 채무를 변제할 수 없다는 원칙을 확립한 영국 계약법 핵심 판례다.
 seoTitle: Pinnel's Case (1602) | 일부 변제 원칙
 metaDescription: Pinnel's Case(1602)는 더 적은 금액으로 더 큰 채무를 변제할 수 없다는 원칙을 확립한 영국 계약법 핵심
@@ -29,7 +29,7 @@ claimantRole: Plaintiff
 claimant: PINNEL
 defendantRole: Defendant
 defendant: Cole
-courtLink: https://youngkuklaw.com/case-archive/pinnels-case.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1572/290.pdf
 ---
 
 ## Case Facts

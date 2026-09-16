@@ -27,7 +27,7 @@ claimantRole: Plaintiff
 claimant: Thomas Routledge
 defendantRole: Defendant
 defendant: Alexander Grant
-courtLink: https://youngkuklaw.com/case-archive/routledge-v-grant.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1828/326.pdf
 ---
 
 ## Case Facts
@@ -56,7 +56,7 @@ Court of Common Pleas는 소송 각하 판결의 취소를 거부하고, Routled
 
 이 판결로부터 세 가지 법명제가 도출된다.
 
-<strong>첫째</strong>, 피청약자에게 승낙을 위한 특정 기간을 부여한 청약자는 그 기간 내에 승낙이 이루어지기 전까지 언제든지 청약을 철회할 자유가 있다. 기간을 부여한다는 사실만으로 청약자가 청약을 유지할 의무를 지는 것은 아니다. 이 원칙은 상호성(mutuality) 요건에 근거한다. 즉, 청약을 존속시키기 위한 약인이 제공되지 않은 경우, 다시 말해 구속력 있는 선택권 계약(option contract)이 없는 경우에는, 일방이 구속되는 반면 타방은 완전한 자유를 보유하는 상태가 유지될 수 없다는 것이다. 이 원칙은 이후 [Dickinson v Dodds (1876)](/ko/dickinson-v-dodds)에서 적용되었고, [Byrne v Van Tienhoven (1880)](/ko/byrne-v-van-tienhoven) 및 [Stevenson v McLean (1880)](/ko/stevenson-v-mclean)에서도 확인되었다.
+<strong>첫째</strong>, 피청약자에게 승낙을 위한 특정 기간을 부여한 청약자는 그 기간 내에 승낙이 이루어지기 전까지 언제든지 청약을 철회할 자유가 있다. 기간을 부여한다는 사실만으로 청약자가 청약을 유지할 의무를 지는 것은 아니다. 이 원칙은 상호성(mutuality) 요건에 근거한다. 즉, 청약을 존속시키기 위한 약인이 제공되지 않은 경우, 다시 말해 구속력 있는 선택권 계약(option contract)이 없는 경우에는, 일방이 구속되는 반면 타방은 완전한 자유를 보유하는 상태가 유지될 수 없다는 것이다. 이 원칙은 이후 [Dickinson v Dodds (1876)](/ko/dickinson-v-dodds)에서 적용되었고, [Byrne v Leon Van Tienhoven (1880)](/ko/byrne-v-van-tienhoven) 및 [Stevenson v McLean (1880)](/ko/stevenson-v-mclean)에서도 확인되었다.
 
 <strong>둘째</strong>, 소장에서 주장된 사실과 심리에서 증명된 사실 사이에 중대한 불일치가 없어야 한다. 원고의 소장이 증거에 의해 뒷받침되지 않는 권원을 주장하는 경우, 즉 중요한 시점에 12년의 임차권만이 존재하는데 31년 또는 32년의 임차권을 주장하는 경우에는, 다른 사정을 고려할 필요 없이 그 이유만으로 소송이 실패하게 된다.
 

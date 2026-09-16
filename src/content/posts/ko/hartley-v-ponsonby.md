@@ -23,13 +23,13 @@ uiDescription: 선원 수가 급감하여 항해 자체가 생명에 위험한 �
   대한 유효한 약인을 제공할 수 있다.
 sourceOrigin: migrated
 humanReviewed: true
-citation: (1857) 7 EL & BL 872
+citation: (1857) 7 El&Bl 872
 court: Court of Queen’s Bench
 claimantRole: Plaintiff
 claimant: ROBERT HARTLEY
 defendantRole: Defendant
 defendant: Ponsonby
-courtLink: https://youngkuklaw.com/case-archive/hartley-v-ponsonby.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1857/605.pdf
 ---
 
 ## Case Facts

@@ -24,13 +24,13 @@ uiDescription: When a ship's crew was reduced from 36 to 19 hands, rendering the
   could validly agree to extra wages as fresh consideration.
 sourceOrigin: migrated
 humanReviewed: true
-citation: (1857) 7 EL & BL 872
+citation: (1857) 7 El&Bl 872
 court: Court of Queen’s Bench
 claimantRole: Plaintiff
 claimant: ROBERT HARTLEY
 defendantRole: Defendant
 defendant: Ponsonby
-courtLink: https://youngkuklaw.com/case-archive/hartley-v-ponsonby.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1857/605.pdf
 ---
 
 ## Case Facts

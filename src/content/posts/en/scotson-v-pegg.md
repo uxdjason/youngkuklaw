@@ -24,13 +24,13 @@ uiDescription: Performing an obligation already owed to a third party under a pr
   party who benefits from that performance.
 sourceOrigin: migrated
 humanReviewed: true
-citation: (1861) 6 H & N 295
+citation: (1861) 6 H&N 295
 court: Court of Exchequer
 claimantRole: Claimant
 claimant: SCOTSON
 defendantRole: Defendant
 defendant: Pegg
-courtLink: https://youngkuklaw.com/case-archive/scotson-v-pegg.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1861/244.pdf
 ---
 
 ## Case Facts

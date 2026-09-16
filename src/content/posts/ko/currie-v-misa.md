@@ -30,7 +30,7 @@ claimantRole: Plaintiff
 claimant: GLYN, MILLS, CURRIE & CO.
 defendantRole: Defendant
 defendant: Misa
-courtLink: https://en.wikipedia.org/wiki/Currie_v_Misa
+courtLink: https://www4.commonlii.org/uk/cases/UKLawRpExch/1875/11.html
 ---
 
 ## Case Facts
@@ -63,7 +63,7 @@ Exchequer Chamber는 Keating J, Lush J, Quain J, Archibald J의 다수의견으�
 
 Ratio의 두 번째 측면은 양도가능증권법(law of negotiable instruments)에 관한 것이다. 법원은 채무자의 권원에 어떠한 흠결도 없다는 점을 인지하면서 선의로 기존 채무에 관하여 양도가능증권을 수령한 채권자는 그 증권에 대한 취소 불가능한 권원을 취득한다고 확립하였다. 기존 채무는 채권자의 유효한 소지인으로서의 지위를 보호하기에 충분한 약인을 구성하며, 피고는 기초 거래에서의 약인 실패를 주장함으로써 그 권원을 무력화할 수 없다.
 
-이 사건의 약인 정의는 이후 수많은 판결에서 인용·확인되어 온 해당 법리의 기초적 표현으로 계속 활용되고 있다. 이 정의는 흔히 약인이 반드시 상당할 필요는 없음을 확인한 [Chappell v Nestlé [1960]](/ko/chappell-v-nestle), 그리고 약인과 동기를 구별한 [Thomas v Thomas (1842)](https://youngkuklaw.com/case-archive/thomas-v-thomas.html)와 함께 읽힌다. 기존 채무가 유효한 약인을 구성할 수 있다는 원칙은 또한 [Foakes v Beer [1884]](/ko/foakes-v-beer) 및 [Pinnel's Case (1602)](/ko/pinnels-case)에서 다루어진 논의와도 연결된다.
+이 사건의 약인 정의는 이후 수많은 판결에서 인용·확인되어 온 해당 법리의 기초적 표현으로 계속 활용되고 있다. 이 정의는 흔히 약인이 반드시 상당할 필요는 없음을 확인한 [Chappell v Nestlé [1960]](/ko/chappell-v-nestle), 그리고 약인과 동기를 구별한 [Thomas v Thomas (1842)](https://www4.commonlii.org/uk/cases/EngR/1842/260.pdf)와 함께 읽힌다. 기존 채무가 유효한 약인을 구성할 수 있다는 원칙은 또한 [Foakes v Beer [1884]](/ko/foakes-v-beer) 및 [Pinnel's Case (1602)](/ko/pinnels-case)에서 다루어진 논의와도 연결된다.
 
 ## Obiter Dicta
 

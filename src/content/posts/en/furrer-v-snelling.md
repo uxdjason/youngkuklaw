@@ -26,11 +26,11 @@ uiDescription: A tenant's unpaid rent covenant was sued upon for an inflated sum
   claimed must be abated.
 sourceOrigin: migrated
 humanReviewed: true
-citation: '(1220) 145 ER 235'
+citation: (1220) 145 ER 235
 court: '?'
 claimant: Furrer
 defendant: Snelling
-courtLink: https://youngkuklaw.com/case-archive/furrer-v-snelling.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1220/761.pdf
 ---
 
 ## Case Facts

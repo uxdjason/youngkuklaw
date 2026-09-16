@@ -22,13 +22,13 @@ uiDescription: 제3자와의 선행 계약에 따라 이미 부담하는 의무�
   유효한 약인이 될 수 있다.
 sourceOrigin: migrated
 humanReviewed: true
-citation: (1861) 6 H & N 295
+citation: (1861) 6 H&N 295
 court: Court of Exchequer
 claimantRole: Claimant
 claimant: SCOTSON
 defendantRole: Defendant
 defendant: Pegg
-courtLink: https://youngkuklaw.com/case-archive/scotson-v-pegg.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1861/244.pdf
 ---
 
 ## Case Facts

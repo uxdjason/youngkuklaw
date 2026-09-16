@@ -33,7 +33,7 @@ claimantRole: Plaintiff
 claimant: Thomas Routledge
 defendantRole: Defendant
 defendant: Alexander Grant
-courtLink: https://youngkuklaw.com/case-archive/routledge-v-grant.html
+courtLink: https://www.commonlii.org/uk/cases/EngR/1828/326.pdf
 ---
 
 ## Case Facts
@@ -62,7 +62,7 @@ The Court of Common Pleas declined to set aside the nonsuit and upheld three dis
 
 Three propositions of law emerge from the judgement.
 
-**First**, an offeror who has given the offeree a specified period within which to accept remains free to revoke the offer at any time before acceptance occurs within that period. The mere granting of time does not bind the offeror to keep the offer open. This principle rests on the requirement of mutuality: where no consideration has been provided to keep the offer open — that is, where there is no binding option contract — one party cannot be held bound whilst the other retains complete freedom. This principle was subsequently applied in [Dickinson v Dodds (1876)](/dickinson-v-dodds) and affirmed in [Byrne v Van Tienhoven (1880)](/byrne-v-van-tienhoven) and [Stevenson v McLean (1880)](/stevenson-v-mclean).
+**First**, an offeror who has given the offeree a specified period within which to accept remains free to revoke the offer at any time before acceptance occurs within that period. The mere granting of time does not bind the offeror to keep the offer open. This principle rests on the requirement of mutuality: where no consideration has been provided to keep the offer open — that is, where there is no binding option contract — one party cannot be held bound whilst the other retains complete freedom. This principle was subsequently applied in [Dickinson v Dodds (1876)](/dickinson-v-dodds) and affirmed in [Byrne v Leon Van Tienhoven (1880)](/byrne-v-van-tienhoven) and [Stevenson v McLean (1880)](/stevenson-v-mclean).
 
 **Second**, there must be no material variance between the facts alleged in the pleadings and the facts proved at trial. Where a claimant's declaration asserts an entitlement that the evidence does not support — here, a 31 or 32-year term when only a 12-year term existed at the material time — the action will fail on that ground independently of any other consideration.
 
