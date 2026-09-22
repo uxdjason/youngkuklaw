@@ -12,6 +12,10 @@
 - **Do Not Hallucinate Translations for Specific Civic/Historical Terms**: If an English term represents a specific UK historical or civic official/role (e.g., "swordbearer"), and there is no direct, widely accepted Korean equivalent, DO NOT invent a translation (e.g., "검도원장"). Leave the term in its original English form.
 - **Translate "The Crown" as "정부"**: In legal and case law contexts, "The Crown" almost always refers to the government or executive branch acting on behalf of the monarch. Do NOT translate it as "왕실" (Royal Family/Court). Translate it as "정부".
 - **Translate "Council" as "지자체"**: When referring to a local authority (e.g., Borough Council, City Council), translate "council" as "지자체" (local government), NOT "의회" (parliament/legislature).
+- **Translate "rule of law" as "법치주의"**: Do NOT translate "rule of law" as "법의 지배". The correct and standard Korean legal translation is "법치주의".
+
+## Statute Section Number Formatting
+- **Never use a dot between "s" and the section number**: Always write `s 23` with a single space, NEVER `s.23`. This applies consistently across all English and Korean markdown files.
 
 ## Internal Links in Korean Text
 - **Use `/ko/` Prefix for Internal Links**: When linking to other case articles from within a Korean markdown file, you MUST prepend `/ko` to the slug. For example, use `[Fisher v Bell [1961]](/ko/fisher-v-bell)` instead of `[Fisher v Bell [1961]](/fisher-v-bell)`. Do not link to the English version from a Korean article unless explicitly requested.

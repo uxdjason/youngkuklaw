@@ -552,7 +552,8 @@ async def _step_write_en(
     )
 
     en_md = result.text.strip()
-    en_md = _remove_self_links(en_md, post["wp_slug"])
+    en_md = _enforce_valid_links(en_md, post["wp_slug"], wp_sourced_urls=_load_wp_external_urls(post))
+    en_md = _apply_common_post_processing(en_md)
     (out / "en.md").write_text(en_md, encoding="utf-8")
     cprint(f"  ✅ 영문 작성 완료 ({len(en_md)}자, ${result.cost_usd:.4f})", out)
     return en_md
@@ -590,7 +591,8 @@ async def _step_write_ko(
     )
 
     ko_md = result.text.strip()
-    ko_md = _remove_self_links(ko_md, post["wp_slug"])
+    ko_md = _enforce_valid_links(ko_md, post["wp_slug"], wp_sourced_urls=_load_wp_external_urls(post))
+    ko_md = _apply_common_post_processing(ko_md)
     ko_md = _apply_ko_post_processing(ko_md)
     (out / "ko.md").write_text(ko_md, encoding="utf-8")
     cprint(f"  ✅ 한국어 작성 완료 ({len(ko_md)}자, ${result.cost_usd:.4f})", out)
@@ -625,7 +627,8 @@ async def _step_wp_priority_en(
     )
 
     en_md = result.text.strip()
-    en_md = _remove_self_links(en_md, post["wp_slug"])
+    en_md = _enforce_valid_links(en_md, post["wp_slug"], wp_sourced_urls=_load_wp_external_urls(post))
+    en_md = _apply_common_post_processing(en_md)
     (out / "en.md").write_text(en_md, encoding="utf-8")
     cprint(f"  ✅ 영문 번역 완료 ({len(en_md)}자, ${result.cost_usd:.4f})", out)
     return en_md
@@ -660,20 +663,101 @@ async def _step_wp_priority_ko(
     )
 
     ko_md = result.text.strip()
-    ko_md = _remove_self_links(ko_md, post["wp_slug"])
+    ko_md = _enforce_valid_links(ko_md, post["wp_slug"], wp_sourced_urls=_load_wp_external_urls(post))
+    ko_md = _apply_common_post_processing(ko_md)
     ko_md = _apply_ko_post_processing(ko_md)
     (out / "ko.md").write_text(ko_md, encoding="utf-8")
     cprint(f"  ✅ 한국어 작성 완료 ({len(ko_md)}자, ${result.cost_usd:.4f})", out)
     return ko_md
 
 
-def _remove_self_links(text: str, slug: str) -> str:
-    """자기 자신에 대한 마크다운 링크를 제거하고 링크 텍스트만 남긴다."""
-    # [Link Text](/slug) 또는 [Link Text](/ko/slug) 패턴 제거 (nested brackets 지원)
-    pattern = re.compile(
-        r'\[(.*?)\]\(\/?(?:ko\/)?%s\/?\)' % re.escape(slug)
+def _extract_external_urls(html_or_text: str) -> set[str]:
+    """WP 원문(HTML 또는 plaintext)에 이미 존재하는 외부 URL을 추출하여 whitelist로 반환한다."""
+    urls: set[str] = set()
+    # HTML <a href> 추출
+    for m in re.finditer(r'href=["\']([^"\'>]+)["\']', html_or_text):
+        u = m.group(1).strip()
+        if u.startswith("http://") or u.startswith("https://"):
+            urls.add(u)
+    # Markdown 링크 [text](url) 추출
+    for m in re.finditer(r'\]\((https?://[^)\s]+)\)', html_or_text):
+        urls.add(m.group(1).strip())
+    return urls
+
+
+def _load_wp_external_urls(post: sqlite3.Row) -> set[str]:
+    """posts 레코드의 wp_html_path에서 WP 원문 HTML을 읽어 외부 URL을 추출한다."""
+    html_path = post["wp_html_path"]
+    if not html_path:
+        return set()
+    p = Path(html_path)
+    if not p.exists():
+        return set()
+    return _extract_external_urls(p.read_text(encoding="utf-8", errors="ignore"))
+
+
+def _get_all_valid_slugs() -> set[str]:
+    conn = _db()
+    rows = conn.execute("SELECT wp_slug FROM posts").fetchall()
+    conn.close()
+    return {r["wp_slug"] for r in rows if r["wp_slug"]}
+
+
+def _enforce_valid_links(text: str, current_slug: str, wp_sourced_urls: set[str] | None = None) -> str:
+    """내부 링크는 DB 슬러그 기준으로, 외부 링크는 WP 원문 출처 URL + 공식 법령·판례 도메인만 허용한다."""
+    valid_slugs = _get_all_valid_slugs()
+    wp_sourced_urls = wp_sourced_urls or set()
+
+    # 항상 허용하는 공식 외부 도메인 (법령·판례 공식 소스)
+    ALLOWED_EXTERNAL_DOMAINS = (
+        "legislation.gov.uk",
+        "bailii.org",
+        "commonlii.org",
     )
-    return pattern.sub(r'\1', text)
+
+    def replace_link(match):
+        link_text = match.group(1)
+        url = match.group(2).strip()
+
+        # 외부 링크 검증
+        if url.startswith("http://") or url.startswith("https://") or url.startswith("mailto:"):
+            # 1) 공식 허용 도메인이면 통과
+            if any(domain in url for domain in ALLOWED_EXTERNAL_DOMAINS):
+                return match.group(0)
+            # 2) WP 원문에 이미 있던 URL이면 통과
+            if url in wp_sourced_urls:
+                return match.group(0)
+            # 3) AI가 새로 지어낸 외부 URL → 텍스트만 반환
+            return link_text
+
+        # 내부 링크에서 슬러그 추출
+        slug = url
+        slug = slug.split("#")[0]  # 해시태그 제거
+        slug = slug.split("?")[0]  # 쿼리스트링 제거
+        slug = slug.strip("/")
+
+        if slug.startswith("ko/"):
+            slug = slug[3:]
+        elif slug.startswith("en/"):
+            slug = slug[3:]
+
+        slug = slug.strip("/")
+
+        # 유효하지 않거나, 현재 글(자기 자신)에 대한 링크면 텍스트만 반환
+        if not slug or slug not in valid_slugs or slug == current_slug:
+            return link_text
+
+        return match.group(0)
+
+    pattern = re.compile(r'\[((?:[^\[\]]|\[[^\[\]]*\])*)\]\(([^)\s]+)\)')
+    return pattern.sub(replace_link, text)
+
+
+def _apply_common_post_processing(text: str) -> str:
+    """영문·국문 공통 후처리 필터: AI가 프롬프트 규칙을 무시하고 잘못 생성한 형식을 강제 교정한다."""
+    # s.23 → s 23 (조항 번호 앞 점자 제거: s.뒤에 숫자가 올 때)
+    text = re.sub(r'\bs\.(?=\d)', 's ', text)
+    return text
 
 
 def _apply_ko_post_processing(text: str) -> str:
